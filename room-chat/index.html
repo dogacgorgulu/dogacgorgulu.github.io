@@ -27,7 +27,7 @@
 
         let players = {};
         const avatarImage = new Image();
-        avatarImage.src = "https://common-verdant-boa.glitch.me/avatar.png"; // Replace with your PNG file URL
+        avatarImage.src = "https://common-verdant-boa.glitch.me/avatar.png"; // Adjust the path as needed
 
         // Dynamically resize the canvas to match the width of the text input
         function resizeCanvas() {
@@ -45,8 +45,16 @@
             if (message) {
                 socket.emit("message", message);
                 chatInput.value = "";
+
+                // Keep the keyboard open by refocusing the input field
+                chatInput.focus();
             }
         };
+
+        // Fix layout when keyboard opens
+        chatInput.addEventListener("focus", () => {
+            document.body.style.height = `${window.innerHeight}px`; // Prevent layout shift
+        });
 
         // Update players from the server
         socket.on("update-players", (serverPlayers) => {
@@ -67,7 +75,7 @@
                 const player = players[id];
 
                 // Draw player avatar
-                ctx.drawImage(avatarImage, player.x - 25, player.y - 25, 50, 50); // Adjust size and position
+                ctx.drawImage(avatarImage, player.x - 25, player.y - 25, 50, 50);
 
                 // Draw message
                 if (player.message) {
@@ -81,6 +89,3 @@
     </script>
 </body>
 </html>
-
-
-

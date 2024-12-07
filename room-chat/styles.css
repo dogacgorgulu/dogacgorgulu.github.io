@@ -22,6 +22,10 @@ canvas {
     width: 90%;
     max-width: 400px;
     margin-top: 10px; /* Add space below the canvas */
+    position: absolute;
+    bottom: 0;
+    z-index: 10;
+    background-color: white;
 }
 
 #chatInput {
@@ -48,5 +52,3 @@ canvas {
 #sendButton:hover {
     background-color: rgb(211, 72, 170); /* Darker cold pink */
 }
-
-
