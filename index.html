@@ -39,12 +39,14 @@
 
     <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
     <script>
-        let socket;
+        const socket = io("https://common-verdant-boa.glitch.me"); // Replace with your signaling server URL
+
         let peerConnection;
         let dataChannel;
         let localSocketId;
         let targetPeerId;
 
+        // DOM Elements
         const peerIdDisplay = document.getElementById("peerIdDisplay");
         const connectionStatus = document.getElementById("connectionStatus");
         const chatLog = document.getElementById("chatLog");
@@ -52,58 +54,17 @@
         const disconnectButton = document.getElementById("disconnectButton");
         const messageBox = document.getElementById("messageBox");
 
-        // Generate Peer ID
+        // Generate ID
         document.getElementById("generateIdButton").onclick = () => {
-            // Disconnect existing socket (if any)
-            if (socket && socket.connected) {
-                socket.disconnect();
-                console.log("Previous connection disconnected.");
+            if (!socket.connected) {
+                socket.connect();
             }
-
-            // Initialize a new connection
-            initializeSocket();
-
             localSocketId = socket.id;
             peerIdDisplay.textContent = localSocketId || "Generating...";
             console.log("Generated Peer ID:", localSocketId);
-
-            // Enable Disconnect button
-            disconnectButton.disabled = false;
         };
 
-        // Initialize Socket.IO with Persistent ID
-        function initializeSocket() {
-            // Check for stored Peer ID
-            const storedId = localStorage.getItem("peerId");
-
-            // Connect to the server with stored ID or fresh connection
-            socket = io("https://common-verdant-boa.glitch.me ", {
-                autoConnect: false, // Prevent auto-connect on load
-                query: { id: storedId }
-            });
-
-            socket.connect(); // Connect manually when button is clicked
-
-            // Handle connection
-            socket.on("connect", () => {
-                localSocketId = socket.id;
-
-                // Store the new Peer ID if it's not already stored
-                if (!storedId || storedId !== localSocketId) {
-                    localStorage.setItem("peerId", localSocketId);
-                }
-
-                peerIdDisplay.textContent = localSocketId;
-                console.log("Connected with ID:", localSocketId);
-            });
-
-            // Handle disconnection
-            socket.on("disconnect", () => {
-                console.log("Disconnected from signaling server.");
-            });
-        }
-
-        // Connect to Another Peer
+        // Connect to another Peer
         document.getElementById("connectButton").onclick = async () => {
             targetPeerId = document.getElementById("peerId").value.trim();
             if (!targetPeerId) {
@@ -123,16 +84,15 @@
             socket.emit("signal", { target: targetPeerId, signal: { offer } });
         };
 
-        // Disconnect Button
+        // Disconnect
         disconnectButton.onclick = () => {
             if (peerConnection) {
                 peerConnection.close();
                 peerConnection = null;
             }
-            if (socket && socket.connected) {
+            if (socket.connected) {
                 socket.disconnect();
             }
-
             connectionStatus.textContent = "Disconnected";
             sendButton.disabled = true;
             disconnectButton.disabled = true;
@@ -140,7 +100,7 @@
             console.log("Disconnected from Peer");
         };
 
-        // Create Peer Connection
+        // Create PeerConnection
         async function createPeerConnection() {
             peerConnection = new RTCPeerConnection({
                 iceServers: [
@@ -195,7 +155,7 @@
                 const message = event.data;
                 console.log("Message received:", message);
                 chatLog.innerHTML += `<p>Peer: ${message}</p>`;
-                chatLog.scrollTop = chatLog.scrollHeight;
+                chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll to the bottom
             };
         }
 
@@ -207,13 +167,13 @@
                 console.log("Sent message:", message);
                 chatLog.innerHTML += `<p>You: ${message}</p>`;
                 messageBox.value = "";
-                chatLog.scrollTop = chatLog.scrollHeight;
+                chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll to the bottom
             } else {
                 console.error("DataChannel is not open. Current state:", dataChannel.readyState);
             }
         };
 
-        // Handle Incoming Signals
+        // Handle incoming signals
         socket.on("signal", async ({ signal, sender }) => {
             console.log("Received signal:", signal, "from:", sender);
 
