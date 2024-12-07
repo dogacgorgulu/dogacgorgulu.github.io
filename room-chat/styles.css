@@ -18,14 +18,14 @@ body {
     height: 100vh; /* Full viewport height */
     text-align: center;
     background: #fdf2f8;
-    padding: 20px;
+    padding: 5px;
     box-sizing: border-box;
 }
 
 #welcomeScreen h1 {
     font-size: 20px;
     color: #ec4899;
-    margin-bottom: 15px;
+    margin-bottom: 2px;
 }
 
 #welcomeScreen input {
