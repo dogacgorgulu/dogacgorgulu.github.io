@@ -71,37 +71,47 @@ window.addEventListener("click", () => {
 // Draw players on the canvas
 
 
+
+
 function draw() {
+    // Clear the entire canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw the background image
     if (backgroundImage.complete) {
         ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-    } else {
-        backgroundImage.onload = () => {
-            ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-        };
     }
 
+    // Draw players
     for (const id in players) {
         const player = players[id];
 
         // Draw avatar
         if (avatarImage.complete) {
-            ctx.drawImage(avatarImage, player.x - 15, player.y - 15, 30, 30); // Adjust size as needed
-        } else {
-            avatarImage.onload = () => {
-                ctx.drawImage(avatarImage, player.x - 15, player.y - 15, 30, 30);
-            };
+            ctx.drawImage(avatarImage, player.x - 25, player.y - 25, 60, 60); // Adjust size as needed
         }
 
-        // Draw name and message
-        ctx.fillStyle = "black";
-        ctx.font = "12px Arial";
-        ctx.fillText(player.name, player.x - 20, player.y - 25);
+        // Draw player's name above the avatar
+        ctx.fillStyle = "white"; // Text color
+        ctx.strokeStyle = "black"; // Outline color
+        ctx.lineWidth = 2; // Thickness of the outline
+        ctx.font = "bold 22px Arial";
+        ctx.textAlign = "center";
+
+        ctx.strokeText(player.name, player.x, player.y - 30); // Name above
+        ctx.fillText(player.name, player.x, player.y - 30);
+
+        // Draw player's message below the avatar
         if (player.message) {
-            ctx.fillText(player.message, player.x - 20, player.y + 35);
+            ctx.strokeText(player.message, player.x, player.y + 50); // Message below
+            ctx.fillText(player.message, player.x, player.y + 50);
         }
     }
+
     requestAnimationFrame(draw);
 }
+
+
 draw();
 
 
@@ -143,12 +153,28 @@ function sendMessage() {
         chatInput.value = ""; // Clear input
         chatInput.focus(); // Keep focus for typing
     }
+    draw();
 }
 
+// Listen for the state-updated event
+socket.on("state-updated", () => {
+    console.log("State updated, redrawing canvas...");
+    draw(); // Explicitly call the draw function
+});
 
 // Update players
 socket.on("players", (data) => (players = data));
 socket.on("player-joined", (data) => (players[data.id] = data));
 socket.on("player-moved", (data) => (players[data.id] = data));
-socket.on("player-message", (data) => (players[data.id] = data));
+
+socket.on("message", (data) => {
+    console.log("Received player-message:", data); // Debug log
+    if (players[data.id]) {
+        players[data.id].message = data.text; // Update the player's message
+        console.log(`Player ${data.id} message updated to: ${data.text}`); // Confirm update
+    } else {
+        console.log(`Player ${data.id} not found!`); // If the player doesn't exist, log an error
+    }
+});
+
 socket.on("player-left", (data) => delete players[data.id]);
