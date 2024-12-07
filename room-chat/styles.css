@@ -20,7 +20,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 50vh;
+    height: 100vh;
     text-align: center;
     background: #fdf2f8;
 }
@@ -60,26 +60,30 @@ body {
 #chatScreen {
     display: flex;
     flex-direction: column;
-    height: 80vh;
+    height: 100vh;
 }
 
+/* Header */
 header {
-    padding: 15px;
+    height: 10%; /* Fixed proportion of the viewport */
+    padding: 10px;
     background: #ec4899; /* Vibrant pink */
     text-align: center;
     color: #ffffff;
+    box-sizing: border-box;
 }
 
 header h1 {
     margin: 0;
-    font-size: 22px;
+    font-size: 20px;
 }
 
 /* Chat Log */
 #chatLog {
-    flex: 1; /* Take available vertical space */
-    overflow-y: auto; /* Make chat log scrollable */
-    padding: 15px;
+    flex: 1;
+    height: 70%; /* Proportionate space for the chat log */
+    overflow-y: auto; /* Enable scrolling for long chats */
+    padding: 10px;
     background: #fdf2f8; /* Light pink */
     display: flex;
     flex-direction: column;
@@ -118,20 +122,20 @@ header h1 {
 
 /* Message Composer */
 #chatBox {
+    height: 20%; /* Fixed proportion for the input area */
     display: flex;
     align-items: center;
+    gap: 10px;
     padding: 10px;
     background: #ffffff;
     border-top: 1px solid #fbcfe8;
-    position: sticky; /* Stick to the bottom of the screen */
-    bottom: 0;
-    z-index: 10;
+    box-sizing: border-box;
 }
 
 #chatInput {
     flex: 1;
-    padding: 10px;
-    font-size: 16px;
+    height: 40px; /* Fixed height for the input */
+    font-size: 14px;
     border: 1px solid #fbcfe8;
     border-radius: 8px;
     outline: none;
@@ -140,11 +144,11 @@ header h1 {
 
 #sendButton {
     padding: 10px 15px;
-    font-size: 16px;
+    font-size: 14px;
     background: #ec4899;
     color: #ffffff;
     border: none;
     border-radius: 8px;
-    margin-left: 10px;
     cursor: pointer;
 }
+
