@@ -150,26 +150,19 @@ header h1 {
     cursor: pointer;
 }
 
-/* Responsive Design */
+
+/* Responsive adjustments */
 @media (max-width: 600px) {
-    header h1 {
-        font-size: 18px;
+    .controls {
+        flex-direction: column;
     }
 
-    #chatLog {
-        padding: 10px;
+    .id-section {
+        width: 100%;
+        justify-content: space-between;
     }
 
-    #chatBox {
-        padding: 10px;
-    }
-
-    #chatInput {
-        font-size: 12px;
-    }
-
-    #sendButton {
-        padding: 8px 12px;
-        font-size: 12px;
+    #peerId, #connectButton, #disconnectButton {
+        width: 100%;
     }
 }
