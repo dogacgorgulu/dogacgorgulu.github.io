@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password-Protected Chat Room</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -28,7 +28,7 @@
 
     <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
     <script>
-        const socket = io("https://common-verdant-boa.glitch.me/room-chat"); // Update with your server URL
+        const socket = io("https://common-verdant-boa.glitch.me/room-chat"); // Replace with your Glitch server URL
         const chatLog = document.getElementById("chatLog");
         const messageBox = document.getElementById("messageBox");
         const sendButton = document.getElementById("sendButton");
@@ -39,6 +39,8 @@
         const chatArea = document.getElementById("chatArea");
 
         let roomId = null;
+        let peerConnection;
+        let dataChannel;
 
         createRoomButton.onclick = () => {
             const roomId = roomIdInput.value.trim();
@@ -67,32 +69,78 @@
                 if (response.success) {
                     alert(response.message);
                     chatArea.classList.remove("hidden");
-                    setupChat();
+                    setupWebRTC();
                 } else {
                     alert(response.message);
                 }
             });
         };
 
-        function setupChat() {
-            sendButton.disabled = false;
-            messageBox.disabled = false;
-
+        function setupWebRTC() {
             socket.on("user-joined", ({ userId }) => {
-                appendMessage(`User ${userId} joined the room`, "system");
+                console.log(`User ${userId} joined`);
+                createOffer(userId);
             });
 
-            socket.on("signal", ({ sender, signal }) => {
-                appendMessage(`Signal received from ${sender}`, "system");
+            socket.on("signal", async ({ sender, signal }) => {
+                console.log(`Signal received from ${sender}`);
+                if (signal.offer) {
+                    await peerConnection.setRemoteDescription(signal.offer);
+                    const answer = await peerConnection.createAnswer();
+                    await peerConnection.setLocalDescription(answer);
+                    socket.emit("signal", { roomId, target: sender, signal: { answer } });
+                } else if (signal.answer) {
+                    await peerConnection.setRemoteDescription(signal.answer);
+                } else if (signal.candidate) {
+                    await peerConnection.addIceCandidate(signal.candidate);
+                }
             });
 
-            sendButton.onclick = () => {
-                const message = messageBox.value.trim();
-                if (!message) return;
-                appendMessage(message, "you");
-                messageBox.value = "";
+            peerConnection = new RTCPeerConnection({
+                iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+            });
+
+            peerConnection.onicecandidate = (event) => {
+                if (event.candidate) {
+                    socket.emit("signal", { roomId, target: roomId, signal: { candidate: event.candidate } });
+                }
+            };
+
+            peerConnection.ondatachannel = (event) => {
+                dataChannel = event.channel;
+                setupDataChannel();
+            };
+
+            dataChannel = peerConnection.createDataChannel("chat");
+            setupDataChannel();
+        }
+
+        function createOffer(target) {
+            peerConnection.createOffer().then((offer) => {
+                peerConnection.setLocalDescription(offer);
+                socket.emit("signal", { roomId, target, signal: { offer } });
+            });
+        }
+
+        function setupDataChannel() {
+            dataChannel.onopen = () => {
+                sendButton.disabled = false;
+                messageBox.disabled = false;
+            };
+
+            dataChannel.onmessage = (event) => {
+                appendMessage(event.data, "peer");
             };
         }
+
+        sendButton.onclick = () => {
+            const message = messageBox.value.trim();
+            if (message && dataChannel.readyState === "open") {
+                dataChannel.send(message);
+                appendMessage(message, "you");
+                messageBox.value = "";
+            }
+        };
 
         function appendMessage(text, sender) {
             const msgDiv = document.createElement("div");
@@ -104,3 +152,4 @@
     </script>
 </body>
 </html>
+
