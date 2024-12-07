@@ -1,12 +1,13 @@
 <!-- https://common-verdant-boa.glitch.me --> 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebRTC P2P Chat</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to the external CSS file -->
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>WebRTC P2P Chat</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    
 <body>
     <header>
         <h1>WebRTC P2P Chat</h1>
@@ -166,9 +167,12 @@
             const msgDiv = document.createElement("div");
             msgDiv.className = `message ${sender}`;
             msgDiv.textContent = text;
+
+            // Append the new message and scroll to the bottom
             chatLog.appendChild(msgDiv);
-            chatLog.scrollTop = chatLog.scrollHeight;
+            chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll to the bottom
         }
+
 
         socket.on("signal", async ({ signal, sender }) => {
             console.log("Received signal:", signal, "from:", sender);

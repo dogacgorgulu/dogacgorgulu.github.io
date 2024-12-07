@@ -120,13 +120,16 @@ header h1 {
 
 #chatLog {
     flex: 1;
-    overflow-y: auto;
+    overflow-y: auto; /* Enable vertical scrolling */
     padding: 15px;
     background: #fdf2f8; /* Light pink */
     display: flex;
     flex-direction: column;
     gap: 8px;
+    max-height: 50vh; /* Limit height to half the viewport */
+    border-radius: 6px;
 }
+
 
 .message {
     max-width: 70%;
