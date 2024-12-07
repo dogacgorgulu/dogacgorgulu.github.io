@@ -5,13 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebRTC P2P Chat</title>
+    <style>
+        #chatLog {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
     <h1>WebRTC P2P Chat</h1>
+
+    <!-- Generate ID Section -->
+    <button id="generateIdButton">Generate Peer ID</button>
+    <p>Your Peer ID: <span id="peerIdDisplay">Not Generated</span></p>
+
+    <!-- Peer ID Section -->
     <label for="peerId">Enter Peer ID:</label>
     <input type="text" id="peerId" placeholder="Peer ID" />
     <button id="connectButton">Connect</button>
+    <button id="disconnectButton" disabled>Disconnect</button>
 
+    <!-- Connection Status -->
+    <h3>Connection Status: <span id="connectionStatus">Not Connected</span></h3>
+
+    <!-- Message Section -->
     <textarea id="messageBox" placeholder="Type a message..." rows="4" cols="50" disabled></textarea>
     <button id="sendButton" disabled>Send</button>
 
@@ -27,17 +46,61 @@
         let localSocketId;
         let targetPeerId;
 
-        // Log when connected and display your Peer ID
-        socket.on("connect", () => {
-            localSocketId = socket.id;
-            console.log("Connected to signaling server with ID:", localSocketId);
-            document.body.insertAdjacentHTML(
-                "beforeend",
-                `<p>Your Peer ID: <strong>${localSocketId}</strong></p>`
-            );
-        });
+        // DOM Elements
+        const peerIdDisplay = document.getElementById("peerIdDisplay");
+        const connectionStatus = document.getElementById("connectionStatus");
+        const chatLog = document.getElementById("chatLog");
+        const sendButton = document.getElementById("sendButton");
+        const disconnectButton = document.getElementById("disconnectButton");
+        const messageBox = document.getElementById("messageBox");
 
-        // Create a PeerConnection and handle DataChannel setup
+        // Generate ID
+        document.getElementById("generateIdButton").onclick = () => {
+            if (!socket.connected) {
+                socket.connect();
+            }
+            localSocketId = socket.id;
+            peerIdDisplay.textContent = localSocketId || "Generating...";
+            console.log("Generated Peer ID:", localSocketId);
+        };
+
+        // Connect to another Peer
+        document.getElementById("connectButton").onclick = async () => {
+            targetPeerId = document.getElementById("peerId").value.trim();
+            if (!targetPeerId) {
+                alert("Please enter a valid Peer ID!");
+                return;
+            }
+
+            connectionStatus.textContent = "Connecting...";
+            await createPeerConnection();
+
+            dataChannel = peerConnection.createDataChannel("chat");
+            setupDataChannel();
+
+            const offer = await peerConnection.createOffer();
+            await peerConnection.setLocalDescription(offer);
+            console.log("Sending offer:", offer);
+            socket.emit("signal", { target: targetPeerId, signal: { offer } });
+        };
+
+        // Disconnect
+        disconnectButton.onclick = () => {
+            if (peerConnection) {
+                peerConnection.close();
+                peerConnection = null;
+            }
+            if (socket.connected) {
+                socket.disconnect();
+            }
+            connectionStatus.textContent = "Disconnected";
+            sendButton.disabled = true;
+            disconnectButton.disabled = true;
+            messageBox.disabled = true;
+            console.log("Disconnected from Peer");
+        };
+
+        // Create PeerConnection
         async function createPeerConnection() {
             peerConnection = new RTCPeerConnection({
                 iceServers: [
@@ -57,12 +120,14 @@
                 }
             };
 
-            peerConnection.oniceconnectionstatechange = () => {
-                console.log("ICE connection state:", peerConnection.iceConnectionState);
-            };
-
             peerConnection.onconnectionstatechange = () => {
                 console.log("Connection state:", peerConnection.connectionState);
+                if (peerConnection.connectionState === "connected") {
+                    connectionStatus.textContent = "Connected";
+                    disconnectButton.disabled = false;
+                } else if (peerConnection.connectionState === "disconnected" || peerConnection.connectionState === "failed") {
+                    connectionStatus.textContent = "Disconnected";
+                }
             };
 
             peerConnection.ondatachannel = (event) => {
@@ -72,47 +137,43 @@
             };
         }
 
-        // Handle DataChannel state and messaging
+        // Setup DataChannel
         function setupDataChannel() {
             dataChannel.onopen = () => {
                 console.log("DataChannel is open!");
-                document.getElementById("messageBox").disabled = false;
-                document.getElementById("sendButton").disabled = false;
+                messageBox.disabled = false;
+                sendButton.disabled = false;
             };
 
             dataChannel.onclose = () => {
                 console.log("DataChannel is closed.");
-                document.getElementById("messageBox").disabled = true;
-                document.getElementById("sendButton").disabled = true;
+                messageBox.disabled = true;
+                sendButton.disabled = true;
             };
 
             dataChannel.onmessage = (event) => {
                 const message = event.data;
                 console.log("Message received:", message);
-                document.getElementById("chatLog").innerHTML += `<p>Peer: ${message}</p>`;
+                chatLog.innerHTML += `<p>Peer: ${message}</p>`;
+                chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll to the bottom
             };
         }
 
-        // Connect to another Peer
-        document.getElementById("connectButton").onclick = async () => {
-            targetPeerId = document.getElementById("peerId").value.trim();
-            if (!targetPeerId) {
-                alert("Please enter a valid Peer ID!");
-                return;
+        // Send Message
+        sendButton.onclick = () => {
+            const message = messageBox.value.trim();
+            if (message && dataChannel.readyState === "open") {
+                dataChannel.send(message);
+                console.log("Sent message:", message);
+                chatLog.innerHTML += `<p>You: ${message}</p>`;
+                messageBox.value = "";
+                chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll to the bottom
+            } else {
+                console.error("DataChannel is not open. Current state:", dataChannel.readyState);
             }
-
-            await createPeerConnection();
-
-            dataChannel = peerConnection.createDataChannel("chat");
-            setupDataChannel();
-
-            const offer = await peerConnection.createOffer();
-            await peerConnection.setLocalDescription(offer);
-            console.log("Sending offer:", offer);
-            socket.emit("signal", { target: targetPeerId, signal: { offer } });
         };
 
-        // Handle incoming signals from the server
+        // Handle incoming signals
         socket.on("signal", async ({ signal, sender }) => {
             console.log("Received signal:", signal, "from:", sender);
 
@@ -132,19 +193,6 @@
                 await peerConnection.addIceCandidate(new RTCIceCandidate(signal.candidate));
             }
         });
-
-        // Send a message via DataChannel
-        document.getElementById("sendButton").onclick = () => {
-            const message = document.getElementById("messageBox").value;
-            if (dataChannel.readyState === "open") {
-                dataChannel.send(message);
-                console.log("Sent message:", message);
-                document.getElementById("chatLog").innerHTML += `<p>You: ${message}</p>`;
-                document.getElementById("messageBox").value = "";
-            } else {
-                console.error("DataChannel is not open. Current state:", dataChannel.readyState);
-            }
-        };
     </script>
 </body>
 </html>
