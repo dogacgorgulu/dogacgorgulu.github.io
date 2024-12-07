@@ -154,14 +154,15 @@
         sendButton.onclick = () => {
             const message = messageBox.value.trim();
             if (message && dataChannel && dataChannel.readyState === "open") {
-                dataChannel.send(message);
-                console.log("Sent message:", message);
-                appendMessage(message, "you");
-                messageBox.value = "";
+                dataChannel.send(message); // Send the message
+                appendMessage(message, "you"); // Display the message in the chat log
+                messageBox.value = ""; // Clear the textarea
+                messageBox.focus(); // Refocus the textarea to keep the keyboard open
             } else {
                 console.error("DataChannel is not open. Current state:", dataChannel ? dataChannel.readyState : "no dataChannel");
             }
         };
+
 
         function appendMessage(text, sender) {
             const msgDiv = document.createElement("div");
