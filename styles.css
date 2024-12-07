@@ -62,17 +62,17 @@ header h1 {
 }
 
 #peerId {
-
-    height: 44px; /* Fixed height for consistency */
-
     flex: 1;
+    max-width: 100%; /* Ensure it doesn’t overflow the parent container */
     padding: 8px 12px;
     font-size: 16px;
     border: 1px solid #fbcfe8;
     border-radius: 6px;
     background: #fef6fb; /* Light pink */
     color: #9d174d;
+    box-sizing: border-box; /* Prevent width issues */
 }
+
 
 #connectButton, #disconnectButton {
     font-size: 14px;

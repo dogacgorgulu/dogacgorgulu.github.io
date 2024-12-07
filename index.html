@@ -164,21 +164,22 @@
         };
 
         function triggerFloatingEffect() {
+            // Create the floating element
             const floatingElement = document.createElement("div");
             floatingElement.className = "floating-effect";
-            floatingElement.textContent = "❤️"; // You can change this to "⭐" or any emoji
+            floatingElement.textContent = "❤️"; // Replace with any emoji or symbol you prefer
 
-            // Randomize position
+            // Position it at a random horizontal location within the chat log
             const randomX = Math.random() * 80 + 10; // Random position within 10%-90% width
             floatingElement.style.left = `${randomX}%`;
 
             // Append the floating element to the chat log
             chatLog.appendChild(floatingElement);
 
-            // Remove the element after animation
+            // Remove the element after the animation completes
             setTimeout(() => {
                 floatingElement.remove();
-            }, 1500); // Match the animation duration in the CSS
+            }, 1500); // Match the animation duration in CSS
         }
 
         function appendMessage(text, sender) {
