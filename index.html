@@ -54,51 +54,52 @@
 
         // Generate Peer ID
         document.getElementById("generateIdButton").onclick = () => {
+            // Disconnect existing socket (if any)
             if (socket && socket.connected) {
                 socket.disconnect();
+                console.log("Previous connection disconnected.");
             }
 
+            // Initialize a new connection
             initializeSocket();
+
+            localSocketId = socket.id;
+            peerIdDisplay.textContent = localSocketId || "Generating...";
+            console.log("Generated Peer ID:", localSocketId);
+
+            // Enable Disconnect button
+            disconnectButton.disabled = false;
         };
 
-        // Initialize Socket.IO
+        // Initialize Socket.IO with Persistent ID
         function initializeSocket() {
+            // Check for stored Peer ID
             const storedId = localStorage.getItem("peerId");
 
-            // Connect to the server with stored ID or a new connection
-            socket = io("https://common-verdant-boa.glitch.me", {
-                autoConnect: false,
-                query: { id: storedId } // Send stored ID to the server
+            // Connect to the server with stored ID or fresh connection
+            socket = io("https://common-verdant-boa.glitch.me ", {
+                autoConnect: false, // Prevent auto-connect on load
+                query: { id: storedId }
             });
 
-            socket.connect();
+            socket.connect(); // Connect manually when button is clicked
 
+            // Handle connection
             socket.on("connect", () => {
                 localSocketId = socket.id;
 
-                // Save the new ID if not already stored
+                // Store the new Peer ID if it's not already stored
                 if (!storedId || storedId !== localSocketId) {
                     localStorage.setItem("peerId", localSocketId);
                 }
 
                 peerIdDisplay.textContent = localSocketId;
-                connectionStatus.textContent = "Connected";
                 console.log("Connected with ID:", localSocketId);
             });
 
+            // Handle disconnection
             socket.on("disconnect", () => {
-                console.log("Disconnected. Attempting to reconnect...");
-                connectionStatus.textContent = "Disconnected";
-            });
-
-            socket.on("reconnect", () => {
-                console.log("Reconnected with the same ID:", localSocketId);
-                connectionStatus.textContent = "Connected";
-            });
-
-            socket.on("reconnect_attempt", () => {
-                console.log("Attempting to reconnect...");
-                connectionStatus.textContent = "Reconnecting...";
+                console.log("Disconnected from signaling server.");
             });
         }
 
