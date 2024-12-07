@@ -68,44 +68,44 @@
 
         // Initialize Socket.IO with Persistent ID
         function initializeSocket() {
-            const storedId = localStorage.getItem("peerId");
+    const storedId = localStorage.getItem("peerId");
 
-            // Connect to the server with stored ID or a new connection
-            socket = io("https://common-verdant-boa.glitch.me", {
-                autoConnect: false,
-                query: { id: storedId } // Use the stored ID for reconnection
-            });
+    // Connect to the server with the stored ID or a fresh connection
+    socket = io("https://your-glitch-project-url.glitch.me", {
+        autoConnect: false, // Prevent auto-connect on page load
+        query: { id: storedId } // Send stored ID to the server
+    });
 
-            socket.connect();
+    socket.connect();
 
-            socket.on("connect", () => {
-                localSocketId = socket.id;
+    socket.on("connect", () => {
+        localSocketId = socket.id;
 
-                // Save the new ID if not already stored
-                if (!storedId || storedId !== localSocketId) {
-                    localStorage.setItem("peerId", localSocketId);
-                }
-
-                peerIdDisplay.textContent = localSocketId;
-                connectionStatus.textContent = "Connected";
-                console.log("Connected with ID:", localSocketId);
-            });
-
-            socket.on("disconnect", () => {
-                console.log("Disconnected. Attempting to reconnect...");
-                connectionStatus.textContent = "Disconnected";
-            });
-
-            socket.on("reconnect", () => {
-                console.log("Reconnected with the same ID:", localSocketId);
-                connectionStatus.textContent = "Connected";
-            });
-
-            socket.on("reconnect_attempt", () => {
-                console.log("Attempting to reconnect...");
-                connectionStatus.textContent = "Reconnecting...";
-            });
+        // Store the new ID if it's not already saved
+        if (!storedId || storedId !== localSocketId) {
+            localStorage.setItem("peerId", localSocketId);
         }
+
+        peerIdDisplay.textContent = localSocketId;
+        connectionStatus.textContent = "Connected";
+        console.log("Connected with ID:", localSocketId);
+    });
+
+    socket.on("disconnect", () => {
+        console.log("Disconnected. Attempting to reconnect...");
+        connectionStatus.textContent = "Disconnected";
+    });
+
+    socket.on("reconnect", () => {
+        console.log("Reconnected with the same ID:", localSocketId);
+        connectionStatus.textContent = "Connected";
+    });
+
+    socket.on("reconnect_attempt", () => {
+        console.log("Attempting to reconnect...");
+        connectionStatus.textContent = "Reconnecting...";
+    });
+}
 
         // Reinitialize socket when Safari is resumed
         document.addEventListener("visibilitychange", () => {
