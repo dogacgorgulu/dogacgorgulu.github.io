@@ -164,44 +164,15 @@
         };
 
 
-        function triggerFloatingEffect(sender) {
-    // Create the floating element
-    const floatingElement = document.createElement("div");
-    floatingElement.className = "floating-effect";
+        function triggerGlowEffect() {
+            chatLog.classList.add("glow");
 
-    // Use different emojis/colors for "you" and "peer" messages
-    if (sender === "you") {
-        floatingElement.textContent = "✨"; // Sparkles for your messages
-        floatingElement.style.color = "#10b981"; // Green sparkles
-    } else {
-        floatingElement.textContent = "❤️"; // Hearts for peer messages
-        floatingElement.style.color = "#ec4899"; // Pink hearts
-    }
+            // Remove the glow class after the animation ends
+            setTimeout(() => {
+                chatLog.classList.remove("glow");
+            }, 300); // Match the transition duration in CSS
+        }
 
-    // Position the heart near the last message
-    const lastMessage = chatLog.lastElementChild; // Get the last message element
-    if (lastMessage) {
-        const rect = lastMessage.getBoundingClientRect(); // Get its position
-        const chatLogRect = chatLog.getBoundingClientRect(); // Get chatLog's position
-
-        // Set the floating effect's position relative to the chatLog
-        floatingElement.style.left = `${rect.left - chatLogRect.left + rect.width / 2}px`;
-        floatingElement.style.top = `${rect.top - chatLogRect.top}px`;
-    } else {
-        // Default position if no message exists
-        floatingElement.style.left = "50%";
-        floatingElement.style.top = "50%";
-        floatingElement.style.transform = "translate(-50%, -50%)";
-    }
-
-    // Append the floating element to the chat log
-    chatLog.appendChild(floatingElement);
-
-    // Remove the floating element after the animation completes
-    setTimeout(() => {
-        floatingElement.remove();
-    }, 1500); // Match the animation duration in CSS
-}
 
 
 
@@ -213,12 +184,13 @@
             // Append the new message to the chat log
             chatLog.appendChild(msgDiv);
 
-            // Trigger floating animation for messages (both "you" and "peer")
-            triggerFloatingEffect(sender);
-
             // Auto-scroll to the bottom
             chatLog.scrollTop = chatLog.scrollHeight;
+
+            // Trigger glow effect
+            triggerGlowEffect();
         }
+
 
 
 
