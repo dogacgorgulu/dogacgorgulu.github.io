@@ -5,67 +5,25 @@ body {
     background: #fdf2f8; /* Soft pink background */
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    overflow: hidden; /* Prevent body scroll */
-}
-
-/* Welcome Screen */
-#welcomeScreen {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    text-align: center;
-    background: #fdf2f8;
-    padding: 20px;
-}
-
-#welcomeScreen h1 {
-    font-size: 24px;
-    color: #ec4899;
-    margin-bottom: 15px;
-}
-
-#welcomeScreen input {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #fbcfe8;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    background: #fef6fb;
-    color: #9d174d;
-    width: 100%;
-    max-width: 300px;
-}
-
-#welcomeScreen button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background: #ec4899;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-#welcomeScreen button:hover {
-    background: #db2777;
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Prevent scrolling */
 }
 
 /* Chat Screen */
 #chatScreen {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 100%; /* Full height of the parent container */
 }
 
 /* Header */
 header {
+    flex-shrink: 0; /* Prevent header from shrinking */
     padding: 15px;
     background: #ec4899;
     text-align: center;
     color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
@@ -75,24 +33,25 @@ header h1 {
 
 /* Chat Log */
 #chatLog {
-    flex: 1; /* Fills available space */
-    overflow-y: auto; /* Enables vertical scrolling */
+    flex: 1; /* Fills remaining space */
+    overflow-y: auto; /* Scrollable content */
     padding: 15px;
     background: #fdf2f8;
     display: flex;
     flex-direction: column;
     gap: 8px;
     border-top: 1px solid #fbcfe8;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on Safari */
 }
 
-/* Messages */
+/* Message Styling */
 .message {
     max-width: 70%;
     padding: 10px 15px;
     border-radius: 8px;
     font-size: 14px;
+    line-height: 1.5;
     word-wrap: break-word;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .message.you {
@@ -107,23 +66,26 @@ header h1 {
     color: #6b0f1e;
 }
 
-/* Composer */
+/* Chat Input Area */
 #chatBox {
+    flex-shrink: 0; /* Prevent shrinking */
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 15px;
     background: #ffffff;
     border-top: 1px solid #fbcfe8;
+    box-sizing: border-box;
 }
 
 #chatInput {
     flex: 1;
+    height: 40px; /* Fixed height */
     border: 1px solid #fbcfe8;
     border-radius: 8px;
     padding: 10px;
     font-size: 14px;
-    height: 40px;
+    outline: none;
     background: #fef6fb;
     color: #9d174d;
 }
@@ -136,6 +98,13 @@ header h1 {
     border: none;
     border-radius: 8px;
     cursor: pointer;
+}
+
+/* Safari Fix for Flexbox Issues */
+@supports (-webkit-touch-callout: none) {
+    #chatLog {
+        height: calc(100% - 60px); /* Adjust to prevent overflow */
+    }
 }
 
 /* Responsive Design */
@@ -161,3 +130,4 @@ header h1 {
         font-size: 12px;
     }
 }
+
