@@ -18,6 +18,7 @@
         header, .controls, .status-bar, .composer {
             padding: 10px;
             background: #ffffff;
+            box-sizing: border-box;
         }
 
         header h1 {
@@ -32,18 +33,53 @@
 
         .controls {
             display: flex;
+            flex-wrap: wrap;
             align-items: center;
             gap: 10px;
         }
 
-        .controls button, .controls input {
-            padding: 5px 10px;
-            font-size: 14px;
+        .id-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
         }
 
-        .controls input {
+        .id-section button {
+            font-size: 14px;
+            background: #128c7e;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .id-section span {
+            font-weight: bold;
+        }
+
+        /* Make inputs and buttons more flexible on small screens */
+        #peerId {
+            flex: 1 1 100px;
+            min-width: 100px;
+            padding: 5px 10px;
+            font-size: 14px;
             border: 1px solid #ccc;
             border-radius: 4px;
+        }
+
+        #connectButton, #disconnectButton {
+            font-size: 14px;
+            background: #128c7e;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        #disconnectButton {
+            background: #8c1212; /* a different color for disconnect */
         }
 
         .status-bar {
@@ -120,23 +156,21 @@
             font-size: 14px;
         }
 
-        .id-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        @media (max-width: 600px) {
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
 
-        .id-section button {
-            font-size: 14px;
-            background: #128c7e;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-        }
+            .id-section {
+                width: 100%;
+                justify-content: space-between;
+            }
 
-        .id-section span {
-            font-weight: bold;
+            #peerId, #connectButton, #disconnectButton {
+                width: 100%;
+                box-sizing: border-box;
+            }
         }
     </style>
 </head>
