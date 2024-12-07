@@ -30,11 +30,7 @@
 
     <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
     <script>
-        // Load audio files
-        const messageSound = new Audio("./sounds/message.mp3");
-        const notificationSound = new Audio("./sounds/notification.mp3");
-
-        const socket = io("https://common-verdant-boa.glitch.me/broadcast"); // Connect to the /chat namespace
+        const socket = io("https://common-verdant-boa.glitch.me/broadcast");
 
         const welcomeScreen = document.getElementById("welcomeScreen");
         const chatScreen = document.getElementById("chatScreen");
@@ -45,6 +41,21 @@
         const sendButton = document.getElementById("sendButton");
 
         let displayName = "";
+
+        // Join the chatroom
+        joinButton.onclick = () => {
+            const name = displayNameInput.value.trim();
+            if (!name) {
+                alert("Please enter a display name!");
+                return;
+            }
+            displayName = name;
+            socket.emit("join", displayName); // Notify server of the new user
+
+            // Toggle screens
+            welcomeScreen.classList.add("hidden");
+            chatScreen.classList.remove("hidden");
+        };
 
         // Listen for Enter key to send message
         chatInput.addEventListener("keypress", (event) => {
@@ -67,46 +78,11 @@
             }
         }
 
-        // Join the chatroom
-        joinButton.onclick = () => {
-            const name = displayNameInput.value.trim();
-            if (!name) {
-                alert("Please enter a display name!");
-                return;
-            }
-            displayName = name;
-            socket.emit("join", displayName); // Notify server of the new user
-            welcomeScreen.classList.add("hidden");
-            chatScreen.classList.remove("hidden");
-        };
-
-        // Handle name changes
-        displayNameInput.onchange = () => {
-            const newName = displayNameInput.value.trim();
-            if (newName && newName !== displayName) {
-                socket.emit("changeName", newName);
-                displayName = newName;
-            }
-        };
-
-        // Handle message sending
-        sendButton.onclick = () => {
-            const message = chatInput.value.trim();
-            if (message) {
-                socket.emit("message", { text: message }); // Send only the text
-                appendMessage({ name: "You", text: message }, "you"); // Local append
-                chatInput.value = "";
-                chatInput.focus(); // Keep keyboard open
-            }
-        };
-
-
+        // Append message to chat log
         function appendMessage({ name, text }, sender) {
             const messageDiv = document.createElement("div");
             messageDiv.className = `message ${sender}`;
             messageDiv.innerHTML = `<strong>${name}:</strong> ${text}`;
-            
-            // Append the new message to the chat log
             chatLog.appendChild(messageDiv);
 
             // Auto-scroll to the bottom
@@ -117,7 +93,6 @@
         socket.on("message", (data) => {
             if (data.name !== displayName) {
                 appendMessage(data, "peer");
-                messageSound.play();
             }
         });
 
@@ -128,8 +103,8 @@
             messageDiv.textContent = message;
             chatLog.appendChild(messageDiv);
             chatLog.scrollTop = chatLog.scrollHeight;
-            notificationSound.play();
         });
+
 
     </script>
 </body>
