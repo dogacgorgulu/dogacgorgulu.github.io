@@ -58,12 +58,21 @@
             chatScreen.classList.remove("hidden");
         };
 
+        // Handle name changes
+        displayNameInput.onchange = () => {
+            const newName = displayNameInput.value.trim();
+            if (newName && newName !== displayName) {
+                socket.emit("changeName", newName);
+                displayName = newName;
+            }
+        };
+
         // Handle message sending
         sendButton.onclick = () => {
             const message = chatInput.value.trim();
             if (message) {
-                socket.emit("message", { name: displayName, text: message });
-                appendMessage({ name: "You", text: message }, "you");
+                socket.emit("message", { text: message }); // Send only the text
+                appendMessage({ name: "You", text: message }, "you"); // Local append
                 chatInput.value = "";
                 chatInput.focus(); // Keep keyboard open
             }
@@ -80,7 +89,9 @@
 
         // Listen for incoming messages
         socket.on("message", (data) => {
-            appendMessage(data, "peer");
+            if (data.name !== displayName) {
+                appendMessage(data, "peer");
+            }
         });
 
         // Display system messages (e.g., join/leave notifications)
