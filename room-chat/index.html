@@ -105,6 +105,20 @@
             chatLog.scrollTop = chatLog.scrollHeight;
         });
 
+        const chatBox = document.getElementById('chatBox');
+
+        // Adjust chat box position on mobile when the keyboard is visible
+        window.addEventListener('resize', () => {
+            if (window.innerHeight < 500) {
+                // Mobile keyboard is likely open
+                chatBox.style.position = 'absolute';
+            } else {
+                // Restore to the default
+                chatBox.style.position = 'fixed';
+            }
+        });
+
+
 
     </script>
 </body>

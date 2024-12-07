@@ -5,7 +5,7 @@ body {
     background: #fdf2f8;
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Full viewport height */
+    height: 100vh; /* Full height for the viewport */
     overflow: hidden; /* Prevent scrolling */
 }
 
@@ -13,7 +13,7 @@ body {
 .main {
     display: flex;
     flex-direction: column;
-    height: 100%; /* Full height */
+    height: 100%; /* Full height of the viewport */
 }
 
 /* Header */
@@ -34,7 +34,7 @@ header h1 {
 
 /* Chat Log */
 #chatLog {
-    flex: 1; /* Take up all remaining space */
+    flex: 1; /* Take up remaining space */
     overflow-y: auto; /* Enable scrolling when content exceeds height */
     padding: 15px;
     background: #fdf2f8;
@@ -43,28 +43,6 @@ header h1 {
     gap: 8px;
     box-sizing: border-box;
     border-top: 1px solid #fbcfe8;
-}
-
-/* Messages */
-.message {
-    max-width: 70%;
-    padding: 10px 15px;
-    border-radius: 8px;
-    font-size: 14px;
-    word-wrap: break-word;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.message.you {
-    align-self: flex-end;
-    background: #f9a8d4;
-    color: #831843;
-}
-
-.message.peer {
-    align-self: flex-start;
-    background: #ffffff;
-    color: #6b0f1e;
 }
 
 /* Chat Composer (Input Area) */
@@ -76,6 +54,16 @@ header h1 {
     background: #ffffff;
     border-top: 1px solid #fbcfe8;
     box-sizing: border-box;
+    position: fixed;
+    bottom: 0; /* Pin to the bottom */
+    width: 100%; /* Full width */
+}
+
+/* Adjust for mobile safe area (keyboard) */
+@supports (padding: env(safe-area-inset-bottom)) {
+    #chatBox {
+        padding-bottom: env(safe-area-inset-bottom); /* Dynamic padding for iOS and other mobile devices */
+    }
 }
 
 #chatInput {
@@ -106,17 +94,13 @@ header h1 {
     background: #db2777;
 }
 
-/* Responsive Design */
+/* Responsive Design for Mobile */
 @media (max-width: 600px) {
     header h1 {
         font-size: 18px;
     }
 
     #chatLog {
-        padding: 10px;
-    }
-
-    #chatBox {
         padding: 10px;
     }
 
