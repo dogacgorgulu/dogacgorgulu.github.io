@@ -2,18 +2,18 @@
 body {
     margin: 0;
     font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background: #fdf2f8; /* Light pink background */
+    background: #fdf2f8;
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Full height */
+    height: 100vh; /* Full viewport height */
     overflow: hidden; /* Prevent body scrolling */
 }
 
-/* Chat screen layout */
+/* Main layout */
 .main {
     display: flex;
     flex-direction: column;
-    height: 100%; /* Full height */
+    height: 100%; /* Full height of viewport */
 }
 
 /* Header */
@@ -31,34 +31,58 @@ header h1 {
     font-size: 22px;
 }
 
-/* Chat log */
+/* Chat log area (scrollable) */
 #chatLog {
-    flex: 1; /* Fill available space */
-    overflow-y: auto; /* Scrollable if content exceeds height */
+    flex: 1; /* Fills remaining space between header and chat input */
+    overflow-y: auto; /* Enable vertical scrolling */
     padding: 15px;
-    background: #fdf2f8;
+    background: #fdf2f8; /* Light pink */
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    flex-direction: column; /* Messages stack vertically */
+    gap: 8px; /* Space between messages */
     box-sizing: border-box;
+    border-top: 1px solid #fbcfe8;
+    scroll-behavior: smooth; /* Smooth scrolling */
 }
 
-/* Input field at the bottom */
-#chatBox {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%; /* Full width */
-    background: #ffffff;
+/* Individual message styling */
+.message {
+    max-width: 70%;
     padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    word-wrap: break-word;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.message.you {
+    align-self: flex-end; /* Your messages align to the right */
+    background: #f9a8d4;
+    color: #831843;
+}
+
+.message.peer {
+    align-self: flex-start; /* Peer messages align to the left */
+    background: #ffffff;
+    color: #6b0f1e;
+}
+
+/* Message composer (fixed at bottom) */
+#chatBox {
+    flex-shrink: 0; /* Prevent shrinking */
     display: flex;
     align-items: center;
+    padding: 10px 15px;
+    background: #ffffff;
     border-top: 1px solid #fbcfe8;
     box-sizing: border-box;
+    position: fixed;
+    bottom: 0;
+    width: 100%; /* Full width */
 }
 
 #chatInput {
-    flex: 1;
+    flex: 1; /* Take up all available space */
     height: 40px; /* Fixed height */
     border: 1px solid #fbcfe8;
     border-radius: 8px;
@@ -67,6 +91,7 @@ header h1 {
     outline: none;
     background: #fef6fb;
     color: #9d174d;
+    resize: none; /* Prevent resizing */
 }
 
 #sendButton {
