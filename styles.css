@@ -1,0 +1,165 @@
+body {
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: #f0f2f5;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+header, .controls, .status-bar, .composer {
+    padding: 10px;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.controls, .status-bar {
+    border-bottom: 1px solid #ccc;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.id-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.id-section button {
+    font-size: 14px;
+    background: #128c7e;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.id-section span {
+    font-weight: bold;
+}
+
+#peerId {
+    flex: 1 1 100px;
+    min-width: 100px;
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#connectButton, #disconnectButton {
+    font-size: 14px;
+    background: #128c7e;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+#disconnectButton {
+    background: #8c1212; /* a different color for disconnect */
+}
+
+.status-bar {
+    display: flex;
+    align-items: center;
+}
+
+.status-bar span {
+    font-weight: bold;
+}
+
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+#chatLog {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background: #e5ddd5;
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    max-width: 70%;
+    margin-bottom: 8px;
+    padding: 10px 14px;
+    border-radius: 18px;
+    line-height: 1.4;
+    font-size: 14px;
+    word-wrap: break-word;
+}
+
+.message.you {
+    background: #dcf8c6;
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+}
+
+.message.peer {
+    background: #fff;
+    align-self: flex-start;
+    border-bottom-left-radius: 0;
+}
+
+.composer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-top: 1px solid #ccc;
+}
+
+.composer textarea {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 20px;
+    resize: none;
+    height: 40px;
+    outline: none;
+}
+
+.composer button {
+    background: #128c7e;
+    color: #fff;
+    border: none;
+    padding: 0 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .id-section {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    #peerId, #connectButton, #disconnectButton {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
