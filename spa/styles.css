@@ -8,8 +8,7 @@ canvas {
     display: block;
     width: 100vw;
     height: calc(100vh - 50px);
-    background: #f3f3f3;
-    border-bottom: 2px solid #ddd;
+    background: none; /* Remove default background to show the image */
 }
 
 #chatBox {
