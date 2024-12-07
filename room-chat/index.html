@@ -7,17 +7,8 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Canvas for the game -->
     <canvas id="gameCanvas"></canvas>
-
-    <!-- Movement Controls for Mobile -->
-    <div id="controls">
-        <button id="up">⬆️</button>
-        <div>
-            <button id="left">⬅️</button>
-            <button id="down">⬇️</button>
-            <button id="right">➡️</button>
-        </div>
-    </div>
 
     <!-- Chat Box -->
     <div id="chatBox">
@@ -34,20 +25,18 @@
         const chatInput = document.getElementById("chatInput");
         const sendButton = document.getElementById("sendButton");
 
-        // Movement controls for mobile
-        const upButton = document.getElementById("up");
-        const downButton = document.getElementById("down");
-        const leftButton = document.getElementById("left");
-        const rightButton = document.getElementById("right");
-
-        // Fixed canvas size
-        const canvasWidth = 600;
-        const canvasHeight = 400;
-        canvas.width = canvasWidth;
-        canvas.height = canvasHeight;
-
         let players = {};
         const speed = 5;
+
+        // Dynamically resize the canvas to match the width of the text input
+        function resizeCanvas() {
+            const chatBoxWidth = chatInput.offsetWidth + sendButton.offsetWidth; // Combined width of input and button
+            canvas.width = chatBoxWidth;
+            canvas.height = chatBoxWidth; // Make it a square
+        }
+
+        resizeCanvas(); // Initial resize
+        window.addEventListener("resize", resizeCanvas); // Adjust on window resize
 
         // Emit movement to the server
         function emitMove(x, y) {
@@ -62,12 +51,6 @@
             if (e.key === "ArrowLeft") emitMove(-speed, 0);
             if (e.key === "ArrowRight") emitMove(speed, 0);
         });
-
-        // Movement controls for mobile
-        upButton.onclick = () => emitMove(0, -speed);
-        downButton.onclick = () => emitMove(0, speed);
-        leftButton.onclick = () => emitMove(-speed, 0);
-        rightButton.onclick = () => emitMove(speed, 0);
 
         // Handle message sending
         sendButton.onclick = () => {
@@ -105,17 +88,8 @@
                 }
             }
         }
-
-        // Prevent the keyboard from closing
-        chatInput.addEventListener("focus", () => {
-            document.body.style.height = `${window.innerHeight}px`; // Prevent layout shift
-        });
-
-        // Resize canvas and layout on window resize
-        window.addEventListener("resize", () => {
-            document.body.style.height = `${window.innerHeight}px`;
-        });
     </script>
 </body>
 </html>
+
 
