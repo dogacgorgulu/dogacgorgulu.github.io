@@ -1,5 +1,17 @@
 const socket = io("https://common-verdant-boa.glitch.me/spa");
 
+const avatarImage = new Image();
+avatarImage.src = "./images/avatar.png"; // Path to your avatar image
+const backgroundImage = new Image();
+backgroundImage.src = "./images/background.jpg"; // Path to your background image
+
+avatarImage.onload = () => console.log("Avatar loaded successfully");
+avatarImage.onerror = () => console.error("Failed to load avatar image");
+
+backgroundImage.onload = () => console.log("Background loaded successfully");
+backgroundImage.onerror = () => console.error("Failed to load background image");
+
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -57,10 +69,7 @@ window.addEventListener("click", () => {
 }, { once: true });
 
 // Draw players on the canvas
-const avatarImage = new Image();
-avatarImage.src = "./images/avatar.png"; // Path to your avatar image
-const backgroundImage = new Image();
-backgroundImage.src = "./images/background.jpg"; // Path to your background image
+
 
 function draw() {
     if (backgroundImage.complete) {
