@@ -2,46 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Game Room</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-        }
-        canvas {
-            display: block;
-            background: #f3f4f6; /* Light gray */
-        }
-        #chatBox {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-        }
-        #chatInput {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px 0 0 4px;
-            width: 300px;
-            outline: none;
-        }
-        #sendButton {
-            padding: 10px;
-            font-size: 16px;
-            background: #2563eb; /* Blue */
-            color: white;
-            border: none;
-            border-radius: 0 4px 4px 0;
-            cursor: pointer;
-        }
-        #sendButton:hover {
-            background: #1e3a8a; /* Darker blue */
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <canvas id="gameCanvas"></canvas>
@@ -52,7 +15,7 @@
 
     <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
     <script>
-        const socket = io("https://common-verdant-boa.glitch.me/game"); // Replace with your server URL
+        const socket = io("https://common-verdant-boa.glitch.me/game");
 
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
@@ -99,13 +62,13 @@
                 // Draw player
                 ctx.beginPath();
                 ctx.arc(player.x, player.y, 20, 0, Math.PI * 2);
-                ctx.fillStyle = id === socket.id ? "blue" : "gray"; // Different color for local player
+                ctx.fillStyle = id === socket.id ? "rgb(245, 99, 200)" : "rgb(189, 195, 199)"; // Cold pink for local player, gray for others
                 ctx.fill();
 
                 // Draw message
                 if (player.message) {
                     ctx.font = "16px Arial";
-                    ctx.fillStyle = "black";
+                    ctx.fillStyle = "rgb(245, 99, 200)"; // Cold pink for text
                     ctx.textAlign = "center";
                     ctx.fillText(player.message, player.x, player.y - 30);
                 }
