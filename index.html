@@ -39,14 +39,12 @@
 
     <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
     <script>
-        const socket = io("https://common-verdant-boa.glitch.me"); // Replace with your signaling server URL
-
+        let socket;
         let peerConnection;
         let dataChannel;
         let localSocketId;
         let targetPeerId;
 
-        // DOM Elements
         const peerIdDisplay = document.getElementById("peerIdDisplay");
         const connectionStatus = document.getElementById("connectionStatus");
         const chatLog = document.getElementById("chatLog");
@@ -54,7 +52,34 @@
         const disconnectButton = document.getElementById("disconnectButton");
         const messageBox = document.getElementById("messageBox");
 
-        // Generate ID
+        // Initialize Socket.IO with persistent ID
+        function initializeSocket() {
+            // Retrieve stored Peer ID
+            const storedId = localStorage.getItem("peerId");
+
+            // Connect to Socket.IO server
+            socket = io("https://common-verdant-boa.glitch.me", {
+                query: { id: storedId } // Send stored ID to reuse it
+            });
+
+            // Handle connection
+            socket.on("connect", () => {
+                localSocketId = socket.id;
+
+                // If there's no stored ID, save the newly assigned ID
+                if (!storedId) {
+                    localStorage.setItem("peerId", localSocketId);
+                }
+
+                // Update display with the persistent or new ID
+                peerIdDisplay.textContent = localSocketId;
+                console.log("Connected with ID:", localSocketId);
+            });
+        }
+
+        initializeSocket();
+
+        // Generate Peer ID
         document.getElementById("generateIdButton").onclick = () => {
             if (!socket.connected) {
                 socket.connect();
@@ -155,7 +180,7 @@
                 const message = event.data;
                 console.log("Message received:", message);
                 chatLog.innerHTML += `<p>Peer: ${message}</p>`;
-                chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll to the bottom
+                chatLog.scrollTop = chatLog.scrollHeight;
             };
         }
 
@@ -167,7 +192,7 @@
                 console.log("Sent message:", message);
                 chatLog.innerHTML += `<p>You: ${message}</p>`;
                 messageBox.value = "";
-                chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll to the bottom
+                chatLog.scrollTop = chatLog.scrollHeight;
             } else {
                 console.error("DataChannel is not open. Current state:", dataChannel.readyState);
             }
@@ -196,3 +221,4 @@
     </script>
 </body>
 </html>
+
