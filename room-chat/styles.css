@@ -6,7 +6,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh; /* Full viewport height */
-    overflow: hidden; /* Prevent scrolling */
+    overflow: hidden; /* Prevent body scrolling */
 }
 
 /* Chat Screen */
@@ -33,15 +33,15 @@ header h1 {
 
 /* Chat Log */
 #chatLog {
-    flex: 1; /* Fills remaining space */
-    overflow-y: auto; /* Scrollable content */
+    flex: 1; /* Takes up available space */
+    overflow-y: auto; /* Enables vertical scrolling */
     padding: 15px;
     background: #fdf2f8;
     display: flex;
     flex-direction: column;
     gap: 8px;
     border-top: 1px solid #fbcfe8;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on Safari */
+    box-sizing: border-box;
 }
 
 /* Message Styling */
@@ -50,8 +50,8 @@ header h1 {
     padding: 10px 15px;
     border-radius: 8px;
     font-size: 14px;
-    line-height: 1.5;
     word-wrap: break-word;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .message.you {
@@ -100,13 +100,6 @@ header h1 {
     cursor: pointer;
 }
 
-/* Safari Fix for Flexbox Issues */
-@supports (-webkit-touch-callout: none) {
-    #chatLog {
-        height: calc(100% - 60px); /* Adjust to prevent overflow */
-    }
-}
-
 /* Responsive Design */
 @media (max-width: 600px) {
     header h1 {
@@ -130,4 +123,5 @@ header h1 {
         font-size: 12px;
     }
 }
+
 
