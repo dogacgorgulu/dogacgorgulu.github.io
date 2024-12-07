@@ -38,8 +38,8 @@
         <div id="chatLog"></div>
 
         <div class="composer">
-            <textarea id="messageBox" placeholder="Type a message..." disabled></textarea>
-            <button id="sendButton" disabled>Send</button>
+            <textarea id="messageBox" placeholder="Type a message..."></textarea>
+            <button id="sendButton">Send</button>
         </div>
     </div>
 
@@ -120,8 +120,12 @@
             const messageDiv = document.createElement("div");
             messageDiv.className = `message ${sender}`;
             messageDiv.innerHTML = `<strong>${name}:</strong> ${text}`;
-            document.getElementById("chatLog").appendChild(messageDiv);
-            document.getElementById("chatLog").scrollTop = document.getElementById("chatLog").scrollHeight;
+            
+            // Append the new message to the chat log
+            chatLog.appendChild(messageDiv);
+
+            // Auto-scroll to the bottom
+            chatLog.scrollTop = chatLog.scrollHeight;
         }
 
         // Listen for incoming messages

@@ -156,13 +156,4 @@ header h1 {
     .controls {
         flex-direction: column;
     }
-
-    .id-section {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    #peerId, #connectButton, #disconnectButton {
-        width: 100%;
-    }
 }
