@@ -49,6 +49,27 @@
 
         let displayName = "";
 
+        // Listen for Enter key to send message
+        chatInput.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault(); // Prevent newline
+                sendMessage();
+            }
+        });
+
+        // Handle button click to send message
+        sendButton.onclick = () => sendMessage();
+
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (message) {
+                socket.emit("message", { text: message }); // Send message to server
+                appendMessage({ name: "You", text: message }, "you"); // Append locally
+                chatInput.value = ""; // Clear input
+                chatInput.focus(); // Keep focus for quick typing
+            }
+        }
+
         // Join the chatroom
         joinButton.onclick = () => {
             const name = displayNameInput.value.trim();
@@ -82,13 +103,13 @@
             }
         };
 
-        // Append a message to the chat log
+
         function appendMessage({ name, text }, sender) {
             const messageDiv = document.createElement("div");
             messageDiv.className = `message ${sender}`;
             messageDiv.innerHTML = `<strong>${name}:</strong> ${text}`;
-            chatLog.appendChild(messageDiv);
-            chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll to the latest message
+            document.getElementById("chatLog").appendChild(messageDiv);
+            document.getElementById("chatLog").scrollTop = document.getElementById("chatLog").scrollHeight;
         }
 
         // Listen for incoming messages
