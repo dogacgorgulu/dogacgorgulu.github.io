@@ -1,59 +1,79 @@
-/* General Styling */
+/* General styling */
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: rgb(240, 242, 246); /* Light gray */
+    font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: #fdf2f8; /* Soft pink background */
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: flex-end; /* Ensure elements are aligned at the bottom */
-    height: 100vh; /* Take full viewport height */
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Prevent scrolling */
 }
 
-/* Canvas Styling */
+/* Canvas styling */
 canvas {
-    width: 100%; /* Make it full width */
-    max-width: 400px; /* Restrict max width */
-    height: auto; /* Automatically maintain aspect ratio */
-    border: 2px solid rgb(200, 200, 200);
-    background: rgb(245, 243, 250); /* Soft cold pink */
-    box-sizing: border-box; /* Include border in the dimensions */
+    flex-shrink: 0; /* Prevent resizing */
+    width: 100%; /* Full width */
+    max-width: 400px; /* Limit maximum width */
+    height: calc(100vw - 80px); /* Dynamic square size, subtract height of chatBox */
+    background: #fef6fb; /* Light pink background */
+    border-bottom: 1px solid #fbcfe8; /* Soft pink border */
 }
 
-/* Chat Box */
+/* Chat Box styling */
 #chatBox {
     display: flex;
     width: 100%;
-    max-width: 400px; /* Match canvas max width */
-    box-sizing: border-box; /* Include padding and border in dimensions */
-    position: relative;
-    bottom: 0;
-    z-index: 10;
-    background-color: white;
+    max-width: 400px; /* Match canvas width */
+    background: #ffffff; /* White background for contrast */
+    padding: 10px;
+    box-sizing: border-box; /* Include padding in size calculations */
+    border-top: 1px solid #fbcfe8; /* Border to separate from canvas */
+    gap: 10px;
+    align-items: center;
+    position: sticky; /* Prevent movement during keyboard open */
+    bottom: 0; /* Ensure it's always at the bottom */
 }
 
+/* Text input styling */
 #chatInput {
     flex: 1;
     padding: 10px;
     font-size: 16px;
-    border: 1px solid rgb(200, 200, 200);
-    border-radius: 10px 0 0 10px;
+    border: 1px solid #fbcfe8;
+    border-radius: 8px;
     outline: none;
-    background-color: rgb(250, 250, 250); /* White input */
+    background: #fef6fb;
+    color: #9d174d;
 }
 
+/* Send button styling */
 #sendButton {
     padding: 10px 15px;
     font-size: 16px;
-    background-color: rgb(245, 99, 200); /* Cold pink */
-    color: white;
+    background: #ec4899; /* Vibrant pink */
+    color: #ffffff;
     border: none;
-    border-radius: 0 10px 10px 0;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background 0.2s;
 }
 
 #sendButton:hover {
-    background-color: rgb(211, 72, 170); /* Darker cold pink */
+    background: #db2777; /* Darker pink */
 }
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    #chatBox {
+        flex-direction: column; /* Stack input and button */
+        align-items: stretch;
+        gap: 5px;
+    }
+
+    #chatInput, #sendButton {
+        width: 100%; /* Full width for smaller screens */
+        margin: 0;
+    }
+}
+
 
