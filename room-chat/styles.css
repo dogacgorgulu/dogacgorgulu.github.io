@@ -9,11 +9,59 @@ body {
     overflow: hidden; /* Prevent body scrolling */
 }
 
-/* Main chat screen layout */
+/* Welcome Screen */
+#welcomeScreen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height for welcome screen */
+    text-align: center;
+    background: #fdf2f8;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#welcomeScreen h1 {
+    font-size: 22px;
+    color: #ec4899;
+    margin-bottom: 15px;
+}
+
+#welcomeScreen input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #fbcfe8;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background: #fef6fb;
+    color: #9d174d;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+#welcomeScreen button {
+    padding: 10px 20px;
+    font-size: 14px;
+    background: #ec4899;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#welcomeScreen button:hover {
+    background: #db2777;
+}
+
+/* Main Chat Screen Layout */
 #chatScreen {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 100%; /* Full height */
 }
 
 /* Header */
@@ -41,6 +89,7 @@ header h1 {
     flex-direction: column; /* Stack messages vertically */
     gap: 8px; /* Space between messages */
     box-sizing: border-box;
+    margin-bottom: 60px; /* Reserve space for the input area */
 }
 
 /* Messages */
@@ -67,16 +116,16 @@ header h1 {
 
 /* Chat input area (fixed at the bottom) */
 #chatBox {
-    flex-shrink: 0; /* Prevent shrinking */
-    display: flex;
-    align-items: center;
-    padding: 10px 15px;
-    background: #ffffff;
-    border-top: 1px solid #fbcfe8;
-    box-sizing: border-box;
     position: fixed;
     bottom: 0;
+    left: 0;
     width: 100%; /* Full width */
+    background: #ffffff;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #fbcfe8;
+    box-sizing: border-box;
 }
 
 #chatInput {
