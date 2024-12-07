@@ -108,6 +108,24 @@
             chatLog.scrollTop = chatLog.scrollHeight;
             notificationSound.play(); // Play notification sound
         });
+
+        const chatBox = document.getElementById("chatBox");
+
+        // Adjust the chatBox's position dynamically when the viewport height changes (mobile keyboard opens)
+        window.addEventListener("resize", () => {
+            const viewportHeight = window.innerHeight;
+            const totalHeight = window.outerHeight;
+
+            if (viewportHeight < totalHeight * 0.7) {
+                // Mobile keyboard is likely open
+                chatBox.style.position = "absolute";
+                chatBox.style.bottom = "0";
+            } else {
+                // Restore default behavior when keyboard is closed
+                chatBox.style.position = "relative";
+                chatBox.style.bottom = "auto";
+            }
+        });
     </script>
 </body>
 </html>

@@ -156,3 +156,12 @@ header h1 {
 #sendButton:hover {
     background: #db2777;
 }
+/* Mobile adjustments */
+@media (max-width: 600px) {
+    body {
+        height: calc(100vh - 20px); /* Account for potential mobile viewport height changes */
+    }
+    #chatBox {
+        padding: 6px 10px; /* Smaller padding for mobile */
+    }
+}
