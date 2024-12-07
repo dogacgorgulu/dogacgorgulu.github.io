@@ -3,57 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>P2P Chat</title>
+    <title>Chat Room</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <h1>WebRTC P2P Chat</h1>
-    </header>
+    <!-- Welcome Screen -->
+    <div id="welcomeScreen">
+        <h1>Welcome to the Chat Room</h1>
+        <input id="displayNameInput" type="text" placeholder="Enter your display name" />
+        <button id="joinButton">Join Chat</button>
+    </div>
 
-    <!-- Chat Log -->
-    <div id="chatLog"></div>
+    <!-- Chat Screen -->
+    <div id="chatScreen" class="hidden">
+        <!-- Header -->
+        <header>
+            <h1>Chat Room</h1>
+        </header>
 
-    <!-- Message Composer -->
-    <div id="chatBox">
-        <input id="chatInput" type="text" placeholder="Type a message..." />
-        <button id="sendButton">Send</button>
+        <!-- Chat Log -->
+        <div id="chatLog"></div>
+
+        <!-- Message Composer -->
+        <div id="chatBox">
+            <input id="chatInput" type="text" placeholder="Type a message..." />
+            <button id="sendButton">Send</button>
+        </div>
     </div>
 
     <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
     <script>
-        const socket = io("https://common-verdant-boa.glitch.me/game");
+        const socket = io("https://common-verdant-boa.glitch.me/broadcast"); // Connect to the /chat namespace
 
+        const welcomeScreen = document.getElementById("welcomeScreen");
+        const chatScreen = document.getElementById("chatScreen");
+        const displayNameInput = document.getElementById("displayNameInput");
+        const joinButton = document.getElementById("joinButton");
         const chatLog = document.getElementById("chatLog");
         const chatInput = document.getElementById("chatInput");
         const sendButton = document.getElementById("sendButton");
+
+        let displayName = "";
+
+        // Join the chatroom
+        joinButton.onclick = () => {
+            const name = displayNameInput.value.trim();
+            if (!name) {
+                alert("Please enter a display name!");
+                return;
+            }
+            displayName = name;
+            socket.emit("join", displayName); // Notify server of the new user
+            welcomeScreen.classList.add("hidden");
+            chatScreen.classList.remove("hidden");
+        };
 
         // Handle message sending
         sendButton.onclick = () => {
             const message = chatInput.value.trim();
             if (message) {
-                socket.emit("message", message);
-                appendMessage(message, "you");
+                socket.emit("message", { name: displayName, text: message });
+                appendMessage({ name: "You", text: message }, "you");
                 chatInput.value = "";
                 chatInput.focus(); // Keep keyboard open
             }
         };
 
         // Append a message to the chat log
-        function appendMessage(message, sender) {
+        function appendMessage({ name, text }, sender) {
             const messageDiv = document.createElement("div");
             messageDiv.className = `message ${sender}`;
-            messageDiv.textContent = message;
+            messageDiv.innerHTML = `<strong>${name}:</strong> ${text}`;
             chatLog.appendChild(messageDiv);
             chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll to the latest message
         }
 
         // Listen for incoming messages
-        socket.on("message", (message) => {
-            appendMessage(message, "peer");
+        socket.on("message", (data) => {
+            appendMessage(data, "peer");
         });
+
+        // Display system messages (e.g., join/leave notifications)
+        socket.on("system", (message) => {
+            const messageDiv = document.createElement("div");
+            messageDiv.className = "system-message";
+            messageDiv.textContent = message;
+            chatLog.appendChild(messageDiv);
+            chatLog.scrollTop = chatLog.scrollHeight;
+        });
+
     </script>
 </body>
 </html>
-

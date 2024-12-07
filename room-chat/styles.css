@@ -8,19 +8,70 @@ body {
     height: 100vh;
 }
 
-/* Header section */
+/* Hidden class for toggling visibility */
+.hidden {
+    display: none;
+}
+
+/* Welcome Screen */
+#welcomeScreen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    background: #fdf2f8;
+}
+
+#welcomeScreen h1 {
+    font-size: 24px;
+    color: #ec4899;
+    margin-bottom: 20px;
+}
+
+#welcomeScreen input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #fbcfe8;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    outline: none;
+    background: #fef6fb;
+    color: #9d174d;
+}
+
+#welcomeScreen button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background: #ec4899;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#welcomeScreen button:hover {
+    background: #db2777;
+}
+
+/* Chat Screen */
+#chatScreen {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
 header {
     padding: 15px;
     background: #ec4899; /* Vibrant pink */
     text-align: center;
     color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
     margin: 0;
     font-size: 22px;
-    font-weight: 600;
 }
 
 /* Chat Log */
@@ -32,8 +83,7 @@ header h1 {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    border-top: 1px solid #fbcfe8; /* Soft pink border */
-    border-bottom: 1px solid #fbcfe8; /* Soft pink border */
+    border-top: 1px solid #fbcfe8;
 }
 
 /* Message styling */
@@ -44,19 +94,25 @@ header h1 {
     font-size: 14px;
     line-height: 1.5;
     word-wrap: break-word;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .message.you {
     align-self: flex-end;
     background: #f9a8d4; /* Soft pink */
-    color: #831843; /* Deep purple-pink */
+    color: #831843;
 }
 
 .message.peer {
     align-self: flex-start;
     background: #ffffff; /* Neutral for peer messages */
     color: #6b0f1e;
+}
+
+.system-message {
+    text-align: center;
+    color: #9d174d;
+    font-style: italic;
+    font-size: 14px;
 }
 
 /* Message Composer */
@@ -76,13 +132,6 @@ header h1 {
     border-radius: 8px;
     outline: none;
     background: #fef6fb;
-    color: #9d174d;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-#chatInput:focus {
-    border-color: #ec4899;
-    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2);
 }
 
 #sendButton {
@@ -92,11 +141,6 @@ header h1 {
     color: #ffffff;
     border: none;
     border-radius: 8px;
-    cursor: pointer;
     margin-left: 10px;
+    cursor: pointer;
 }
-
-#sendButton:hover {
-    background: #db2777; /* Darker pink */
-}
-
