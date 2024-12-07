@@ -9,11 +9,11 @@ body {
     overflow: hidden; /* Prevent body scrolling */
 }
 
-/* Main layout */
-.main {
+/* Main chat screen layout */
+#chatScreen {
     display: flex;
     flex-direction: column;
-    height: 100%; /* Full height of viewport */
+    height: 100%;
 }
 
 /* Header */
@@ -31,21 +31,19 @@ header h1 {
     font-size: 22px;
 }
 
-/* Chat log area (scrollable) */
+/* Chat log (scrollable) */
 #chatLog {
-    flex: 1; /* Fills remaining space between header and chat input */
-    overflow-y: auto; /* Enable vertical scrolling */
+    flex: 1; /* Fills remaining space between header and input */
+    overflow-y: auto; /* Scrollable if content exceeds height */
     padding: 15px;
     background: #fdf2f8; /* Light pink */
     display: flex;
-    flex-direction: column; /* Messages stack vertically */
+    flex-direction: column; /* Stack messages vertically */
     gap: 8px; /* Space between messages */
     box-sizing: border-box;
-    border-top: 1px solid #fbcfe8;
-    scroll-behavior: smooth; /* Smooth scrolling */
 }
 
-/* Individual message styling */
+/* Messages */
 .message {
     max-width: 70%;
     padding: 10px 15px;
@@ -56,18 +54,18 @@ header h1 {
 }
 
 .message.you {
-    align-self: flex-end; /* Your messages align to the right */
+    align-self: flex-end; /* Align user's messages to the right */
     background: #f9a8d4;
     color: #831843;
 }
 
 .message.peer {
-    align-self: flex-start; /* Peer messages align to the left */
+    align-self: flex-start; /* Align peer's messages to the left */
     background: #ffffff;
     color: #6b0f1e;
 }
 
-/* Message composer (fixed at bottom) */
+/* Chat input area (fixed at the bottom) */
 #chatBox {
     flex-shrink: 0; /* Prevent shrinking */
     display: flex;
@@ -108,3 +106,4 @@ header h1 {
 #sendButton:hover {
     background: #db2777;
 }
+
