@@ -74,37 +74,42 @@ window.addEventListener("click", () => {
 
 
 function draw() {
-    // Clear the entire canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw the background image
     if (backgroundImage.complete) {
         ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
     }
 
-    // Draw players
     for (const id in players) {
         const player = players[id];
 
-        // Draw avatar
-        if (avatarImage.complete) {
-            ctx.drawImage(avatarImage, player.x - 25, player.y - 25, 60, 60); // Adjust size as needed
+        ctx.save(); // Save the current canvas state
+
+        // Flip avatar if facing right
+        if (player.lastDirection === "right") {
+            ctx.translate(player.x + 25, player.y - 25); // Move to the avatar's position
+            ctx.scale(-1, 1); // Flip horizontally
+            ctx.translate(-(player.x + 25), -(player.y - 25)); // Move back
         }
 
-        // Draw player's name above the avatar
-        ctx.fillStyle = "white"; // Text color
-        ctx.strokeStyle = "black"; // Outline color
-        ctx.lineWidth = 2; // Thickness of the outline
-        ctx.font = "bold 22px Arial";
+        // Draw avatar (flipped if facing right)
+        ctx.drawImage(avatarImage, player.x - 25, player.y - 25, 60, 60);
+
+        ctx.restore(); // Restore the canvas state to avoid affecting other drawings
+
+        // Draw player's name and message
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 2;
+        ctx.font = "bold 20px Arial";
         ctx.textAlign = "center";
 
-        ctx.strokeText(player.name, player.x, player.y - 30); // Name above
-        ctx.fillText(player.name, player.x, player.y - 30);
+        ctx.strokeText(player.name, player.x, player.y - 35);
+        ctx.fillText(player.name, player.x, player.y - 35);
 
-        // Draw player's message below the avatar
         if (player.message) {
-            ctx.strokeText(player.message, player.x, player.y + 50); // Message below
-            ctx.fillText(player.message, player.x, player.y + 50);
+            ctx.strokeText(player.message, player.x, player.y + 60);
+            ctx.fillText(player.message, player.x, player.y + 60);
         }
     }
 
@@ -112,28 +117,31 @@ function draw() {
 }
 
 
+
 draw();
 
 
 // Handle player movement
 window.addEventListener("keydown", (e) => {
-    const moveDistance = 10; // Define how much the player moves with each key press
+    let dx = 0, dy = 0;
 
-    // Arrow keys
-    if (e.key === "ArrowUp") myPlayer.y -= moveDistance;
-    if (e.key === "ArrowDown") myPlayer.y += moveDistance;
-    if (e.key === "ArrowLeft") myPlayer.x -= moveDistance;
-    if (e.key === "ArrowRight") myPlayer.x += moveDistance;
+    if (e.key === "ArrowUp" || e.key === "w") dy = -10;
+    if (e.key === "ArrowDown" || e.key === "s") dy = 10;
+    if (e.key === "ArrowLeft" || e.key === "a") {
+        dx = -10;
+        myPlayer.lastDirection = "left"; // Moving left
+    }
+    if (e.key === "ArrowRight" || e.key === "d") {
+        dx = 10;
+        myPlayer.lastDirection = "right"; // Moving right
+    }
 
-    // W, A, S, D keys
-    if (e.key === "w" || e.key === "W") myPlayer.y -= moveDistance; // W
-    if (e.key === "s" || e.key === "S") myPlayer.y += moveDistance; // S
-    if (e.key === "a" || e.key === "A") myPlayer.x -= moveDistance; // A
-    if (e.key === "d" || e.key === "D") myPlayer.x += moveDistance; // D
+    myPlayer.x += dx;
+    myPlayer.y += dy;
 
-    // Emit movement to the server
-    socket.emit("move", { x: myPlayer.x, y: myPlayer.y });
+    socket.emit("move", { x: myPlayer.x, y: myPlayer.y, direction: myPlayer.lastDirection });
 });
+
 
 
 // Handle chat messages
