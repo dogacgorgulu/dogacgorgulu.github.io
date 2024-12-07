@@ -215,3 +215,29 @@ header h1 {
         width: 100%;
     }
 }
+
+/* Container for floating animations */
+#chatLog {
+    position: relative; /* Required for positioning stars/hearts */
+}
+
+/* Star/Heart Animation */
+.floating-effect {
+    position: absolute;
+    font-size: 18px;
+    color: #ec4899; /* Pink color for hearts */
+    animation: floatUp 1.5s ease-out forwards;
+    pointer-events: none; /* Prevent interaction */
+}
+
+/* Animation Keyframes */
+@keyframes floatUp {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100px) scale(0.8);
+    }
+}

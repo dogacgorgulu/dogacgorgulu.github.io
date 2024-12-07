@@ -163,16 +163,41 @@
             }
         };
 
+        function triggerFloatingEffect() {
+            const floatingElement = document.createElement("div");
+            floatingElement.className = "floating-effect";
+            floatingElement.textContent = "❤️"; // You can change this to "⭐" or any emoji
+
+            // Randomize position
+            const randomX = Math.random() * 80 + 10; // Random position within 10%-90% width
+            floatingElement.style.left = `${randomX}%`;
+
+            // Append the floating element to the chat log
+            chatLog.appendChild(floatingElement);
+
+            // Remove the element after animation
+            setTimeout(() => {
+                floatingElement.remove();
+            }, 1500); // Match the animation duration in the CSS
+        }
 
         function appendMessage(text, sender) {
             const msgDiv = document.createElement("div");
             msgDiv.className = `message ${sender}`;
             msgDiv.textContent = text;
 
-            // Append the new message and scroll to the bottom
+            // Append the new message
             chatLog.appendChild(msgDiv);
-            chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll to the bottom
+
+            // Trigger floating animation
+            if (sender === "peer") {
+                triggerFloatingEffect();
+            }
+
+            // Auto-scroll to the bottom
+            chatLog.scrollTop = chatLog.scrollHeight;
         }
+
 
 
         socket.on("signal", async ({ signal, sender }) => {
