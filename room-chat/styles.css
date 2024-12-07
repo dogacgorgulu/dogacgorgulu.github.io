@@ -6,14 +6,14 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh; /* Full viewport height */
-    overflow: hidden; /* Prevent body scrolling */
+    overflow: hidden; /* Prevent scrolling */
 }
 
-/* Chat Screen Layout */
-.chatScreen {
+/* Main chat screen layout */
+.main {
     display: flex;
     flex-direction: column;
-    height: 100%; /* Full height of the container */
+    height: 100%; /* Full height */
 }
 
 /* Header */
@@ -29,22 +29,23 @@ header {
 header h1 {
     margin: 0;
     font-size: 22px;
+    font-weight: 600;
 }
 
 /* Chat Log */
 #chatLog {
-    flex: 1; /* Fills the available space between header and input area */
-    overflow-y: auto; /* Enables vertical scrolling for overflowing messages */
+    flex: 1; /* Take up all remaining space */
+    overflow-y: auto; /* Enable scrolling when content exceeds height */
     padding: 15px;
-    background: #fdf2f8; /* Light pink */
+    background: #fdf2f8;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    border-top: 1px solid #fbcfe8;
     box-sizing: border-box;
+    border-top: 1px solid #fbcfe8;
 }
 
-/* Message Styling */
+/* Messages */
 .message {
     max-width: 70%;
     padding: 10px 15px;
@@ -66,20 +67,19 @@ header h1 {
     color: #6b0f1e;
 }
 
-/* Chat Input Area */
-.chatBox {
+/* Chat Composer (Input Area) */
+#chatBox {
     flex-shrink: 0; /* Prevent shrinking */
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 15px;
+    padding: 10px 15px;
     background: #ffffff;
     border-top: 1px solid #fbcfe8;
     box-sizing: border-box;
 }
 
 #chatInput {
-    flex: 1;
+    flex: 1; /* Take up available space */
     height: 40px; /* Fixed height */
     border: 1px solid #fbcfe8;
     border-radius: 8px;
@@ -88,10 +88,11 @@ header h1 {
     outline: none;
     background: #fef6fb;
     color: #9d174d;
-    resize: none; /* Prevent textarea resizing */
+    resize: none; /* Prevent resizing */
 }
 
 #sendButton {
+    margin-left: 10px;
     padding: 10px 15px;
     font-size: 14px;
     background: #ec4899;
@@ -99,6 +100,10 @@ header h1 {
     border: none;
     border-radius: 8px;
     cursor: pointer;
+}
+
+#sendButton:hover {
+    background: #db2777;
 }
 
 /* Responsive Design */
@@ -111,7 +116,7 @@ header h1 {
         padding: 10px;
     }
 
-    .chatBox {
+    #chatBox {
         padding: 10px;
     }
 
