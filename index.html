@@ -59,14 +59,9 @@
             }
 
             initializeSocket();
-            localSocketId = socket.id;
-            peerIdDisplay.textContent = localSocketId || "Generating...";
-            console.log("Generated Peer ID:", localSocketId);
-
-            disconnectButton.disabled = false;
         };
 
-        // Initialize Socket.IO with Persistent ID
+        // Initialize Socket.IO
         function initializeSocket() {
             const storedId = localStorage.getItem("peerId");
 
