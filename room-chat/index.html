@@ -3,14 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Game Room</title>
+    <title>P2P Chat</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Canvas for the game -->
-    <canvas id="gameCanvas"></canvas>
+    <!-- Header -->
+    <header>
+        <h1>WebRTC P2P Chat</h1>
+    </header>
 
-    <!-- Chat Box -->
+    <!-- Chat Log -->
+    <div id="chatLog"></div>
+
+    <!-- Message Composer -->
     <div id="chatBox">
         <input id="chatInput" type="text" placeholder="Type a message..." />
         <button id="sendButton">Send</button>
@@ -20,74 +25,35 @@
     <script>
         const socket = io("https://common-verdant-boa.glitch.me/game");
 
-        const canvas = document.getElementById("gameCanvas");
-        const ctx = canvas.getContext("2d");
+        const chatLog = document.getElementById("chatLog");
         const chatInput = document.getElementById("chatInput");
         const sendButton = document.getElementById("sendButton");
-
-        let players = {};
-        const avatarImage = new Image();
-        avatarImage.src = "./avatar.png"; // Adjust the path as needed
-
-        // Dynamically resize the canvas to match the width of the text input
-        function resizeCanvas() {
-            const chatBoxWidth = chatInput.offsetWidth + sendButton.offsetWidth; // Combined width of input and button
-            canvas.width = chatBoxWidth;
-            canvas.height = chatBoxWidth; // Make it a square
-        }
-
-        resizeCanvas(); // Initial resize
-        window.addEventListener("resize", resizeCanvas); // Adjust on window resize
 
         // Handle message sending
         sendButton.onclick = () => {
             const message = chatInput.value.trim();
             if (message) {
                 socket.emit("message", message);
+                appendMessage(message, "you");
                 chatInput.value = "";
-
-                // Keep the keyboard open by refocusing the input field
-                chatInput.focus();
+                chatInput.focus(); // Keep keyboard open
             }
         };
 
-        // Fix layout when keyboard opens
-        chatInput.addEventListener("focus", () => {
-            document.body.style.height = `${window.innerHeight}px`; // Prevent layout shift
-        });
-
-        // Update players from the server
-        socket.on("update-players", (serverPlayers) => {
-            players = serverPlayers;
-            draw();
-        });
-
-        // Notify user if the game room is full
-        socket.on("full", (message) => {
-            alert(message);
-        });
-
-        // Draw the game
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            for (const id in players) {
-                const player = players[id];
-
-                // Draw player avatar
-                ctx.drawImage(avatarImage, player.x - 25, player.y - 25, 50, 50); // Adjust size and position
-
-                // Draw message with updated font
-                if (player.message) {
-                    ctx.font = "22px Arial"; // Match the CSS styling
-                    ctx.fillStyle = "#9d174d"; // Deep pink color
-                    ctx.textAlign = "center";
-                    ctx.fillText(player.message, player.x, player.y - 40); // Position above avatar
-                }
-            }
+        // Append a message to the chat log
+        function appendMessage(message, sender) {
+            const messageDiv = document.createElement("div");
+            messageDiv.className = `message ${sender}`;
+            messageDiv.textContent = message;
+            chatLog.appendChild(messageDiv);
+            chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll to the latest message
         }
 
-
+        // Listen for incoming messages
+        socket.on("message", (message) => {
+            appendMessage(message, "peer");
+        });
     </script>
 </body>
 </html>
+
