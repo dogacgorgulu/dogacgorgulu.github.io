@@ -77,15 +77,16 @@
                 // Draw player avatar
                 ctx.drawImage(avatarImage, player.x - 25, player.y - 25, 50, 50); // Adjust size and position
 
-                // Draw message with larger font
+                // Draw message with updated font
                 if (player.message) {
-                    ctx.font = "18px Arial"; // Match the CSS styling
+                    ctx.font = "22px Arial"; // Match the CSS styling
                     ctx.fillStyle = "#9d174d"; // Deep pink color
                     ctx.textAlign = "center";
                     ctx.fillText(player.message, player.x, player.y - 40); // Position above avatar
                 }
             }
         }
+
 
     </script>
 </body>
