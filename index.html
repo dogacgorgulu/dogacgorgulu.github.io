@@ -148,7 +148,7 @@
     <div class="controls">
         <div class="id-section">
             <button id="generateIdButton">Generate Peer ID</button>
-            <span>Your Peer ID:</span> <span id="peerIdDisplay">Not Generated</span>
+            <span>Your Peer ID:</span> <span id="peerIdDisplay">Not Connected</span>
         </div>
         <input type="text" id="peerId" placeholder="Enter Peer ID" />
         <button id="connectButton">Connect</button>
@@ -170,7 +170,7 @@
 
     <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
     <script>
-        const socket = io("https://common-verdant-boa.glitch.me"); // Change to your server address if needed
+        const socket = io("https://common-verdant-boa.glitch.me"); // Replace with your signaling server URL if needed
 
         let peerConnection;
         let dataChannel;
@@ -183,15 +183,15 @@
         const sendButton = document.getElementById("sendButton");
         const disconnectButton = document.getElementById("disconnectButton");
         const messageBox = document.getElementById("messageBox");
+        const generateIdButton = document.getElementById("generateIdButton");
 
-        // On socket connection
         socket.on("connect", () => {
             localSocketId = socket.id;
             peerIdDisplay.textContent = localSocketId;
-            console.log("Peer ID:", localSocketId);
+            console.log("Connected to signaling server. Peer ID:", localSocketId);
         });
 
-        document.getElementById("generateIdButton").onclick = () => {
+        generateIdButton.onclick = () => {
             if (!socket.connected) {
                 socket.connect();
             }
