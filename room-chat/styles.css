@@ -2,18 +2,18 @@
 body {
     margin: 0;
     font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background: #fdf2f8;
+    background: #fdf2f8; /* Light pink background */
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Full height for the viewport */
-    overflow: hidden; /* Prevent scrolling */
+    height: 100vh; /* Full height */
+    overflow: hidden; /* Prevent body scrolling */
 }
 
-/* Main chat screen layout */
+/* Chat screen layout */
 .main {
     display: flex;
     flex-direction: column;
-    height: 100%; /* Full height of the viewport */
+    height: 100%; /* Full height */
 }
 
 /* Header */
@@ -29,45 +29,36 @@ header {
 header h1 {
     margin: 0;
     font-size: 22px;
-    font-weight: 600;
 }
 
-/* Chat Log */
+/* Chat log */
 #chatLog {
-    flex: 1; /* Take up remaining space */
-    overflow-y: auto; /* Enable scrolling when content exceeds height */
+    flex: 1; /* Fill available space */
+    overflow-y: auto; /* Scrollable if content exceeds height */
     padding: 15px;
     background: #fdf2f8;
     display: flex;
     flex-direction: column;
     gap: 8px;
     box-sizing: border-box;
-    border-top: 1px solid #fbcfe8;
 }
 
-/* Chat Composer (Input Area) */
+/* Input field at the bottom */
 #chatBox {
-    flex-shrink: 0; /* Prevent shrinking */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%; /* Full width */
+    background: #ffffff;
+    padding: 10px 15px;
     display: flex;
     align-items: center;
-    padding: 10px 15px;
-    background: #ffffff;
     border-top: 1px solid #fbcfe8;
     box-sizing: border-box;
-    position: fixed;
-    bottom: 0; /* Pin to the bottom */
-    width: 100%; /* Full width */
-}
-
-/* Adjust for mobile safe area (keyboard) */
-@supports (padding: env(safe-area-inset-bottom)) {
-    #chatBox {
-        padding-bottom: env(safe-area-inset-bottom); /* Dynamic padding for iOS and other mobile devices */
-    }
 }
 
 #chatInput {
-    flex: 1; /* Take up available space */
+    flex: 1;
     height: 40px; /* Fixed height */
     border: 1px solid #fbcfe8;
     border-radius: 8px;
@@ -76,7 +67,6 @@ header h1 {
     outline: none;
     background: #fef6fb;
     color: #9d174d;
-    resize: none; /* Prevent resizing */
 }
 
 #sendButton {
@@ -92,24 +82,4 @@ header h1 {
 
 #sendButton:hover {
     background: #db2777;
-}
-
-/* Responsive Design for Mobile */
-@media (max-width: 600px) {
-    header h1 {
-        font-size: 18px;
-    }
-
-    #chatLog {
-        padding: 10px;
-    }
-
-    #chatInput {
-        font-size: 12px;
-    }
-
-    #sendButton {
-        padding: 8px 12px;
-        font-size: 12px;
-    }
 }
