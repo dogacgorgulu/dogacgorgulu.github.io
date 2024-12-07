@@ -33,6 +33,10 @@
 
     <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
     <script>
+        // Load audio files
+        const messageSound = new Audio("./sounds/message.mp3");
+        const notificationSound = new Audio("./sounds/notification.mp3");
+
         const socket = io("https://common-verdant-boa.glitch.me/broadcast"); // Connect to the /chat namespace
 
         const welcomeScreen = document.getElementById("welcomeScreen");
@@ -91,6 +95,7 @@
         socket.on("message", (data) => {
             if (data.name !== displayName) {
                 appendMessage(data, "peer");
+                messageSound.play();
             }
         });
 
@@ -101,6 +106,7 @@
             messageDiv.textContent = message;
             chatLog.appendChild(messageDiv);
             chatLog.scrollTop = chatLog.scrollHeight;
+            notificationSound.play();
         });
 
     </script>
