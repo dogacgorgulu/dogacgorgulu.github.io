@@ -8,40 +8,25 @@
 </head>
 <body>
     <!-- Welcome Screen -->
-    <div id="controls">
+    <div id="welcomeScreen">
         <h1>Welcome to the Chat Room</h1>
         <input id="displayNameInput" type="text" placeholder="Enter your display name" />
         <button id="joinButton">Join Chat</button>
     </div>
 
-    <!-- Chat Screen 
+    <!-- Chat Screen -->
     <div id="chatScreen" class="hidden">
-        Header
         <header>
             <h1>Chat Room</h1>
         </header>
-
-        Chat Log
         <div id="chatLog"></div>
-
-       Message Composer 
         <div id="chatBox">
-            <input id="chatInput" type="text" placeholder="Type a message..." />
+            <textarea id="chatInput" placeholder="Type a message..."></textarea>
             <button id="sendButton">Send</button>
         </div>
     </div>
--->
-    <div class="chatScreen">
-        <header>
-            <h1>Chat Room</h1>
-        </header>
-        <div id="chatLog"></div>
 
-        <div class="chatBox">
-            <textarea id="chatInput" type="text" placeholder="Type a message..."></textarea>
-            <button id="sendButton">Send</button>
-        </div>
-    </div>
+
 
     <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
     <script>
