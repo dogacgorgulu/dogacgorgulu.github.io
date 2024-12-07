@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Password-Protected Chat Room</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Password-Protected Chat Room</h1>
+    </header>
+
+    <div class="room-controls">
+        <input type="text" id="roomId" placeholder="Enter Room ID" />
+        <input type="password" id="roomPassword" placeholder="Enter Password" />
+        <button id="createRoomButton">Create Room</button>
+        <button id="joinRoomButton">Join Room</button>
+    </div>
+
+    <div id="chatArea" class="hidden">
+        <div id="chatLog"></div>
+        <div class="composer">
+            <textarea id="messageBox" placeholder="Type a message..." disabled></textarea>
+            <button id="sendButton" disabled>Send</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
+    <script>
+        const socket = io("https://your-glitch-project.glitch.me/room-chat"); // Update with your server URL
+        const chatLog = document.getElementById("chatLog");
+        const messageBox = document.getElementById("messageBox");
+        const sendButton = document.getElementById("sendButton");
+        const roomIdInput = document.getElementById("roomId");
+        const roomPasswordInput = document.getElementById("roomPassword");
+        const createRoomButton = document.getElementById("createRoomButton");
+        const joinRoomButton = document.getElementById("joinRoomButton");
+        const chatArea = document.getElementById("chatArea");
+
+        let roomId = null;
+
+        createRoomButton.onclick = () => {
+            const roomId = roomIdInput.value.trim();
+            const password = roomPasswordInput.value.trim();
+
+            if (!roomId || !password) {
+                alert("Please enter a room ID and password!");
+                return;
+            }
+
+            socket.emit("create-room", { roomId, password }, (response) => {
+                alert(response.message);
+            });
+        };
+
+        joinRoomButton.onclick = () => {
+            roomId = roomIdInput.value.trim();
+            const password = roomPasswordInput.value.trim();
+
+            if (!roomId || !password) {
+                alert("Please enter a room ID and password!");
+                return;
+            }
+
+            socket.emit("join-room", { roomId, password }, (response) => {
+                if (response.success) {
+                    alert(response.message);
+                    chatArea.classList.remove("hidden");
+                    setupChat();
+                } else {
+                    alert(response.message);
+                }
+            });
+        };
+
+        function setupChat() {
+            sendButton.disabled = false;
+            messageBox.disabled = false;
+
+            socket.on("user-joined", ({ userId }) => {
+                appendMessage(`User ${userId} joined the room`, "system");
+            });
+
+            socket.on("signal", ({ sender, signal }) => {
+                appendMessage(`Signal received from ${sender}`, "system");
+            });
+
+            sendButton.onclick = () => {
+                const message = messageBox.value.trim();
+                if (!message) return;
+                appendMessage(message, "you");
+                messageBox.value = "";
+            };
+        }
+
+        function appendMessage(text, sender) {
+            const msgDiv = document.createElement("div");
+            msgDiv.className = `message ${sender}`;
+            msgDiv.textContent = text;
+            chatLog.appendChild(msgDiv);
+            chatLog.scrollTop = chatLog.scrollHeight;
+        }
+    </script>
+</body>
+</html>
