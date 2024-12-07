@@ -52,44 +52,58 @@
         const disconnectButton = document.getElementById("disconnectButton");
         const messageBox = document.getElementById("messageBox");
 
-        // Initialize Socket.IO with persistent ID
+        // Generate Peer ID
+        document.getElementById("generateIdButton").onclick = () => {
+            // Disconnect existing socket (if any)
+            if (socket && socket.connected) {
+                socket.disconnect();
+                console.log("Previous connection disconnected.");
+            }
+
+            // Initialize a new connection
+            initializeSocket();
+
+            localSocketId = socket.id;
+            peerIdDisplay.textContent = localSocketId || "Generating...";
+            console.log("Generated Peer ID:", localSocketId);
+
+            // Enable Disconnect button
+            disconnectButton.disabled = false;
+        };
+
+        // Initialize Socket.IO with Persistent ID
         function initializeSocket() {
-            // Retrieve stored Peer ID
+            // Check for stored Peer ID
             const storedId = localStorage.getItem("peerId");
 
-            // Connect to Socket.IO server
+            // Connect to the server with stored ID or fresh connection
             socket = io("https://common-verdant-boa.glitch.me", {
-                query: { id: storedId } // Send stored ID to reuse it
+                autoConnect: false, // Prevent auto-connect on load
+                query: { id: storedId }
             });
+
+            socket.connect(); // Connect manually when button is clicked
 
             // Handle connection
             socket.on("connect", () => {
                 localSocketId = socket.id;
 
-                // If there's no stored ID, save the newly assigned ID
-                if (!storedId) {
+                // Store the new Peer ID if it's not already stored
+                if (!storedId || storedId !== localSocketId) {
                     localStorage.setItem("peerId", localSocketId);
                 }
 
-                // Update display with the persistent or new ID
                 peerIdDisplay.textContent = localSocketId;
                 console.log("Connected with ID:", localSocketId);
             });
+
+            // Handle disconnection
+            socket.on("disconnect", () => {
+                console.log("Disconnected from signaling server.");
+            });
         }
 
-        initializeSocket();
-
-        // Generate Peer ID
-        document.getElementById("generateIdButton").onclick = () => {
-            if (!socket.connected) {
-                socket.connect();
-            }
-            localSocketId = socket.id;
-            peerIdDisplay.textContent = localSocketId || "Generating...";
-            console.log("Generated Peer ID:", localSocketId);
-        };
-
-        // Connect to another Peer
+        // Connect to Another Peer
         document.getElementById("connectButton").onclick = async () => {
             targetPeerId = document.getElementById("peerId").value.trim();
             if (!targetPeerId) {
@@ -109,15 +123,16 @@
             socket.emit("signal", { target: targetPeerId, signal: { offer } });
         };
 
-        // Disconnect
+        // Disconnect Button
         disconnectButton.onclick = () => {
             if (peerConnection) {
                 peerConnection.close();
                 peerConnection = null;
             }
-            if (socket.connected) {
+            if (socket && socket.connected) {
                 socket.disconnect();
             }
+
             connectionStatus.textContent = "Disconnected";
             sendButton.disabled = true;
             disconnectButton.disabled = true;
@@ -125,7 +140,7 @@
             console.log("Disconnected from Peer");
         };
 
-        // Create PeerConnection
+        // Create Peer Connection
         async function createPeerConnection() {
             peerConnection = new RTCPeerConnection({
                 iceServers: [
@@ -198,7 +213,7 @@
             }
         };
 
-        // Handle incoming signals
+        // Handle Incoming Signals
         socket.on("signal", async ({ signal, sender }) => {
             console.log("Received signal:", signal, "from:", sender);
 
