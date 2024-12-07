@@ -165,31 +165,44 @@
 
 
         function triggerFloatingEffect(sender) {
-            // Create the floating element
-            const floatingElement = document.createElement("div");
-            floatingElement.className = "floating-effect";
+    // Create the floating element
+    const floatingElement = document.createElement("div");
+    floatingElement.className = "floating-effect";
 
-            // Use different emojis/colors for "you" and "peer" messages
-            if (sender === "you") {
-                floatingElement.textContent = "✨"; // Sparkles for your messages
-                floatingElement.style.color = "#10b981"; // Green sparkles
-            } else {
-                floatingElement.textContent = "❤️"; // Hearts for peer messages
-                floatingElement.style.color = "#ec4899"; // Pink hearts
-            }
+    // Use different emojis/colors for "you" and "peer" messages
+    if (sender === "you") {
+        floatingElement.textContent = "✨"; // Sparkles for your messages
+        floatingElement.style.color = "#10b981"; // Green sparkles
+    } else {
+        floatingElement.textContent = "❤️"; // Hearts for peer messages
+        floatingElement.style.color = "#ec4899"; // Pink hearts
+    }
 
-            // Randomize horizontal position
-            const randomX = Math.random() * 80 + 10; // Position between 10%-90%
-            floatingElement.style.left = `${randomX}%`;
+    // Position the heart near the last message
+    const lastMessage = chatLog.lastElementChild; // Get the last message element
+    if (lastMessage) {
+        const rect = lastMessage.getBoundingClientRect(); // Get its position
+        const chatLogRect = chatLog.getBoundingClientRect(); // Get chatLog's position
 
-            // Append the floating element to the chat log
-            chatLog.appendChild(floatingElement);
+        // Set the floating effect's position relative to the chatLog
+        floatingElement.style.left = `${rect.left - chatLogRect.left + rect.width / 2}px`;
+        floatingElement.style.top = `${rect.top - chatLogRect.top}px`;
+    } else {
+        // Default position if no message exists
+        floatingElement.style.left = "50%";
+        floatingElement.style.top = "50%";
+        floatingElement.style.transform = "translate(-50%, -50%)";
+    }
 
-            // Remove the floating element after the animation completes
-            setTimeout(() => {
-                floatingElement.remove();
-            }, 1500); // Match the animation duration in CSS
-        }
+    // Append the floating element to the chat log
+    chatLog.appendChild(floatingElement);
+
+    // Remove the floating element after the animation completes
+    setTimeout(() => {
+        floatingElement.remove();
+    }, 1500); // Match the animation duration in CSS
+}
+
 
 
         function appendMessage(text, sender) {
