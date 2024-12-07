@@ -11,30 +11,27 @@ body {
 
 /* Canvas styling */
 canvas {
-    flex-shrink: 0; /* Prevent resizing */
     width: 100%; /* Full width */
-    max-width: 400px; /* Limit maximum width */
-    height: calc(100vw - 80px); /* Dynamic square size, subtract height of chatBox */
-    background: #fef6fb; /* Light pink background */
-    border-bottom: 1px solid #fbcfe8; /* Soft pink border */
+    height: calc(100vw - 80px); /* Maintain square aspect ratio (subtract chat box height) */
+    background: #fef6fb; /* Light pink */
+    border-bottom: 2px solid #fbcfe8; /* Pink border */
 }
 
 /* Chat Box styling */
 #chatBox {
     display: flex;
     width: 100%;
-    max-width: 400px; /* Match canvas width */
-    background: #ffffff; /* White background for contrast */
     padding: 10px;
-    box-sizing: border-box; /* Include padding in size calculations */
-    border-top: 1px solid #fbcfe8; /* Border to separate from canvas */
+    box-sizing: border-box; /* Include padding in size */
+    background: #ffffff; /* White background */
+    border-top: 2px solid #fbcfe8; /* Top border */
     gap: 10px;
     align-items: center;
-    position: sticky; /* Prevent movement during keyboard open */
-    bottom: 0; /* Ensure it's always at the bottom */
+    position: sticky; /* Keeps it fixed at the bottom */
+    bottom: 0;
 }
 
-/* Text input styling */
+/* Input field styling */
 #chatInput {
     flex: 1;
     padding: 10px;
@@ -44,6 +41,7 @@ canvas {
     outline: none;
     background: #fef6fb;
     color: #9d174d;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 /* Send button styling */
@@ -65,7 +63,7 @@ canvas {
 /* Responsive adjustments */
 @media (max-width: 600px) {
     #chatBox {
-        flex-direction: column; /* Stack input and button */
+        flex-direction: column; /* Stack input and button vertically */
         align-items: stretch;
         gap: 5px;
     }
@@ -75,5 +73,6 @@ canvas {
         margin: 0;
     }
 }
+
 
 
