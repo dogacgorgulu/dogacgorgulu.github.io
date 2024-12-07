@@ -1,80 +1,15 @@
-/* General styling */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background: #fdf2f8; /* Soft pink background */
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Full viewport height */
-}
-
-/* Hidden class for toggling visibility */
-.hidden {
-    display: none;
-}
-
-/* Welcome Screen */
-#welcomeScreen {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    text-align: center;
-    background: #fdf2f8;
-    padding: 20px;
-}
-
-#welcomeScreen h1 {
-    font-size: 24px; /* Slightly larger font size for better readability */
-    color: #ec4899;
-    margin-bottom: 15px;
-}
-
-#welcomeScreen input {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #fbcfe8;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    outline: none;
-    background: #fef6fb;
-    color: #9d174d;
-    width: 100%;
-    max-width: 300px;
-}
-
-#welcomeScreen button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background: #ec4899;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-#welcomeScreen button:hover {
-    background: #db2777;
-}
-
 /* Chat Screen */
 #chatScreen {
     display: flex;
     flex-direction: column;
-    flex-grow: 1; /* Allow chat screen to fill available space */
+    height: 100vh;
 }
 
 /* Header */
 header {
-    height: auto;
+    height: 10%;
     padding: 10px;
-    background: #ec4899; /* Vibrant pink */
+    background: #ec4899;
     text-align: center;
     color: #ffffff;
     box-sizing: border-box;
@@ -90,12 +25,13 @@ header h1 {
     flex: 1;
     overflow-y: auto;
     padding: 10px;
-    background: #fdf2f8; /* Light pink */
+    background: #fdf2f8;
     display: flex;
     flex-direction: column;
     gap: 8px;
     border-top: 1px solid #fbcfe8;
     box-sizing: border-box;
+    max-height: calc(100vh - 20%);
 }
 
 /* Message styling */
@@ -110,25 +46,20 @@ header h1 {
 
 .message.you {
     align-self: flex-end;
-    background: #f9a8d4; /* Soft pink */
+    background: #f9a8d4;
     color: #831843;
 }
 
 .message.peer {
     align-self: flex-start;
-    background: #ffffff; /* Neutral for peer messages */
+    background: #ffffff;
     color: #6b0f1e;
-}
-
-.system-message {
-    text-align: center;
-    color: #9d174d;
-    font-style: italic;
-    font-size: 14px;
 }
 
 /* Message Composer */
 #chatBox {
+    height: auto;
+    min-height: 60px;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -158,36 +89,3 @@ header h1 {
     cursor: pointer;
 }
 
-/* Responsive Design */
-@media (max-width: 600px) {
-    #welcomeScreen h1 {
-        font-size: 18px; /* Smaller header for mobile */
-    }
-
-    #welcomeScreen input {
-        font-size: 14px;
-    }
-
-    header {
-        height: auto;
-        padding: 8px;
-        font-size: 16px;
-    }
-
-    #chatBox {
-        padding: 8px;
-    }
-
-    #chatInput {
-        height: 35px;
-    }
-
-    #sendButton {
-        padding: 8px 12px;
-        font-size: 12px;
-    }
-
-    .message {
-        font-size: 12px;
-    }
-}
