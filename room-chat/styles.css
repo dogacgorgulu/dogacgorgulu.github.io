@@ -2,11 +2,13 @@
 body {
     margin: 0;
     font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background: #fdf2f8; /* Soft pink background */
+    background: #fdf2f8;
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Full viewport height */
+    height: 100vh;
     overflow: hidden; /* Prevent body scrolling */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* Chat Screen */
@@ -33,8 +35,8 @@ header h1 {
 
 /* Chat Log */
 #chatLog {
-    flex: 1; /* Takes up available space */
-    overflow-y: auto; /* Enables vertical scrolling */
+    flex: 1; /* Take up remaining space without growing */
+    overflow-y: auto; /* Enable vertical scrolling */
     padding: 15px;
     background: #fdf2f8;
     display: flex;
@@ -42,6 +44,8 @@ header h1 {
     gap: 8px;
     border-top: 1px solid #fbcfe8;
     box-sizing: border-box;
+    height: calc(100% - 60px); /* Fixed height minus the chat input area */
+    max-height: calc(100% - 60px); /* Prevent growth beyond screen */
 }
 
 /* Message Styling */
@@ -76,6 +80,7 @@ header h1 {
     background: #ffffff;
     border-top: 1px solid #fbcfe8;
     box-sizing: border-box;
+    height: 60px; /* Fixed height for the input area */
 }
 
 #chatInput {
@@ -123,5 +128,6 @@ header h1 {
         font-size: 12px;
     }
 }
+
 
 
