@@ -8,6 +8,18 @@
 </head>
 <body>
     <canvas id="gameCanvas"></canvas>
+
+    <!-- Movement Controls for Mobile -->
+    <div id="controls">
+        <button id="up">⬆️</button>
+        <div>
+            <button id="left">⬅️</button>
+            <button id="down">⬇️</button>
+            <button id="right">➡️</button>
+        </div>
+    </div>
+
+    <!-- Chat Box -->
     <div id="chatBox">
         <input id="chatInput" type="text" placeholder="Type a message..." />
         <button id="sendButton">Send</button>
@@ -22,21 +34,40 @@
         const chatInput = document.getElementById("chatInput");
         const sendButton = document.getElementById("sendButton");
 
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        // Movement controls for mobile
+        const upButton = document.getElementById("up");
+        const downButton = document.getElementById("down");
+        const leftButton = document.getElementById("left");
+        const rightButton = document.getElementById("right");
+
+        // Fixed canvas size
+        const canvasWidth = 600;
+        const canvasHeight = 400;
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
 
         let players = {};
-        const speed = 5; // Player movement speed
+        const speed = 5;
 
-        // Handle player movement
+        // Emit movement to the server
+        function emitMove(x, y) {
+            socket.emit("move", { x, y });
+        }
+
+        // Keyboard movement for desktop
         window.addEventListener("keydown", (e) => {
-            let move = { x: 0, y: 0 };
-            if (e.key === "ArrowUp") move.y = -speed;
-            if (e.key === "ArrowDown") move.y = speed;
-            if (e.key === "ArrowLeft") move.x = -speed;
-            if (e.key === "ArrowRight") move.x = speed;
-            socket.emit("move", move);
+            if (chatInput === document.activeElement) return; // Ignore if typing
+            if (e.key === "ArrowUp") emitMove(0, -speed);
+            if (e.key === "ArrowDown") emitMove(0, speed);
+            if (e.key === "ArrowLeft") emitMove(-speed, 0);
+            if (e.key === "ArrowRight") emitMove(speed, 0);
         });
+
+        // Movement controls for mobile
+        upButton.onclick = () => emitMove(0, -speed);
+        downButton.onclick = () => emitMove(0, speed);
+        leftButton.onclick = () => emitMove(-speed, 0);
+        rightButton.onclick = () => emitMove(speed, 0);
 
         // Handle message sending
         sendButton.onclick = () => {
@@ -62,25 +93,29 @@
                 // Draw player
                 ctx.beginPath();
                 ctx.arc(player.x, player.y, 20, 0, Math.PI * 2);
-                ctx.fillStyle = id === socket.id ? "rgb(245, 99, 200)" : "rgb(189, 195, 199)"; // Cold pink for local player, gray for others
+                ctx.fillStyle = id === socket.id ? "rgb(245, 99, 200)" : "rgb(189, 195, 199)"; // Cold pink for local player
                 ctx.fill();
 
                 // Draw message
                 if (player.message) {
                     ctx.font = "16px Arial";
-                    ctx.fillStyle = "rgb(245, 99, 200)"; // Cold pink for text
+                    ctx.fillStyle = "rgb(245, 99, 200)";
                     ctx.textAlign = "center";
                     ctx.fillText(player.message, player.x, player.y - 30);
                 }
             }
         }
 
-        // Resize canvas when the window is resized
+        // Prevent the keyboard from closing
+        chatInput.addEventListener("focus", () => {
+            document.body.style.height = `${window.innerHeight}px`; // Prevent layout shift
+        });
+
+        // Resize canvas and layout on window resize
         window.addEventListener("resize", () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            draw();
+            document.body.style.height = `${window.innerHeight}px`;
         });
     </script>
 </body>
 </html>
+
