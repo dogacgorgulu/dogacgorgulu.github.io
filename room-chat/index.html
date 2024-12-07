@@ -26,7 +26,8 @@
         const sendButton = document.getElementById("sendButton");
 
         let players = {};
-        const speed = 5;
+        const avatarImage = new Image();
+        avatarImage.src = "room-chat/avatar.png"; // Replace with your PNG file URL
 
         // Dynamically resize the canvas to match the width of the text input
         function resizeCanvas() {
@@ -37,20 +38,6 @@
 
         resizeCanvas(); // Initial resize
         window.addEventListener("resize", resizeCanvas); // Adjust on window resize
-
-        // Emit movement to the server
-        function emitMove(x, y) {
-            socket.emit("move", { x, y });
-        }
-
-        // Keyboard movement for desktop
-        window.addEventListener("keydown", (e) => {
-            if (chatInput === document.activeElement) return; // Ignore if typing
-            if (e.key === "ArrowUp") emitMove(0, -speed);
-            if (e.key === "ArrowDown") emitMove(0, speed);
-            if (e.key === "ArrowLeft") emitMove(-speed, 0);
-            if (e.key === "ArrowRight") emitMove(speed, 0);
-        });
 
         // Handle message sending
         sendButton.onclick = () => {
@@ -67,29 +54,33 @@
             draw();
         });
 
+        // Notify user if the game room is full
+        socket.on("full", (message) => {
+            alert(message);
+        });
+
         // Draw the game
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             for (const id in players) {
                 const player = players[id];
-                // Draw player
-                ctx.beginPath();
-                ctx.arc(player.x, player.y, 20, 0, Math.PI * 2);
-                ctx.fillStyle = id === socket.id ? "rgb(245, 99, 200)" : "rgb(189, 195, 199)"; // Cold pink for local player
-                ctx.fill();
+
+                // Draw player avatar
+                ctx.drawImage(avatarImage, player.x - 25, player.y - 25, 50, 50); // Adjust size and position
 
                 // Draw message
                 if (player.message) {
                     ctx.font = "16px Arial";
                     ctx.fillStyle = "rgb(245, 99, 200)";
                     ctx.textAlign = "center";
-                    ctx.fillText(player.message, player.x, player.y - 30);
+                    ctx.fillText(player.message, player.x, player.y - 40);
                 }
             }
         }
     </script>
 </body>
 </html>
+
 
 
