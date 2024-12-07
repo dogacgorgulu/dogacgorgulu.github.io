@@ -5,7 +5,8 @@ body {
     background: #fdf2f8; /* Soft pink background */
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Prevent scrolling */
 }
 
 /* Hidden class for toggling visibility */
@@ -76,8 +77,8 @@ header h1 {
 
 /* Chat Log */
 #chatLog {
-    flex: 1;
-    overflow-y: auto;
+    flex: 1; /* Take available vertical space */
+    overflow-y: auto; /* Make chat log scrollable */
     padding: 15px;
     background: #fdf2f8; /* Light pink */
     display: flex;
@@ -122,6 +123,9 @@ header h1 {
     padding: 10px;
     background: #ffffff;
     border-top: 1px solid #fbcfe8;
+    position: sticky; /* Stick to the bottom of the screen */
+    bottom: 0;
+    z-index: 10;
 }
 
 #chatInput {
