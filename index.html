@@ -37,9 +37,10 @@
     <h2>Chat Log</h2>
     <div id="chatLog"></div>
 
+    <!-- Replace with your signaling server URL if it's running elsewhere -->
     <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
     <script>
-        const socket = io("https://common-verdant-boa.glitch.me"); // Replace with your signaling server URL
+        const socket = io("https://common-verdant-boa.glitch.me"); // Change to your server address if needed
 
         let peerConnection;
         let dataChannel;
@@ -54,14 +55,18 @@
         const disconnectButton = document.getElementById("disconnectButton");
         const messageBox = document.getElementById("messageBox");
 
-        // Generate ID
+        // Wait for socket to connect to generate ID
+        socket.on("connect", () => {
+            localSocketId = socket.id;
+            peerIdDisplay.textContent = localSocketId;
+            console.log("Peer ID:", localSocketId);
+        });
+
         document.getElementById("generateIdButton").onclick = () => {
             if (!socket.connected) {
                 socket.connect();
             }
-            localSocketId = socket.id;
-            peerIdDisplay.textContent = localSocketId || "Generating...";
-            console.log("Generated Peer ID:", localSocketId);
+            // The ID will be displayed once the "connect" event fires.
         };
 
         // Connect to another Peer
@@ -91,7 +96,8 @@
                 peerConnection = null;
             }
             if (socket.connected) {
-                socket.disconnect();
+                // You can choose to keep the socket connected if you want to reconnect quickly.
+                // For now, let's just leave it connected so we can easily generate a new ID or reconnect.
             }
             connectionStatus.textContent = "Disconnected";
             sendButton.disabled = true;
@@ -162,14 +168,14 @@
         // Send Message
         sendButton.onclick = () => {
             const message = messageBox.value.trim();
-            if (message && dataChannel.readyState === "open") {
+            if (message && dataChannel && dataChannel.readyState === "open") {
                 dataChannel.send(message);
                 console.log("Sent message:", message);
                 chatLog.innerHTML += `<p>You: ${message}</p>`;
                 messageBox.value = "";
                 chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll to the bottom
             } else {
-                console.error("DataChannel is not open. Current state:", dataChannel.readyState);
+                console.error("DataChannel is not open. Current state:", dataChannel ? dataChannel.readyState : "no dataChannel");
             }
         };
 
@@ -180,17 +186,18 @@
             if (signal.offer) {
                 console.log("Received offer, creating answer...");
                 await createPeerConnection();
-                await peerConnection.setRemoteDescription(new RTCSessionDescription(signal.offer));
+                await peerConnection.setRemoteDescription(signal.offer);
                 const answer = await peerConnection.createAnswer();
                 await peerConnection.setLocalDescription(answer);
                 console.log("Sending answer:", answer);
                 socket.emit("signal", { target: sender, signal: { answer } });
+                targetPeerId = sender; // Update targetPeerId to respond with candidates
             } else if (signal.answer) {
                 console.log("Received answer, setting remote description...");
-                await peerConnection.setRemoteDescription(new RTCSessionDescription(signal.answer));
+                await peerConnection.setRemoteDescription(signal.answer);
             } else if (signal.candidate) {
                 console.log("Received ICE candidate, adding...");
-                await peerConnection.addIceCandidate(new RTCIceCandidate(signal.candidate));
+                await peerConnection.addIceCandidate(signal.candidate).catch(e => console.error(e));
             }
         });
     </script>
