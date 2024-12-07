@@ -11,8 +11,9 @@ body {
 
 /* Canvas styling */
 canvas {
-    width: 100%; /* Full width */
-    height: calc(100vw - 80px); /* Maintain square aspect ratio (subtract chat box height) */
+    flex-shrink: 0; /* Prevent resizing */
+    width: 100%; /* Full width of the screen */
+    height: calc(100vh - 120px); /* Dynamically adjust height, subtract chat box height */
     background: #fef6fb; /* Light pink */
     border-bottom: 2px solid #fbcfe8; /* Pink border */
 }
@@ -21,14 +22,16 @@ canvas {
 #chatBox {
     display: flex;
     width: 100%;
+    background: #ffffff; /* White background */
     padding: 10px;
     box-sizing: border-box; /* Include padding in size */
-    background: #ffffff; /* White background */
     border-top: 2px solid #fbcfe8; /* Top border */
     gap: 10px;
     align-items: center;
-    position: sticky; /* Keeps it fixed at the bottom */
+    position: fixed; /* Fixed to the bottom */
     bottom: 0;
+    left: 0;
+    z-index: 1000;
 }
 
 /* Input field styling */
@@ -60,6 +63,14 @@ canvas {
     background: #db2777; /* Darker pink */
 }
 
+/* Avatar message styling */
+.avatar-message {
+    font-size: 18px; /* Larger font size */
+    font-weight: bold;
+    color: #9d174d; /* Deep pink */
+    text-align: center;
+}
+
 /* Responsive adjustments */
 @media (max-width: 600px) {
     #chatBox {
@@ -72,7 +83,12 @@ canvas {
         width: 100%; /* Full width for smaller screens */
         margin: 0;
     }
+
+    .avatar-message {
+        font-size: 20px; /* Larger font for smaller screens */
+    }
 }
+
 
 
 

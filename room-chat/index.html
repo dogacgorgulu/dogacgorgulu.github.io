@@ -75,17 +75,18 @@
                 const player = players[id];
 
                 // Draw player avatar
-                ctx.drawImage(avatarImage, player.x - 25, player.y - 25, 50, 50);
+                ctx.drawImage(avatarImage, player.x - 25, player.y - 25, 50, 50); // Adjust size and position
 
-                // Draw message
+                // Draw message with larger font
                 if (player.message) {
-                    ctx.font = "16px Arial";
-                    ctx.fillStyle = "rgb(245, 99, 200)";
+                    ctx.font = "18px Arial"; // Match the CSS styling
+                    ctx.fillStyle = "#9d174d"; // Deep pink color
                     ctx.textAlign = "center";
-                    ctx.fillText(player.message, player.x, player.y - 40);
+                    ctx.fillText(player.message, player.x, player.y - 40); // Position above avatar
                 }
             }
         }
+
     </script>
 </body>
 </html>
