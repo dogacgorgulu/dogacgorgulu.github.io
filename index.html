@@ -22,7 +22,7 @@
 
     <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
     <script>
-        const socket = io("https://common-verdant-boa.glitch.me");
+        const socket = io("https://your-glitch-project-url.glitch.me"); // Update with your deployed server URL
 
         let peerConnection;
         let dataChannel;
@@ -39,43 +39,59 @@
         });
 
         async function createPeerConnection() {
-            peerConnection = new RTCPeerConnection();
+            peerConnection = new RTCPeerConnection({
+                iceServers: [
+                    { urls: "stun:stun.l.google.com:19302" }, // Public STUN server
+                    {
+                        urls: "turn:relay.metered.ca:80", // Free TURN server
+                        username: "user",
+                        credential: "pass"
+                    }
+                ]
+            });
 
-            peerConnection.ondatachannel = (event) => {
-                dataChannel = event.channel;
-                setupDataChannel();
-            };
-
+            // Handle ICE candidates
             peerConnection.onicecandidate = (event) => {
                 if (event.candidate) {
-                    socket.emit("signal", {
-                        target: targetPeerId,
-                        signal: { candidate: event.candidate }
-                    });
+                    console.log("Sending ICE candidate:", event.candidate);
+                    socket.emit("signal", { target: targetPeerId, signal: { candidate: event.candidate } });
                 }
             };
 
+            // Monitor ICE connection state
+            peerConnection.oniceconnectionstatechange = () => {
+                console.log("ICE connection state:", peerConnection.iceConnectionState);
+            };
+
+            // Monitor connection state
             peerConnection.onconnectionstatechange = () => {
                 console.log("Connection state:", peerConnection.connectionState);
+            };
+
+            // Handle incoming DataChannel
+            peerConnection.ondatachannel = (event) => {
+                dataChannel = event.channel;
+                setupDataChannel();
             };
         }
 
         function setupDataChannel() {
             dataChannel.onopen = () => {
-                console.log("DataChannel opened");
+                console.log("DataChannel is open!");
                 document.getElementById("messageBox").disabled = false;
                 document.getElementById("sendButton").disabled = false;
             };
 
-            dataChannel.onmessage = (event) => {
-                const message = event.data;
-                document.getElementById("chatLog").innerHTML += `<p>Peer: ${message}</p>`;
-            };
-
             dataChannel.onclose = () => {
-                console.log("DataChannel closed");
+                console.log("DataChannel is closed.");
                 document.getElementById("messageBox").disabled = true;
                 document.getElementById("sendButton").disabled = true;
+            };
+
+            dataChannel.onmessage = (event) => {
+                const message = event.data;
+                console.log("Message received:", message);
+                document.getElementById("chatLog").innerHTML += `<p>Peer: ${message}</p>`;
             };
         }
 
@@ -88,26 +104,32 @@
 
             await createPeerConnection();
 
+            // Create and send offer
             dataChannel = peerConnection.createDataChannel("chat");
             setupDataChannel();
 
             const offer = await peerConnection.createOffer();
             await peerConnection.setLocalDescription(offer);
+            console.log("Sending offer:", offer);
             socket.emit("signal", { target: targetPeerId, signal: { offer } });
         };
 
         socket.on("signal", async ({ signal, sender }) => {
-            targetPeerId = sender;
+            console.log("Received signal:", signal, "from:", sender);
 
             if (signal.offer) {
+                console.log("Received offer, creating answer...");
                 await createPeerConnection();
                 await peerConnection.setRemoteDescription(new RTCSessionDescription(signal.offer));
                 const answer = await peerConnection.createAnswer();
                 await peerConnection.setLocalDescription(answer);
+                console.log("Sending answer:", answer);
                 socket.emit("signal", { target: sender, signal: { answer } });
             } else if (signal.answer) {
+                console.log("Received answer, setting remote description...");
                 await peerConnection.setRemoteDescription(new RTCSessionDescription(signal.answer));
             } else if (signal.candidate) {
+                console.log("Received ICE candidate, adding...");
                 await peerConnection.addIceCandidate(new RTCIceCandidate(signal.candidate));
             }
         });
@@ -116,13 +138,13 @@
             const message = document.getElementById("messageBox").value;
             if (dataChannel.readyState === "open") {
                 dataChannel.send(message);
+                console.log("Sent message:", message);
                 document.getElementById("chatLog").innerHTML += `<p>You: ${message}</p>`;
                 document.getElementById("messageBox").value = "";
             } else {
-                console.error("DataChannel is not open.");
+                console.error("DataChannel is not open. Current state:", dataChannel.readyState);
             }
         };
     </script>
 </body>
 </html>
-
