@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decentralized Card Jitsu</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Decentralized Card Jitsu</h1>
+    <div>
+        <p id="status">Connecting...</p>
+        <input id="session-id" type="text" placeholder="Enter Session ID">
+        <button id="join-button">Join Game</button>
+    </div>
+    <div id="score-display" style="margin-top: 10px; font-weight: bold;"></div>
+    <div id="game-log" style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: scroll;"></div>
+    <div id="deck-container" style="margin-top: 20px;"></div>
+    
+
+    
+    <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"> </script>
+    <script src="main.js"></script>
+</body>
+</html>

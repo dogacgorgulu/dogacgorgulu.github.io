@@ -1,0 +1,37 @@
+
+    #deck-container {
+        display: flex;
+        gap: 10px;
+    }
+
+    #score-display {
+        border: 1px solid red; /* Debugging style */
+    }
+    
+
+    .card {
+        padding: 10px;
+        border: 1px solid #333;
+        border-radius: 5px;
+        background-color: #f5f5f5;
+        cursor: pointer;
+    }
+
+    .card:disabled {
+        background-color: #ddd;
+        cursor: not-allowed;
+    }
+
+
+    .log-win {
+        color: green;
+    }
+
+    .log-loss {
+        color: red;
+    }
+
+    .log-draw {
+        color: orange;
+    }
+
