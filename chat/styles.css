@@ -147,9 +147,6 @@ header h1 {
     opacity: 1;
 }
 
-
-
-
 /* Floating Effect for Stars/Hearts */
 .floating-effect {
     position: absolute;
@@ -200,7 +197,7 @@ header h1 {
     color: #6b0f1e;
 }
 
-/* Message composer */
+/* Message composer 
 .composer {
     display: flex;
     flex: 0.1;
@@ -212,13 +209,46 @@ header h1 {
     padding: 15px;
     background: #ffffff;
     border-top: 1px solid #fbcfe8;
+}*/
+
+.composer {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
 }
+
+#messageBox {
+    width: 100%;
+    min-height: 50px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    resize: vertical;
+}
+
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+
+
 
 .composer textarea {
     flex: 1;
+    width: 90%;
+    
     border: 1px solid #fbcfe8;
     border-radius: 8px;
     padding: 10px;
+
     font-size: 14px;
     resize: none;
     height: 40px;
@@ -237,11 +267,13 @@ header h1 {
     background: #ec4899;
     color: #ffffff;
     border: none;
-    padding: 8px 20px;
+    padding: 6px 18px;
     border-radius: 6px;
     cursor: pointer;
     font-size: 14px;
     transition: background 0.2s;
+    cursor: pointer;
+    text-align: center;
 }
 
 .composer button:hover {
