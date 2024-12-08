@@ -164,6 +164,26 @@ function sendMessage() {
     draw();
 }
 
+const chatLog = document.getElementById("chatLog");
+
+socket.on("message", (data) => {
+    if (players[data.id]) {
+        players[data.id].message = data.text;
+
+        // Create a new chat log entry
+        const messageElement = document.createElement("div");
+        messageElement.textContent = `${players[data.id].name}: ${data.text}`;
+        messageElement.style.marginBottom = "5px";
+
+        // Append the message to the chat log
+        chatLog.appendChild(messageElement);
+
+        // Auto-scroll to the bottom of the chat log
+        chatLog.scrollTop = chatLog.scrollHeight;
+    }
+});
+
+
 // Listen for the state-updated event
 socket.on("state-updated", () => {
     console.log("State updated, redrawing canvas...");
