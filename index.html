@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#000000">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Applications</title>
@@ -32,4 +35,18 @@
     <a href="room-chat/index.html">Broadcast</a>
     <a href="spa/index.html">Spa</a>
 </body>
+<script>
+    if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js').then(
+      (registration) => {
+        console.log('Service Worker registered with scope:', registration.scope);
+      },
+      (error) => {
+        console.error('Service Worker registration failed:', error);
+      }
+    );
+  });
+}
+</script>
 </html>
