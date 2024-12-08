@@ -67,13 +67,33 @@ body {
     height: 100%; /* Full height */
 }
 
-/* Header */
 header {
+    display: flex;
+    justify-content: space-between; /* Space between title and user count */
+    align-items: center; /* Vertically center items */
     padding: 10px;
-    background: #ec4899;
-    text-align: center;
-    color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #ddd;
+}
+
+h1 {
+    margin: 0; /* Remove default margin */
+    font-size: 24px; /* Adjust as needed */
+}
+
+#userCount {
+    font-size: 16px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Space between icon and number */
+}
+
+#userCount i {
+    font-size: 18px; /* Adjust icon size */
+}
+
+#userCountNumber {
+    font-weight: bold;
 }
 
 header h1 {
