@@ -6,6 +6,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    overflow: hidden; /* Prevent body scrolling */
 }
 
 /* Header section */
@@ -123,6 +124,7 @@ header h1 {
 
 /* Chat Log Container */
 #chatLog {
+    display: flex;
     flex: 1;
     overflow-y: auto;
     padding: 15px;
@@ -130,7 +132,7 @@ header h1 {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    max-height: 50vh; /* Limit height */
+
     position: relative; /* Required for glow positioning */
     border-radius: 6px;
     background-image: linear-gradient(to top, rgba(236, 72, 153, 0) 80%, rgba(236, 72, 153, 0.4));
@@ -169,7 +171,12 @@ header h1 {
     }
 }
 
-
+/* Apply max-height only for mobile devices */
+@media (max-width: 768px) { /* Example: Mobile devices with width <= 768px */
+    #chatLog {
+        max-height: 50vh;
+    }
+}
 
 .message {
     max-width: 70%;
@@ -196,6 +203,10 @@ header h1 {
 /* Message composer */
 .composer {
     display: flex;
+    flex: 0.1;
+    
+    bottom: 0;
+
     align-items: center;
     gap: 10px;
     padding: 15px;
@@ -253,4 +264,10 @@ header h1 {
     }
 }
 
-
+/* Main Chat Screen Layout */
+#chatScreen {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Full height */
+}
