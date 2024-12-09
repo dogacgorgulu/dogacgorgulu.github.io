@@ -35,7 +35,7 @@ socket.on("connect_error", (error) => {
 });
 
 socket.on("error", (message) => {
-    updateGameLog(`Error: ${message}`);
+    updateGameLog(`Error: ${message}`, "error");
     console.error("Error:", message);
 });
 
@@ -48,8 +48,20 @@ socket.on("session-update", (data) => {
 // Handle game started
 socket.on("game-started", (data) => {
     playerDeck = data.decks[socket.id] || [];
-    updateGameLog("Game started! Decks distributed.");
+    const defender = data.round === 1 ? data.players[0] : data.players[1];
+    const attacker = data.round === 1 ? data.players[1] : data.players[0];
+
+    updateGameLog(
+        `Game started! ${defender === socket.id ? "You" : "Opponent"} are defending.`,
+        "role-reversal"
+    );
+    updateGameLog(
+        `${attacker === socket.id ? "You" : "Opponent"} are attacking.`,
+        "role-reversal"
+    );
+
     displayPlayerDeck();
+    displayScores(data.scores, "Scores");
 });
 
 // Handle next turn
@@ -72,18 +84,29 @@ socket.on("card-played", (data) => {
 // Handle round result
 socket.on("round-result", (data) => {
     const winnerText = data.winner
-        ? `Winner: ${data.winner === socket.id ? "You" : "Opponent"}`
+        ? `Turn winner: ${data.winner === socket.id ? "You" : "Opponent"}`
         : "It's a draw!";
-    updateGameLog(`Round result: ${winnerText}`);
-    displayScores(data.scores);
+    updateGameLog(winnerText);
+    displayScores(data.scores, "Scores");
+});
+
+// Handle role reversal
+socket.on("role-reversal", (data) => {
+    const defender = data.newDefender === socket.id ? "You" : "Opponent";
+    updateGameLog(`Round ${data.round} started! ${defender} are defending.`, "role-reversal");
+    updateGameLog("Roles have been reversed. Prepare your strategy!", "role-reversal");
+    displayScores(data.scores, "Scores");
 });
 
 // Handle game end
 socket.on("game-ended", (data) => {
     if (data.reason) {
-        updateGameLog(`Game ended: ${data.reason}`);
+        updateGameLog(`Game ended: ${data.reason}`, "error");
     } else {
-        updateGameLog(`Game over! Winner: ${data.winner === socket.id ? "You" : "Opponent"}`);
+        const winnerText = data.winner === socket.id ? "You" : "Opponent";
+        updateGameLog(`Game over! ${winnerText} are the overall winner!`, "game-end");
+        updateGameLog("Final scores:");
+        displayScores(data.scores, "Final Scores");
     }
     console.log("Game ended:", data);
 });
@@ -96,7 +119,7 @@ joinButton.addEventListener("click", () => {
         updateGameLog(`Joining session ${sessionId}...`);
         console.log(`Attempting to join session ${sessionId}`);
     } else {
-        updateGameLog("Please enter a session ID!");
+        updateGameLog("Please enter a session ID!", "error");
     }
 });
 
@@ -122,50 +145,50 @@ function disableCardSelection() {
 function handleCardPlay(event) {
     const cardId = event.target.dataset.cardId;
 
-    // Find the card in the local player's deck
     const card = playerDeck.find((c) => c.id === cardId);
     if (!card) {
-        alert("Card not found!");
+        updateGameLog("Invalid card selection!", "error");
         return;
     }
 
     if (socket.id === currentTurnPlayer) {
         socket.emit("play-card", { sessionId, cardId: card.id });
-        playerDeck = playerDeck.filter((c) => c.id !== cardId); // Remove the played card
+        playerDeck = playerDeck.filter((c) => c.id !== cardId);
         displayPlayerDeck();
     }
 }
 
-
 // Display the player's deck
 function displayPlayerDeck() {
-    const deckContainer = document.getElementById("deck-container");
     deckContainer.innerHTML = ""; // Clear previous deck
 
     playerDeck.forEach((card) => {
         const cardElement = document.createElement("button");
         cardElement.textContent = `${card.element} (${card.power})`;
         cardElement.className = "card";
-        cardElement.dataset.cardId = card.id; // Use the unique ID
+        cardElement.dataset.cardId = card.id;
         cardElement.addEventListener("click", handleCardPlay);
         deckContainer.appendChild(cardElement);
     });
 }
 
-
 // Display scores
 function displayScores(scores) {
-    console.log("Scores to display:", scores); // Debugging line
-    scoreDisplay.innerHTML = Object.entries(scores)
-        .map(([player, score]) => `${player === socket.id ? "You" : "Opponent"}: ${score}`)
-        .join("<br>");
+    const yourScoreElement = document.getElementById("score-you");
+    const opponentScoreElement = document.getElementById("score-opponent");
+
+    // Update scores
+    yourScoreElement.textContent = scores[socket.id] || 0; // "You" score
+    const opponentId = Object.keys(scores).find((id) => id !== socket.id); // Find opponent ID
+    opponentScoreElement.textContent = scores[opponentId] || 0; // "Opponent" score
 }
 
 
 // Helper function to update the game log
-function updateGameLog(message) {
+function updateGameLog(message, className = "") {
     const logEntry = document.createElement("p");
     logEntry.textContent = message;
+    if (className) logEntry.classList.add(className);
     gameLog.appendChild(logEntry);
-    gameLog.scrollTop = gameLog.scrollHeight; // Auto-scroll
+    gameLog.scrollTop = gameLog.scrollHeight;
 }
