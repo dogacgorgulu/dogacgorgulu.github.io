@@ -209,3 +209,34 @@ header h1 {
     background: #d02580; /* Slightly darker pink for hover effect */
 }
 
+#customFileButton {
+    margin-left: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+    background: #ec4899; /* Pink background */
+    color: #ffffff; /* White text */
+    border: none; /* Remove border */
+    border-radius: 8px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+#customFileButton:hover {
+    background: #d02580; /* Slightly darker pink for hover effect */
+}
+
+#fileNameDisplay {
+    margin-left: 10px; /* Space between the button and file name */
+    font-size: 14px;
+    color: #555; /* Subtle color for file name */
+    font-style: italic; /* Optional: Italicize the text */
+}
+
+#imagePreviewContainer {
+    margin-top: 10px; /* Space above the preview container */
+}
+
+#imagePreview {
+    border: 1px solid #ccc; /* Optional: Add border around the preview */
+    border-radius: 5px; /* Rounded corners */
+}
+

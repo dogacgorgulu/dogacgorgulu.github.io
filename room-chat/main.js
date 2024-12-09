@@ -119,12 +119,18 @@ sendImageButton.onclick = () => {
             const imageData = reader.result; // Base64 encoded image
             socket.emit("image", { image: imageData }); // Send image data to server
             appendImage({ name: "You", image: imageData }, "you"); // Append locally
+
+            // Clear the input and preview after sending
+            imageInput.value = ""; // Reset file input
+            imagePreview.style.display = "none"; // Hide the preview
+            imagePreview.src = ""; // Clear the image source
         };
         reader.readAsDataURL(file);
     } else {
         alert("Please select an image to send!");
     }
 };
+
 
 function appendImage({ name, image }, sender) {
     const messageDiv = document.createElement("div");
@@ -141,3 +147,26 @@ socket.on("image", (data) => {
         messageSound.play(); // Play incoming message sound
     }
 });
+
+const imagePreview = document.getElementById("imagePreview");
+
+
+
+imageInput.addEventListener("change", () => {
+    const file = imageInput.files[0];
+
+    if (file) {
+        // Update and display the image preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            imagePreview.src = e.target.result; // Set the preview image source
+            imagePreview.style.display = "block"; // Show the image
+        };
+        reader.readAsDataURL(file);
+    } else {
+        // Hide the preview if no file is selected
+        imagePreview.style.display = "none";
+        imagePreview.src = ""; // Clear the image source
+    }
+});
+
