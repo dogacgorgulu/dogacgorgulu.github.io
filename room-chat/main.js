@@ -11,6 +11,7 @@ const joinButton = document.getElementById("joinButton");
 const chatLog = document.getElementById("chatLog");
 const chatInput = document.getElementById("chatInput");
 const sendButton = document.getElementById("sendButton");
+const imagePreview = document.getElementById("imagePreview");
 
 const chatBox = document.getElementById("chatBox");
 const userCountDisplay = document.getElementById("userCount");
@@ -41,17 +42,33 @@ chatInput.addEventListener("keypress", (event) => {
 });
 
 // Handle button click to send message
-sendButton.onclick = () => sendMessage();
-
-function sendMessage() {
+// Handle sending messages or images
+sendButton.onclick = () => {
     const message = chatInput.value.trim();
-    if (message) {
+    const file = imageInput.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const imageData = reader.result; // Base64 encoded image
+            socket.emit("image", { image: imageData }); // Send image data to server
+            appendImage({ name: "You", image: imageData }, "you"); // Append locally
+
+            // Clear the input and preview after sending
+            imageInput.value = ""; // Reset file input
+            imagePreview.style.display = "none"; // Hide the preview
+            imagePreview.src = ""; // Clear the image source
+        };
+        reader.readAsDataURL(file);
+    } else if (message) {
         socket.emit("message", { text: message }); // Send message to server
         appendMessage({ name: "You", text: message }, "you"); // Append locally
-        chatInput.value = ""; // Clear input
-        chatInput.focus(); // Keep focus for quick typing
+        chatInput.value = ""; // Clear the input
+        chatInput.focus(); // Keep focus for typing
+    } else {
+        alert("Please type a message or choose an image to send!");
     }
-}
+};
 
 // Append message to chat log
 function appendMessage({ name, text }, sender) {
@@ -109,28 +126,6 @@ window.addEventListener("resize", () => {
 // image 
 
 const imageInput = document.getElementById("imageInput");
-const sendImageButton = document.getElementById("sendImageButton");
-
-sendImageButton.onclick = () => {
-    const file = imageInput.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-            const imageData = reader.result; // Base64 encoded image
-            socket.emit("image", { image: imageData }); // Send image data to server
-            appendImage({ name: "You", image: imageData }, "you"); // Append locally
-
-            // Clear the input and preview after sending
-            imageInput.value = ""; // Reset file input
-            imagePreview.style.display = "none"; // Hide the preview
-            imagePreview.src = ""; // Clear the image source
-        };
-        reader.readAsDataURL(file);
-    } else {
-        alert("Please select an image to send!");
-    }
-};
-
 
 function appendImage({ name, image }, sender) {
     const messageDiv = document.createElement("div");
@@ -148,7 +143,6 @@ socket.on("image", (data) => {
     }
 });
 
-const imagePreview = document.getElementById("imagePreview");
 
 
 
