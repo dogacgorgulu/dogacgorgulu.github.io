@@ -68,15 +68,22 @@ div {
 }
 
 .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 10px;
     border: 2px solid #3e2723;
     border-radius: 8px;
     background-color: #f5f5dc; /* Beige card background */
-    cursor: pointer;
-    font-family: 'Georgia', serif;
-    text-align: center;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover:not(:disabled) {
+    transform: translateY(-5px);
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 .card:disabled {
@@ -85,10 +92,22 @@ div {
     border-color: #8d6e63;
 }
 
-.card:hover:not(:disabled) {
-    transform: translateY(-3px);
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+.card-image {
+    pointer-events: none;
+    width: 200px; /* Adjust based on your image size */
+    height: 250px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 5px;
 }
+
+.card-caption {
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    color: #3e2723;
+    text-align: center;
+}
+
 
 #score-display {
     background-color: #e7d7c1; /* Soft parchment background */

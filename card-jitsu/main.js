@@ -144,8 +144,14 @@ function disableCardSelection() {
 // Handle card play
 function handleCardPlay(event) {
     const cardId = event.target.dataset.cardId;
-
     const card = playerDeck.find((c) => c.id === cardId);
+
+    // If cardId is invalid or card not found, avoid processing further
+    if (!card) {
+        updateGameLog("Invalid card selection!", "error");
+        return;
+    }
+
     if (!card) {
         updateGameLog("Invalid card selection!", "error");
         return;
@@ -164,10 +170,29 @@ function displayPlayerDeck() {
 
     playerDeck.forEach((card) => {
         const cardElement = document.createElement("button");
-        cardElement.textContent = `${card.element} (${card.power})`;
         cardElement.className = "card";
         cardElement.dataset.cardId = card.id;
-        cardElement.addEventListener("click", handleCardPlay);
+
+        // Create the image element for the card
+        const cardImage = document.createElement("img");
+        cardImage.src = `card-art/${card.element.toLowerCase()}-${card.power}.png`;
+        cardImage.alt = `${card.element} (${card.power})`;
+        cardImage.className = "card-image";
+
+        // Append the image and text to the button
+        cardElement.appendChild(cardImage);
+        cardElement.appendChild(document.createTextNode(`${card.element} (${card.power})`));
+
+        // Add click event for playing the card
+                // Add click event to the button, not the image
+                cardElement.addEventListener("click", (event) => {
+                    // Ensure only the button processes the event
+                    event.preventDefault();
+                    event.stopPropagation();
+                    handleCardPlay(event.currentTarget.dataset.cardId); // Pass only the cardId
+                });
+
+        // Add the card to the deck container
         deckContainer.appendChild(cardElement);
     });
 }
