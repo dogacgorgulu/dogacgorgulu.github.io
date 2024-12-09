@@ -22,10 +22,21 @@
             <span>Opponent: </span><span id="score-opponent">0</span>
         </div>
     </div>
-    <div id="game-log" style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: scroll;"></div>
+    
+    
+    <div id="battle-area">
+        <div>
+            <img id="player1-card" class="card-image" src="card-art/transparent-placeholder.png" alt="Player 1's card">
+        </div>
+        <div>
+            <img id="player2-card" class="card-image" src="card-art/transparent-placeholder.png" alt="Player 2's card">
+        </div>
+    </div>
+      
+
     <div id="deck-container" style="margin-top: 20px;"></div>
     
-
+    <div id="game-log"></div>
     
     <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"> </script>
     <script src="main.js"></script>

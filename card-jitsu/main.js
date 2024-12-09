@@ -8,6 +8,8 @@ const sessionIdInput = document.getElementById("session-id");
 const gameLog = document.getElementById("game-log");
 const deckContainer = document.getElementById("deck-container");
 const scoreDisplay = document.getElementById("score-display");
+const player1CardElement = document.getElementById("player1-card");
+const player2CardElement = document.getElementById("player2-card");
 
 // Variables
 let sessionId = null;
@@ -19,12 +21,14 @@ socket.on("connect", () => {
     statusDisplay.textContent = "Connected";
     statusDisplay.style.color = "green";
     console.log("Connected to the server");
+    resetBattleArea();
 });
 
 socket.on("disconnect", () => {
     statusDisplay.textContent = "Disconnected";
     statusDisplay.style.color = "red";
     console.log("Disconnected from the server");
+    resetBattleArea();
 });
 
 // Handle errors
@@ -62,6 +66,7 @@ socket.on("game-started", (data) => {
 
     displayPlayerDeck();
     displayScores(data.scores, "Scores");
+    resetBattleArea();
 });
 
 // Handle next turn
@@ -79,15 +84,41 @@ socket.on("next-turn", (data) => {
 // Handle card played
 socket.on("card-played", (data) => {
     updateGameLog(`${data.player} played a card: ${data.card.element} (${data.card.power})`);
+
+    // Distinguish player
+    if (data.player === socket.id) {
+        updateBattleArea(data.card, null); // You
+    } else {
+        updateBattleArea(null, data.card); // Opponent
+    }
 });
 
-// Handle round result
+// Handle TURN result
 socket.on("round-result", (data) => {
     const winnerText = data.winner
         ? `Turn winner: ${data.winner === socket.id ? "You" : "Opponent"}`
         : "It's a draw!";
     updateGameLog(winnerText);
     displayScores(data.scores, "Scores");
+
+    // Clear previous animations
+    player1CardElement.classList.remove("winning-card", "losing-card");
+    player2CardElement.classList.remove("winning-card", "losing-card");
+    
+    // Add animation classes based on the result
+    if (data.winner === socket.id) {
+        player1CardElement.classList.add("winning-card");
+        player2CardElement.classList.add("losing-card");
+    } else if (data) {
+        player1CardElement.classList.add("losing-card");
+        player2CardElement.classList.add("winning-card");
+    }
+
+    // Reset battle area after a delay
+    setTimeout(() => {
+        resetBattleArea();
+    }, 2000); // Adjust delay to match animation duration
+
 });
 
 // Handle role reversal
@@ -217,3 +248,37 @@ function updateGameLog(message, className = "") {
     gameLog.appendChild(logEntry);
     gameLog.scrollTop = gameLog.scrollHeight;
 }
+
+// battleground
+
+// Update the battle area with played cards
+function updateBattleArea(player1Card, player2Card) {
+    // Update YOUR card
+    if (player1Card) {
+        player1CardElement.classList.remove("placeholder-card");
+        player1CardElement.src = `card-art/${player1Card.element.toLowerCase()}-${player1Card.power}.png`;
+        player1CardElement.alt = `${player1Card.element} (${player1Card.power})`;
+    }
+
+    // Update Player 2's card
+    if (player2Card) {
+        player2CardElement.classList.remove("placeholder-card");
+        player2CardElement.src = `card-art/${player2Card.element.toLowerCase()}-${player2Card.power}.png`;
+        player2CardElement.alt = `${player2Card.element} (${player2Card.power})`;
+    }
+}
+    
+function resetBattleArea() {
+    // Reset Player 1's card area
+    player1CardElement.src = 'card-art/transparent-placeholder.png'; // Clear the image source
+    player1CardElement.alt = 'No card played1';
+    player1CardElement.classList.add("placeholder-card");
+    player1CardElement.classList.remove("winning-card", "losing-card");
+
+    // Reset Player 2's card area
+    player2CardElement.src = 'card-art/transparent-placeholder.png'; // Clear the image source
+    player2CardElement.alt = 'No card played';
+    player2CardElement.classList.add("placeholder-card");
+    player2CardElement.classList.remove("winning-card", "losing-card");
+}
+

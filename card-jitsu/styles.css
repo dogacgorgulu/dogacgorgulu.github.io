@@ -223,3 +223,72 @@ div {
     color: #c62828; /* Error red */
     font-style: italic;
 }
+
+#battle-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    gap: 20px;
+    max-width: 600px;
+    padding: 10px;
+    border: 2px solid #3e2723;
+    border-radius: 8px;
+    background-color: #f5f5dc; /* Neutral background */
+}
+
+.played-card {
+    text-align: center;
+    width: 120px; /* Adjust to fit card size */
+}
+
+.played-card img {
+    width: 100px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 2px solid #8d6e63;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease;
+}
+
+@keyframes winning-animation {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(-20px); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes losing-animation {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0; }
+}
+
+.winning-card {
+    animation: winning-animation 0.5s ease-in-out;
+    border-color: #4caf50; /* Green border for winner */
+    box-shadow: 0 0 15px #4caf50;
+}
+
+.losing-card {
+    animation: losing-animation 0.5s ease-in-out;
+    border-color: #f44336; /* Red border for loser */
+    box-shadow: 0 0 15px #f44336;
+}
+
+/* Placeholder card */
+.placeholder-card {
+    display: inline-block;
+
+    background-color: #d3d3d3; /* Light gray for placeholder */
+    
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #4b3832;
+    border: 2px dashed #8d6e63; /* Dashed border for placeholder */
+    width: 120px; /* Match card-image dimensions */
+    height: 160px;
+    border-radius: 5px;
+}
