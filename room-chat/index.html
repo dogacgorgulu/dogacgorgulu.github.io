@@ -34,10 +34,16 @@
             <textarea id="chatInput" placeholder="Type a message..."></textarea>
             
             <input type="file" id="imageInput" accept="image/*" style="display: none;" />
-            <label for="imageInput" id="customFileButton">Choose Image</label>
+            <label for="imageInput" id="customFileButton">
+                <img src="../icons/gallery.png" alt="Choose Image" id="imageLogo" />
+            </label>
+
             <div id="imagePreviewContainer">
                 <img id="imagePreview" src="" alt="Preview" style="display: none; max-width: 200px; max-height: 200px; margin-top: 10px;" />
             </div>
+
+
+
             
             <button id="sendButton">Send</button>
         </div>
