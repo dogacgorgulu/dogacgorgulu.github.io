@@ -33,7 +33,6 @@ joinButton.onclick = () => {
     chatScreen.classList.remove("hidden");
 };
 
-
 // Handle button click to send message
 sendButton.onclick = () => {
     const message = chatInput.value.trim();
@@ -63,7 +62,6 @@ sendButton.onclick = () => {
         alert("Please type a message or choose an image to send!");
     }
 };
-
 
 // Append message to chat log
 function appendMessage({ name, text, reply }, sender) {
@@ -104,7 +102,6 @@ function appendImage({ name, image, reply }, sender) {
     chatLog.scrollTop = chatLog.scrollHeight;
 }
 
-
 // Listen for incoming messages
 socket.on("message", (data) => {
     appendMessage(data, data.name === displayName ? "you" : "peer");
@@ -120,7 +117,6 @@ socket.on("image", (data) => {
     }
 });
 
-
 // Display system messages (e.g., join/leave notifications)
 socket.on("system", (message) => {
     const messageDiv = document.createElement("div");
@@ -130,8 +126,6 @@ socket.on("system", (message) => {
     chatLog.scrollTop = chatLog.scrollHeight;
     notificationSound.play(); // Play notification sound
 });
-
-
 
 // Listen for the userCount event
 socket.on("userCount", (count) => {
