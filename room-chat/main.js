@@ -203,7 +203,7 @@ function setReplyContext(name, text) {
     // Update the reply indicator content
     replyIndicator.style.display = "flex";
     replyIndicator.innerHTML = `
-        Replying to: <strong>${name}: </strong>${text}
+        Replying to ${name} "${text}"
         <button onclick="clearReplyContext()">Cancel</button>
     `;
 }

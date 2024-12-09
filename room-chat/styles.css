@@ -269,23 +269,32 @@ header h1 {
 }
 
 #replyIndicator {
-    background-color: #ffe9e9;
-    padding: 8px;
-    border: 1px solid #ff6b6b;
-    border-radius: 5px;
+    max-width: 100%;
+    padding: 8px 12px;
+    border-radius: 8px;
     font-size: 14px;
-    display: flex;
-    justify-content: space-between; /* Align the cancel button to the right */
-    align-items: center;
-    margin-bottom: 10px; /* Add space below the indicator */
+    word-wrap: break-word;
+    align-self: flex-start;
     color: #ff6b6b;
+    
+    background-color: #ffe9e9;
+    border: 1px solid #ff6b6b;
 
-        /* Add these fixes */
-        max-width: 100%; /* Ensure it doesn't overflow the parent container */
-        box-sizing: border-box; /* Include padding and border in the width */
-        overflow-wrap: break-word; /* Break long text to fit within the container */
-        word-wrap: break-word; /* Older support for word breaking */
-        word-break: break-word; /* Force breaking for long words */
+    
+    display: flex;
+    flex-direction: column; /* Stack messages vertically */
+    gap: 8px; /* Space between messages */
+
+    /*justify-content: space-between; */
+    align-items: center;
+    margin: 2px; /* Add space below the indicator 
+ 
+
+     /* Add these fixes 
+    max-width: 100%; /* Ensure it doesn't overflow the parent container
+    box-sizing: border-box; /* Include padding and border in the width 
+    */
+        
 }
 
 #replyIndicator button {
