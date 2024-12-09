@@ -1,72 +1,94 @@
+/* General body styles */
 body {
-    font-family: 'Georgia', serif; /* Classic serif font for a vintage feel */
-    background-color: #f4ecd8; /* Parchment-like background */
-    color: #4b3832; /* Dark brown text */
+    font-family: 'Georgia', serif;
+    background-color: #f4ecd8;
+    color: #4b3832;
     margin: 0;
     padding: 0;
     line-height: 1.6;
 }
 
+/* Header */
 h1 {
     font-family: 'Times New Roman', serif;
-    color: #3e2723; /* Deep brown */
+    color: #3e2723;
     text-align: center;
     margin-top: 20px;
     text-shadow: 1px 1px 0px #d8c3a5;
 }
 
+/* Center main content */
 div {
     margin: 20px;
+    text-align: center;
 }
 
+/* Status text */
 #status {
     font-weight: bold;
     text-align: center;
     margin-bottom: 10px;
 }
 
+/* Input and button styling */
 #session-id {
     font-family: 'Courier New', monospace;
     padding: 8px;
-    border: 1px solid #a1887f; /* Soft brown border */
+    border: 1px solid #a1887f;
     border-radius: 5px;
-    background-color: #f4f1e6; /* Light parchment */
+    background-color: #f4f1e6;
     color: #4b3832;
-    margin-right: 10px;
+    margin-bottom: 10px; /* Add spacing below input field */
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
 }
 
 #join-button {
     font-family: 'Georgia', serif;
-    background-color: #d7ccc8; /* Muted brown */
+    background-color: #d7ccc8;
     border: 1px solid #8d6e63;
     border-radius: 5px;
     padding: 10px 15px;
     color: #3e2723;
     cursor: pointer;
     transition: all 0.3s ease;
+    width: 100%;
+    max-width: 150px;
 }
 
 #join-button:hover {
-    background-color: #8d6e63; /* Darker brown on hover */
-    color: #f4ecd8; /* Text matches parchment */
+    background-color: #8d6e63;
+    color: #f4ecd8;
 }
 
+/* Game log styles */
 #game-log {
-    background-color: #e0d5c6; /* Antique paper look */
+    background-color: #e0d5c6;
     color: #3e2723;
     font-family: 'Georgia', serif;
     padding: 15px;
     border: 1px solid #8d6e63;
     border-radius: 5px;
+    height: 150px; /* Keep height consistent */
+    overflow-y: scroll;
+    margin: 20px auto; /* Center and space it nicely */
+    max-width: 600px; /* Maximum width for larger screens */
+    width: 90%; /* Make it adapt to smaller screens */
+    box-sizing: border-box; /* Include padding and border in the width */
 }
 
+
+/* Deck container styling */
 #deck-container {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     justify-content: center;
     padding: 10px;
 }
 
+/* Individual cards */
 .card {
     display: flex;
     flex-direction: column;
@@ -81,44 +103,92 @@ div {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.card:hover:not(:disabled) {
-    transform: translateY(-5px);
-    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
-}
-
-.card:disabled {
-    background-color: #d7ccc8; /* Muted brown for disabled cards */
-    cursor: not-allowed;
-    border-color: #8d6e63;
-}
-
 .card-image {
     pointer-events: none;
-    width: 200px; /* Adjust based on your image size */
-    height: 250px;
+    width: 120px; /* Adjust based on your image size */
+    height: 160px;
     object-fit: cover;
     border-radius: 5px;
     margin-bottom: 5px;
 }
 
-.card-caption {
-    font-family: 'Georgia', serif;
-    font-size: 14px;
-    color: #3e2723;
-    text-align: center;
+.card:disabled {
+    background-color: #d7ccc8;
+    cursor: not-allowed;
+    border-color: #8d6e63;
 }
 
+.card:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+}
 
+/* Score display */
+/* Score display */
 #score-display {
-    background-color: #e7d7c1; /* Soft parchment background */
+    background-color: #e7d7c1;
     border: 2px solid #3e2723;
     border-radius: 8px;
-    padding: 10px;
-    max-width: 300px;
-    margin: auto;
+    padding: 5px 10px; /* Reduce padding */
+    max-width: 200px; /* Narrower width */
     font-family: 'Georgia', serif;
     color: #3e2723;
     text-align: center;
+    font-size: 16px; /* Slightly smaller font */
+    line-height: 1.4; /* Compact line height */
+
+    width: 90%;
+    margin: 10px auto;
+    box-sizing: border-box;
+}
+
+#score-display p {
+    margin: 5px 0; /* Reduce spacing between text */
+}
+
+#player-you,
+#player-opponent {
+    display: flex;
+    justify-content: space-between; /* Align labels and scores */
+    margin: 3px 0; /* Reduce spacing between rows */
+}
+
+#player-you span,
+#player-opponent span {
+    font-size: 14px; /* Smaller font for labels */
+    font-weight: bold; /* Highlight scores */
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    /* Adjust layout for smaller screens */
+    #deck-container {
+        flex-wrap: wrap;
+        gap: 4px;
+        justify-content: center;
+        padding: 4px;
+    }
+
+    .card {
+        padding: 4px;
+        border: 2px solid #3e2723;
+    }
+
+    #game-log {
+        height: 100px; /* Reduce log height further on mobile */
+        font-size: 14px;
+    }
+
+    .card-image {
+        width: 80px;
+        height: 96px;
+        border-radius: 5px;
+        margin-bottom: 5px;
+    }
+
+    #score-display {
+        font-size: 14px; /* Smaller font for mobile */
+    }
 }
 
 .role-reversal {
@@ -153,4 +223,3 @@ div {
     color: #c62828; /* Error red */
     font-style: italic;
 }
-
