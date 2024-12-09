@@ -163,7 +163,8 @@ header h1 {
     resize: none; /* Prevent resizing */
 }
 
-#sendButton {
+#sendButton,
+#sendImageButton {
     margin-left: 8px;
     padding: 8px 12px;
     font-size: 14px;
@@ -186,3 +187,25 @@ header h1 {
         padding: 6px 10px; /* Smaller padding for mobile */
     }
 }
+
+.message img {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+#imageInput {
+    margin-left: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+    background: #ec4899; /* Pink background */
+    color: #ffffff; /* White text */
+    border: none; /* Remove border */
+    border-radius: 8px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+#imageInput:hover {
+    background: #d02580; /* Slightly darker pink for hover effect */
+}
+

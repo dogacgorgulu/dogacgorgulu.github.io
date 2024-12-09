@@ -104,3 +104,40 @@ window.addEventListener("resize", () => {
         chatBox.style.bottom = "auto";
     }
 });
+
+
+// image 
+
+const imageInput = document.getElementById("imageInput");
+const sendImageButton = document.getElementById("sendImageButton");
+
+sendImageButton.onclick = () => {
+    const file = imageInput.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const imageData = reader.result; // Base64 encoded image
+            socket.emit("image", { image: imageData }); // Send image data to server
+            appendImage({ name: "You", image: imageData }, "you"); // Append locally
+        };
+        reader.readAsDataURL(file);
+    } else {
+        alert("Please select an image to send!");
+    }
+};
+
+function appendImage({ name, image }, sender) {
+    const messageDiv = document.createElement("div");
+    messageDiv.className = `message ${sender}`;
+    messageDiv.innerHTML = `<strong>${name}:</strong> <img src="${image}" alt="Image" style="max-width: 200px; max-height: 200px;">`;
+    chatLog.appendChild(messageDiv);
+    chatLog.scrollTop = chatLog.scrollHeight;
+}
+
+// Listen for incoming images
+socket.on("image", (data) => {
+    if (data.name !== displayName) {
+        appendImage(data, "peer");
+        messageSound.play(); // Play incoming message sound
+    }
+});
