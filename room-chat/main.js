@@ -33,16 +33,8 @@ joinButton.onclick = () => {
     chatScreen.classList.remove("hidden");
 };
 
-// Listen for Enter key to send message
-chatInput.addEventListener("keypress", (event) => {
-    if (event.key === "Enter") {
-        event.preventDefault(); // Prevent newline
-        sendMessage();
-    }
-});
 
 // Handle button click to send message
-// Handle sending messages or images
 sendButton.onclick = () => {
     const message = chatInput.value.trim();
     const file = imageInput.files[0];
@@ -51,43 +43,83 @@ sendButton.onclick = () => {
         const reader = new FileReader();
         reader.onload = () => {
             const imageData = reader.result; // Base64 encoded image
-            socket.emit("image", { image: imageData }); // Send image data to server
-            appendImage({ name: "You", image: imageData }, "you"); // Append locally
+            socket.emit("image", { image: imageData, reply: replyContext });
+            appendImage({ name: "You", image: imageData, reply: replyContext }, "you");
 
             // Clear the input and preview after sending
             imageInput.value = ""; // Reset file input
             imagePreview.style.display = "none"; // Hide the preview
             imagePreview.src = ""; // Clear the image source
+            clearReplyContext();
         };
         reader.readAsDataURL(file);
     } else if (message) {
-        socket.emit("message", { text: message }); // Send message to server
-        appendMessage({ name: "You", text: message }, "you"); // Append locally
+        socket.emit("message", { text: message, reply: replyContext });
+        appendMessage({ name: "You", text: message, reply: replyContext }, "you");
         chatInput.value = ""; // Clear the input
         chatInput.focus(); // Keep focus for typing
+        clearReplyContext();
     } else {
         alert("Please type a message or choose an image to send!");
     }
 };
 
+
 // Append message to chat log
-function appendMessage({ name, text }, sender) {
+function appendMessage({ name, text, reply }, sender) {
     const messageDiv = document.createElement("div");
     messageDiv.className = `message ${sender}`;
-    messageDiv.innerHTML = `<strong>${name}:</strong> ${text}`;
-    chatLog.appendChild(messageDiv);
 
-    // Auto-scroll to the bottom
+    // Add reply context if present
+    let replyHTML = "";
+    if (reply) {
+        replyHTML = `<div class="reply"><strong>${reply.name}: </strong> ${reply.text || "an image"}</div>`;
+    }
+
+    messageDiv.innerHTML = `
+        ${replyHTML}
+        <strong>${name}:</strong> ${text}
+        <img class="reply-button" src="../icons/reply.png" alt="Reply" onclick="setReplyContext('${name}', '${text}')"/>
+    `;
+    chatLog.appendChild(messageDiv);
     chatLog.scrollTop = chatLog.scrollHeight;
 }
 
+function appendImage({ name, image, reply }, sender) {
+    const messageDiv = document.createElement("div");
+    messageDiv.className = `message ${sender}`;
+
+    // Add reply context if present
+    let replyHTML = "";
+    if (reply) {
+        replyHTML = `<div class="reply"><strong>Replying to ${reply.name}:</strong>&nbsp;${reply.text || "an image"}</div>`;
+    }
+
+    messageDiv.innerHTML = `
+        ${replyHTML}
+        <strong>${name}:</strong> <img src="${image}" alt="Image" style="max-width: 200px; max-height: 200px;">
+        <img class="reply-button" src="../icons/reply.png" alt="Reply" onclick="setReplyContext('${name}', 'an image')"/>
+    `;
+    chatLog.appendChild(messageDiv);
+    chatLog.scrollTop = chatLog.scrollHeight;
+}
+
+
 // Listen for incoming messages
 socket.on("message", (data) => {
+    appendMessage(data, data.name === displayName ? "you" : "peer");
     if (data.name !== displayName) {
-        appendMessage(data, "peer");
-        messageSound.play(); // Play incoming message sound
+        messageSound.play();
     }
 });
+
+socket.on("image", (data) => {
+    appendImage(data, data.name === displayName ? "you" : "peer");
+    if (data.name !== displayName) {
+        messageSound.play();
+    }
+});
+
 
 // Display system messages (e.g., join/leave notifications)
 socket.on("system", (message) => {
@@ -127,21 +159,10 @@ window.addEventListener("resize", () => {
 
 const imageInput = document.getElementById("imageInput");
 
-function appendImage({ name, image }, sender) {
-    const messageDiv = document.createElement("div");
-    messageDiv.className = `message ${sender}`;
-    messageDiv.innerHTML = `<strong>${name}:</strong> <img src="${image}" alt="Image" style="max-width: 200px; max-height: 200px;">`;
-    chatLog.appendChild(messageDiv);
-    chatLog.scrollTop = chatLog.scrollHeight;
-}
+
 
 // Listen for incoming images
-socket.on("image", (data) => {
-    if (data.name !== displayName) {
-        appendImage(data, "peer");
-        messageSound.play(); // Play incoming message sound
-    }
-});
+
 
 
 
@@ -164,3 +185,43 @@ imageInput.addEventListener("change", () => {
     }
 });
 
+let replyContext = null;
+
+function setReplyContext(name, text) {
+    replyContext = { name, text };
+
+    // Select the correct parent container (e.g., #chatContainer)
+    const chatContainer = document.getElementById("replyPos");
+
+    // Get or create the reply indicator
+    let replyIndicator = document.getElementById("replyIndicator");
+    if (!replyIndicator) {
+        // Create the reply indicator if it doesn't exist
+        replyIndicator = document.createElement("div");
+        replyIndicator.id = "replyIndicator";
+        chatContainer.insertBefore(replyIndicator, chatContainer.firstChild); // Insert at the top of the container
+    }
+
+    // Update the reply indicator content
+    replyIndicator.style.display = "flex";
+    replyIndicator.innerHTML = `
+        Replying to: <strong>${name}: </strong>${text}
+        <button onclick="clearReplyContext()">Cancel</button>
+    `;
+}
+
+
+
+
+function clearReplyContext() {
+    replyContext = null;
+    const replyIndicator = document.getElementById("replyIndicator");
+    if (replyIndicator) replyIndicator.remove();
+}
+
+chatInput.addEventListener("keypress", (event) => {
+    if (event.key === "Enter" && !event.shiftKey) { // Check for Enter without Shift (to avoid adding a newline)
+        event.preventDefault(); // Prevent default newline behavior
+        sendButton.click(); // Trigger the Send button
+    }
+});

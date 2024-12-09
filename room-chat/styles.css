@@ -62,6 +62,8 @@ body {
 
 /* Main Chat Screen Layout */
 #chatScreen {
+    flex-direction: column;
+
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
@@ -138,6 +140,7 @@ header h1 {
 
 /* Chat input area (fixed at the bottom) */
 #chatBox {
+
     flex-shrink: 0;
     bottom: 0;
     left: 0;
@@ -244,3 +247,68 @@ header h1 {
     border-radius: 5px; /* Rounded corners */
 }
 
+.reply {
+    background-color: #f0f0f0;
+    border-left: 4px solid #007bff;
+    padding: 5px;
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: #555;
+}
+
+.reply-button {
+    width: 20px; /* Adjust size as needed */
+    height: 20px;
+    margin-left: 8px; /* Space between text and icon */
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.reply-button:hover {
+    opacity: 0.7; /* Optional hover effect */
+}
+
+#replyIndicator {
+    background-color: #ffe9e9;
+    padding: 8px;
+    border: 1px solid #ff6b6b;
+    border-radius: 5px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between; /* Align the cancel button to the right */
+    align-items: center;
+    margin-bottom: 10px; /* Add space below the indicator */
+    color: #ff6b6b;
+
+        /* Add these fixes */
+        max-width: 100%; /* Ensure it doesn't overflow the parent container */
+        box-sizing: border-box; /* Include padding and border in the width */
+        overflow-wrap: break-word; /* Break long text to fit within the container */
+        word-wrap: break-word; /* Older support for word breaking */
+        word-break: break-word; /* Force breaking for long words */
+}
+
+#replyIndicator button {
+    background: none;
+    border: none;
+    color: #ff6b6b;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+
+
+
+/*
+    socket.on("message", (data) => {
+      const name = users[socket.id] || `User-${socket.id.slice(0, 5)}`;
+      socket.broadcast.emit("message", { name, text: data.text });
+    });
+    
+    socket.on("image", (data) => {
+        const name = users[socket.id] || `User-${socket.id.slice(0, 5)}`;
+        // Broadcast image to all users except the sender
+    socket.broadcast.emit("image", { name, image: data.image });
+    });
+///
+*/
