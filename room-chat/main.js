@@ -1,3 +1,4 @@
+let replyContext = null;
 // Load audio files
 const messageSound = new Audio("./sounds/message.mp3");
 const notificationSound = new Audio("./sounds/notification.mp3");
@@ -50,6 +51,9 @@ sendButton.onclick = () => {
             imagePreview.style.display = "none"; // Hide the preview
             imagePreview.src = ""; // Clear the image source
             clearReplyContext();
+        };
+        reader.onerror = () => {
+            console.error("Error reading .jpg file:", reader.error);
         };
         reader.readAsDataURL(file);
     } else if (message) {
@@ -179,7 +183,7 @@ imageInput.addEventListener("change", () => {
     }
 });
 
-let replyContext = null;
+
 
 function setReplyContext(name, text) {
     replyContext = { name, text };
