@@ -5,20 +5,19 @@
     <meta name="theme-color" content="#000000">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Chat Room</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Broadcast Room</title>
+    <link id="themeStylesheet" rel="stylesheet" href="styles.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
 </head>
 <body>
 
-
     <!-- Chat Screen -->
     <div id="chatScreen" class="hidden">
         <div id="welcomeScreen">
-            <h1>Welcome to the Chat Room</h1>
             <input id="displayNameInput" type="text" placeholder="Enter your display name" />
-            <button id="joinButton">Join Chat</button>
+            <button id="joinButton">Update</button>
+            <img id="switchStyle" src="../icons/switch-theme.png" alt="Switch Theme" title="Switch Theme" />
         </div>
     
         <header>
@@ -51,6 +50,7 @@
     
     </div>
     <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
+    <script src="/switchTheme.js"></script>
     <script src="main.js"></script>
     
 </body>

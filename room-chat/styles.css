@@ -300,3 +300,24 @@ header h1 {
 }
 
 
+
+/* PNG button styling */
+#switchStyle {
+    position: absolute; /* Position relative to #welcomeScreen */
+    
+    right: 10px; /* Offset from the right */
+    
+    width: 48px; /* Set width of the button */
+    height: 48px; /* Set height of the button */
+
+    cursor: pointer; /* Make the cursor show as a pointer */
+    transition: transform 0.2s ease, opacity 0.2s ease; /* Smooth interaction */
+    z-index: 10; /* Ensure it appears above other elements */
+    opacity: 0.9; /* Slight transparency for a subtle look */
+}
+
+/* Hover effect for PNG button */
+#switchStyle:hover {
+    opacity: 1; /* Fully visible on hover */
+    transform: scale(1.2); /* Slight scale effect */
+}

@@ -69,40 +69,65 @@ sendButton.onclick = () => {
 
 // Append message to chat log
 function appendMessage({ name, text, reply }, sender) {
+    const wrapperDiv = document.createElement("div");
+    wrapperDiv.className = `message-wrapper ${sender}`;
+    wrapperDiv.style.display = "flex";
+    wrapperDiv.style.alignItems = "center";
+    wrapperDiv.style.justifyContent = sender === "you" ? "flex-end" : "flex-start"; // Align based on sender
+
+    // Create the message bubble
     const messageDiv = document.createElement("div");
     messageDiv.className = `message ${sender}`;
-
-    // Add reply context if present
-    let replyHTML = "";
-    if (reply) {
-        replyHTML = `<div class="reply"><strong>${reply.name}: </strong> ${reply.text || "an image"}</div>`;
-    }
-
     messageDiv.innerHTML = `
-        ${replyHTML}
+        ${reply ? `<div class="reply"><strong>${reply.name}: </strong> ${reply.text || "an image"}</div>` : ""}
         <strong>${name}:</strong> ${text}
-        <img class="reply-button" src="../icons/reply.png" alt="Reply" onclick="setReplyContext('${name}', '${text}')"/>
     `;
-    chatLog.appendChild(messageDiv);
+
+    // Create the reply button
+    const replyButton = document.createElement("img");
+    replyButton.className = "reply-button";
+    replyButton.src = "../icons/reply.png";
+    replyButton.alt = "Reply";
+    replyButton.onclick = () => setReplyContext(name, text);
+
+    // Append message bubble and button to wrapper
+    wrapperDiv.appendChild(messageDiv);
+    wrapperDiv.appendChild(replyButton);
+
+    // Append the wrapper to the chat log
+    chatLog.appendChild(wrapperDiv);
     chatLog.scrollTop = chatLog.scrollHeight;
 }
 
+
 function appendImage({ name, image, reply }, sender) {
+    const wrapperDiv = document.createElement("div");
+    wrapperDiv.className = `message-wrapper ${sender}`;
+    wrapperDiv.style.display = "flex";
+    wrapperDiv.style.alignItems = "center";
+    wrapperDiv.style.justifyContent = sender === "you" ? "flex-end" : "flex-start"; // Align based on sender
+
+    // Create the message bubble
     const messageDiv = document.createElement("div");
     messageDiv.className = `message ${sender}`;
-
-    // Add reply context if present
-    let replyHTML = "";
-    if (reply) {
-        replyHTML = `<div class="reply"><strong>Replying to ${reply.name}:</strong>&nbsp;${reply.text || "an image"}</div>`;
-    }
-
     messageDiv.innerHTML = `
-        ${replyHTML}
+        ${reply ? `<div class="reply"><strong>Replying to ${reply.name}:</strong>&nbsp;${reply.text || "an image"}</div>` : ""}
         <strong>${name}:</strong> <img src="${image}" alt="Image" style="max-width: 200px; max-height: 200px;">
-        <img class="reply-button" src="../icons/reply.png" alt="Reply" onclick="setReplyContext('${name}', 'an image')"/>
     `;
-    chatLog.appendChild(messageDiv);
+
+    // Create the reply button
+    const replyButton = document.createElement("img");
+    replyButton.className = "reply-button";
+    replyButton.src = "../icons/reply.png";
+    replyButton.alt = "Reply";
+    replyButton.onclick = () => setReplyContext(name, "an image");
+
+    // Append message bubble and button to wrapper
+    wrapperDiv.appendChild(messageDiv);
+    wrapperDiv.appendChild(replyButton);
+
+    // Append the wrapper to the chat log
+    chatLog.appendChild(wrapperDiv);
     chatLog.scrollTop = chatLog.scrollHeight;
 }
 

@@ -1,0 +1,317 @@
+/* General styling */
+body {
+    margin: 0;
+    font-family: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: linear-gradient(135deg, #64b5f6, #1e88e5); /* Blue gradient */
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    max-height: 100dvh;
+    height: 100dvh;
+    overflow: visible;
+}
+
+/* Welcome Screen */
+#welcomeScreen {
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
+    backdrop-filter: blur(10px); /* Glass effect */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 20px;
+    gap: 10px;
+}
+
+#welcomeScreen h1 {
+    font-size: 20px;
+    color: #e3f2fd; /* Light blue text */
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+#welcomeScreen input {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.7); /* Glass-like input */
+    color: #000;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+    outline: none;
+    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#welcomeScreen button {
+    padding: 8px 16px;
+    font-size: 14px;
+    background: linear-gradient(135deg, #64b5f6, #1e88e5); /* Gradient */
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+#welcomeScreen button:hover {
+    background: linear-gradient(135deg, #2196f3, #1565c0);
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* Main Chat Screen Layout */
+#chatScreen {
+    flex-direction: column;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Full height */
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: linear-gradient(to bottom, #64b5f6, rgba(255, 255, 255, 0.1));
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 18px;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Chat log */
+#chatLog {
+    flex: 1;
+    overflow-y: scroll;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    box-shadow: inset 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Messages */
+/* Message bubble */
+.message {
+    max-width: 70%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    word-wrap: break-word;
+    background: rgba(255, 255, 255, 0.8); /* Light background for bubbles */
+    color: #000;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.message.you {
+    align-self: flex-end; /* Right-align user's messages */
+    background: linear-gradient(to right, #64b5f6, #1e88e5);
+    color: #ffffff;
+}
+
+.message.peer {
+    align-self: flex-start; /* Left-align peer's messages */
+    background: rgba(255, 255, 255, 0.8);
+    color: #000;
+}
+
+.message .text-content {
+    flex: 1; /* Allows the text to take up all available space */
+    margin-right: 8px; /* Add space between the text and button */
+}
+
+
+
+/* Chat input area */
+#chatBox {
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0px -2px 6px rgba(0, 0, 0, 0.1);
+}
+
+#chatInput {
+    flex: 1;
+    height: 35px;
+    padding: 8px;
+    font-size: 14px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.7);
+    color: #000;
+}
+
+#sendButton {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #64b5f6, #1e88e5);
+    color: #ffffff;
+    cursor: pointer;
+    margin-left: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+#sendButton:hover {
+    background: linear-gradient(135deg, #2196f3, #1565c0);
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+    body {
+        height: calc(100vh - 20px); /* Account for potential mobile viewport height changes */
+    }
+
+    #chatBox {
+        padding: 6px 10px; /* Smaller padding for mobile */
+    }
+}
+
+/* Image preview and inputs */
+.message img {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+#imageInput {
+    margin-left: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+    background: #2196f3;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#imageInput:hover {
+    background: #1565c0;
+}
+
+#customFileButton {
+    margin-left: 8px;
+    padding: 0; /* Remove padding for compactness */
+    border: none; /* Remove border */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+#imageLogo {
+    width: 48px; /* Set the size of the logo */
+    height: 48px; /* Adjust the dimensions as needed */
+    object-fit: contain; /* Ensures the image fits well */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Reply styling */
+.reply {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-left: 4px solid #2196f3;
+    padding: 5px;
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: #000;
+    border-radius: 5px; /* Rounded corners for a softer look */
+    display: flex;
+    align-items: center; /* Align text and button */
+    justify-content: space-between; /* Space between text and reply button */
+    gap: 8px; /* Gap between elements */
+}
+
+.reply-button {
+    width: 32px;
+    height: 32px;
+    margin-left: 8px;
+    cursor: pointer;
+    
+    opacity: 0.8; /* Subtle visibility */
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    vertical-align: middle; /* Align with text */
+}
+
+.reply-button:hover {
+    opacity: 1;
+    transform: scale(1.2); /* Slightly enlarge on hover for interactivity */
+}
+
+
+
+#replyIndicator {
+    max-width: 100%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    word-wrap: break-word;
+    align-self: flex-start;
+    color: #2196f3;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #2196f3;
+    display: flex;
+    align-items: center; /* Center text and cancel button */
+    justify-content: space-between; /* Space between text and button */
+    gap: 8px; /* Space between reply text and cancel button */
+}
+
+#replyIndicator button {
+    background: none;
+    border: none;
+    color: #2196f3;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 4px 8px; /* Add some padding for better usability */
+    border-radius: 4px; /* Rounded edges */
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+#replyIndicator button:hover {
+    background-color: #2196f3;
+    color: #ffffff;
+}
+
+/* PNG button styling */
+#switchStyle {
+    position: absolute; /* Position relative to #welcomeScreen */
+    
+    right: 10px; /* Offset from the right */
+    
+    width: 48px; /* Set width of the button */
+    height: 48px; /* Set height of the button */
+
+    cursor: pointer; /* Make the cursor show as a pointer */
+    transition: transform 0.2s ease, opacity 0.2s ease; /* Smooth interaction */
+    z-index: 10; /* Ensure it appears above other elements */
+    opacity: 0.9; /* Slight transparency for a subtle look */
+}
+
+/* Hover effect for PNG button */
+#switchStyle:hover {
+    opacity: 1; /* Fully visible on hover */
+    transform: scale(1.2); /* Slight scale effect */
+}
