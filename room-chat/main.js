@@ -74,6 +74,7 @@ function appendMessage({ name, text, reply }, sender) {
     wrapperDiv.style.display = "flex";
     wrapperDiv.style.alignItems = "center";
     wrapperDiv.style.justifyContent = sender === "you" ? "flex-end" : "flex-start"; // Align based on sender
+    wrapperDiv.style.gap = "8px";
 
     // Create the message bubble
     const messageDiv = document.createElement("div");
