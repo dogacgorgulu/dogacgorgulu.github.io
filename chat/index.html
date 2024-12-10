@@ -13,8 +13,6 @@
 <body>
 
     <div id="chatScreen" class="hidden">
-
-
     
         <header>
             <h1>WebRTC P2P Chat</h1>
@@ -36,17 +34,22 @@
 
         <div id="chatLog"></div>
 
-        <div class="composer">
-                <textarea id="messageBox" placeholder="Type a message..." disabled></textarea>
+        <div id="replyIndicator" style="display: none;"></div>
+        <div id="replyPos" style="display: flex;"></div>
+
+        <div id="chatBox">
             
+            <textarea id="chatInput" placeholder="Type a message..." disabled></textarea>
+            
+            <input type="file" id="imageInput" accept="image/*" style="display: none;" />
+            <label for="imageInput" id="customFileButton">
+                <img src="../icons/gallery.png" alt="Choose Image" id="imageLogo" />
+            </label>
 
-                <div class="button-group">
-                    <button id="sendButton" disabled>Send</button>
-                    <input type="file" id="imageInput" accept="image/*" />
-                    <button id="sendImageButton">Send Image</button>
-                </div>
-                <div id="imageDisplay"></div>
-
+            <div id="imagePreviewContainer">
+                <img id="imagePreview" src="" alt="Preview" style="display: none; max-width: 200px; max-height: 200px; margin-top: 10px;" />
+            </div>
+            <button id="sendButton" disabled>Send</button>
         </div>
     
     </div>

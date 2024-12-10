@@ -1,17 +1,28 @@
 const socket = io("https://common-verdant-boa.glitch.me/p2p"); // Replace with your signaling server URL if needed
 
+const messageSound = new Audio("./sounds/message.mp3");
+const notificationSound = new Audio("./sounds/notification.mp3");
+
 let peerConnection;
 let dataChannel;
 let localSocketId;
 let targetPeerId;
+let replyContext;
 
 const peerIdDisplay = document.getElementById("peerIdDisplay");
 const connectionStatus = document.getElementById("connectionStatus");
 const chatLog = document.getElementById("chatLog");
 const sendButton = document.getElementById("sendButton");
 const disconnectButton = document.getElementById("disconnectButton");
-const messageBox = document.getElementById("messageBox");
+
 const generateIdButton = document.getElementById("generateIdButton");
+const imageInput = document.getElementById("imageInput");
+
+const welcomeScreen = document.getElementById("welcomeScreen");
+const chatScreen = document.getElementById("chatScreen");
+const chatInput = document.getElementById("chatInput");
+const imagePreview = document.getElementById("imagePreview");
+const chatBox = document.getElementById("chatBox");
 
 socket.on("connect", () => {
     localSocketId = socket.id;
@@ -52,7 +63,7 @@ disconnectButton.onclick = () => {
     connectionStatus.textContent = "Disconnected";
     sendButton.disabled = true;
     disconnectButton.disabled = true;
-    messageBox.disabled = true;
+    chatInput.disabled = true;
     console.log("Disconnected from Peer");
 };
 
@@ -95,13 +106,13 @@ async function createPeerConnection() {
 function setupDataChannel() {
     dataChannel.onopen = () => {
         console.log("DataChannel is open!");
-        messageBox.disabled = false;
+        chatInput.disabled = false;
         sendButton.disabled = false;
     };
 
     dataChannel.onclose = () => {
         console.log("DataChannel is closed.");
-        messageBox.disabled = true;
+        chatInput.disabled = true;
         sendButton.disabled = true;
     };
 
@@ -112,17 +123,7 @@ function setupDataChannel() {
     };
 }
 
-sendButton.onclick = () => {
-    const message = messageBox.value.trim();
-    if (message && dataChannel && dataChannel.readyState === "open") {
-        dataChannel.send(message); // Send the message
-        appendMessage(message, "you"); // Display the message in the chat log
-        messageBox.value = ""; // Clear the textarea
-        messageBox.focus(); // Keep the keyboard open
-    } else {
-        console.error("DataChannel is not open. Current state:", dataChannel ? dataChannel.readyState : "no dataChannel");
-    }
-};
+
 
 function triggerGlowEffect() {
     chatLog.classList.add("glow");
@@ -133,19 +134,169 @@ function triggerGlowEffect() {
     }, 300); // Match the transition duration in CSS
 };
 
-function appendMessage(text, sender) {
-    const msgDiv = document.createElement("div");
-    msgDiv.className = `message ${sender}`;
-    msgDiv.textContent = text;
 
-    // Append the new message to the chat log
-    chatLog.appendChild(msgDiv);
 
-    // Auto-scroll to the bottom
+
+///// NEW FEATURES
+
+// Handle button click to send message
+sendButton.onclick = () => {
+    const message = chatInput.value.trim();
+    const file = imageInput.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const imageData = reader.result; // Base64 encoded image
+            socket.emit("image", { image: imageData, reply: replyContext });
+            appendImage({ name: "You", image: imageData, reply: replyContext }, "you");
+
+            // Clear the input and preview after sending
+            imageInput.value = ""; // Reset file input
+            imagePreview.style.display = "none"; // Hide the preview
+            imagePreview.src = ""; // Clear the image source
+            clearReplyContext();
+        };
+        reader.onerror = () => {
+            console.error("Error reading .jpg file:", reader.error);
+        };
+        reader.readAsDataURL(file);
+    } else if (message) {
+        socket.emit("message", { text: message, reply: replyContext });
+        appendMessage({ name: "You", text: message, reply: replyContext }, "you");
+        chatInput.value = ""; // Clear the input
+        chatInput.focus(); // Keep focus for typing
+        clearReplyContext();
+    } else {
+        alert("Please type a message or choose an image to send!");
+    }
+};
+
+// Append message to chat log
+function appendMessage({ name, text, reply }, sender) {
+    const messageDiv = document.createElement("div");
+    messageDiv.className = `message ${sender}`;
+
+    // Add reply context if present
+    let replyHTML = "";
+    if (reply) {
+        replyHTML = `<div class="reply"><strong>${reply.name}: </strong> ${reply.text || "an image"}</div>`;
+    }
+
+    messageDiv.innerHTML = `
+        ${replyHTML}
+        <strong>${name}:</strong> ${text}
+        <img class="reply-button" src="../icons/reply.png" alt="Reply" onclick="setReplyContext('${name}', '${text}')"/>
+    `;
+    chatLog.appendChild(messageDiv);
     chatLog.scrollTop = chatLog.scrollHeight;
+}
 
-    // Trigger glow effect
-    triggerGlowEffect();
+function appendImage({ name, image, reply }, sender) {
+    const messageDiv = document.createElement("div");
+    messageDiv.className = `message ${sender}`;
+
+    // Add reply context if present
+    let replyHTML = "";
+    if (reply) {
+        replyHTML = `<div class="reply"><strong>Replying to ${reply.name}:</strong>&nbsp;${reply.text || "an image"}</div>`;
+    }
+
+    messageDiv.innerHTML = `
+        ${replyHTML}
+        <strong>${name}:</strong> <img src="${image}" alt="Image" style="max-width: 200px; max-height: 200px;">
+        <img class="reply-button" src="../icons/reply.png" alt="Reply" onclick="setReplyContext('${name}', 'an image')"/>
+    `;
+    chatLog.appendChild(messageDiv);
+    chatLog.scrollTop = chatLog.scrollHeight;
+}
+
+// Listen for incoming messages
+socket.on("message", (data) => {
+    appendMessage(data, data.name === socket.id ? "you" : "peer");
+    if (data.name !== socket.id) {
+        messageSound.play();
+    }
+});
+
+socket.on("image", (data) => {
+    appendImage(data, data.name === socket.id ? "you" : "peer");
+    if (data.name !== socket.id) {
+        messageSound.play();
+    }
+});
+
+
+// Adjust the chatBox's position dynamically when the viewport height changes (mobile keyboard opens)
+window.addEventListener("resize", () => {
+    const viewportHeight = window.innerHeight;
+    const totalHeight = window.outerHeight;
+
+    if (viewportHeight < totalHeight * 0.7) {
+        // Mobile keyboard is likely open
+        chatBox.style.position = "absolute";
+        chatBox.style.bottom = "0";
+    } else {
+        // Restore default behavior when keyboard is closed
+        chatBox.style.position = "relative";
+        chatBox.style.bottom = "auto";
+    }
+});
+
+
+// image 
+
+// Listen for incoming images
+
+
+
+
+
+imageInput.addEventListener("change", () => {
+    const file = imageInput.files[0];
+
+    if (file) {
+        // Update and display the image preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            imagePreview.src = e.target.result; // Set the preview image source
+            imagePreview.style.display = "block"; // Show the image
+        };
+        reader.readAsDataURL(file);
+    } else {
+        // Hide the preview if no file is selected
+        imagePreview.style.display = "none";
+        imagePreview.src = ""; // Clear the image source
+    }
+});
+
+function setReplyContext(name, text) {
+    replyContext = { name, text };
+
+    // Select the correct parent container (e.g., #chatContainer)
+    const chatContainer = document.getElementById("replyPos");
+
+    // Get or create the reply indicator
+    let replyIndicator = document.getElementById("replyIndicator");
+    if (!replyIndicator) {
+        // Create the reply indicator if it doesn't exist
+        replyIndicator = document.createElement("div");
+        replyIndicator.id = "replyIndicator";
+        chatContainer.insertBefore(replyIndicator, chatContainer.firstChild); // Insert at the top of the container
+    }
+
+    // Update the reply indicator content
+    replyIndicator.style.display = "flex";
+    replyIndicator.innerHTML = `
+        Replying to ${name} "${text}"
+        <button onclick="clearReplyContext()">Cancel</button>
+    `;
+}
+
+function clearReplyContext() {
+    replyContext = null;
+    const replyIndicator = document.getElementById("replyIndicator");
+    if (replyIndicator) replyIndicator.remove();
 }
 
 socket.on("signal", async ({ signal, sender }) => {
@@ -169,10 +320,9 @@ socket.on("signal", async ({ signal, sender }) => {
     }
 });
 
-// Add event listener to messageBox for the Enter key
-messageBox.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-        event.preventDefault(); // Prevent newline in the messageBox
-        sendButton.onclick(); // Trigger the sendButton click event
+chatInput.addEventListener("keypress", (event) => {
+    if (event.key === "Enter" && !event.shiftKey) { // Check for Enter without Shift (to avoid adding a newline)
+        event.preventDefault(); // Prevent default newline behavior
+        sendButton.click(); // Trigger the Send button
     }
 });
