@@ -16,16 +16,17 @@ body {
     display: flex;
     flex-shrink: 0;
     flex-direction: row;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     text-align: center;
     background: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
     backdrop-filter: blur(10px); /* Glass effect */
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 10px;
-    padding: 10px;
+    padding-right: 18px;
+    padding-left: 18px;
     box-sizing: border-box;
-    margin: 20px;
+    margin: 10px;
     gap: 10px;
 }
 
@@ -37,7 +38,7 @@ body {
 }
 
 #welcomeScreen input {
-    padding: 8px 16px;
+    padding: 8px 8px;
     font-size: 14px;
     border: none;
     border-radius: 8px;
@@ -297,9 +298,9 @@ header h1 {
 
 /* PNG button styling */
 #switchStyle {
-    position: absolute; /* Position relative to #welcomeScreen */
-    
-    right: 10px; /* Offset from the right */
+    position: relative; /* Position relative to #welcomeScreen */
+    margin-left: auto;
+    padding: 8px 8px;
     
     width: 48px; /* Set width of the button */
     height: 48px; /* Set height of the button */
