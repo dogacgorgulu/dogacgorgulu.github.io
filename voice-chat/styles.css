@@ -1,0 +1,25 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+  #userList {
+    margin: 20px auto;
+    max-width: 300px;
+    text-align: left;
+  }
+  .user {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+    border-radius: 5px;
+  }
+  .user button {
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+  }
