@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cocktail Selector</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>Cocktail Preferences</h1>
+      <form id="user-form">
+        <label for="username">Name:</label>
+        <input type="text" id="username" placeholder="Your name" required />
+      </form>
+    </header>
+    <main>
+      <div id="content">
+        <!-- Cocktail Selector -->
+        <section id="selector">
+          <form id="ingredients-form">
+            <label>Select up to 5 ingredients and assign urgency colors:</label>
+            <div id="ingredients-list">
+<div class="ingredient">
+  <input type="checkbox" id="rum" value="rum" />
+  <label for="rum"><span>Rum</span></label>
+  <select data-ingredient="rum" class="color-selector">
+    <option value="white">White</option>
+    <option value="red">Red</option>
+    <option value="yellow">Yellow</option>
+    <option value="green">Green</option>
+  </select>
+</div>
+<div class="ingredient">
+  <input type="checkbox" id="lime" value="lime" />
+  <label for="lime"><span>Lime</span></label>
+  <select data-ingredient="lime" class="color-selector">
+    <option value="white">White</option>
+    <option value="red">Red</option>
+    <option value="yellow">Yellow</option>
+    <option value="green">Green</option>
+  </select>
+</div>
+<div class="ingredient">
+  <input type="checkbox" id="mint" value="mint" />
+  <label for="mint"><span>Mintand a</span></label>
+  <select data-ingredient="mint" class="color-selector">
+    <option value="white">White</option>
+    <option value="red">Red</option>
+    <option value="yellow">Yellow</option>
+    <option value="green">Green</option>
+  </select>
+</div>
+
+
+
+              <!-- Add the rest of the ingredients similarly -->
+            </div>
+            <button type="submit">Save Preferences</button>
+          </form>
+          <button id="retrieve-preferences" class="secondary-button">Retrieve Preferences</button>
+          <div id="results"></div>
+        </section>
+
+        <!-- Informative Paragraph -->
+        <section id="info">
+          <p>
+            You can select up to 5 characteristics to define your ideal cocktail. Each characteristic is assigned a color code based on its importance:
+          </p>
+          <p>
+            White = 1 point (Least important)<br>
+            Yellow = 2 points<br>
+            Green = 4 points<br>
+            Red = 9 points (Most important)
+          </p>
+          <p>
+            You can use each color code as many times as you wish. However, overusing any color code (except White) will incur a penalty, reducing the overall performance.
+          </p>
+          <p>
+            Penalty-Free Set: White, White, Yellow, Green, Red<br>
+            (Diverse and balanced)
+          </p>
+          <p>
+            Penalized Set: White, Green, Red, Red, Red<br>
+            (Overusing Red triggers penalties)
+          </p>
+          <p>
+            If Red is crucial to you, consider avoiding the use of Red for other preferences.<br>
+            This strategy helps you emphasize what truly matters. The goal is to encourage thoughtful ranking, and avoid greedy behavior.
+          </p>
+          <p>
+            Choose wisely to craft an ideal cocktail menu!
+          </p>
+          
+        </section>
+      </div>
+    </main>
+    <footer>
+      <p>&copy; 2024 Cocktail Preferences. All rights reserved.</p>
+    </footer>
+  </div>
+  <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

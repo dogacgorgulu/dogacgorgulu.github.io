@@ -1,0 +1,189 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body and Font Settings */
+  body {
+    font-family: "Tahoma", "MS Sans Serif", sans-serif;
+    font-size: 12px;
+    line-height: 1;
+    background: #008080; /* Classic Windows teal background */
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: visible;
+  }
+  
+  /* Container */
+  #container {
+    background: #c0c0c0; /* Classic Windows gray background */
+    border: 2px solid #808080; /* Outer border */
+    box-shadow: inset -2px -2px 0 #ffffff, inset 2px 2px 0 #404040; /* Inset effect */
+    padding: 20px;
+    width: 500px;
+    max-width: 90%;
+    text-align: center;
+  }
+  
+  /* Header */
+  header h1 {
+    font-size: 24px;
+    color: black;
+    text-shadow: none;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #808080;
+    padding-bottom: 5px;
+  }
+  
+  header p {
+    font-size: 14px;
+    color: black;
+    margin-bottom: 20px;
+  }
+  
+  /* Main Content */
+  main {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  #selector {
+    flex: 2;
+  }
+  
+  #info {
+    flex: 1;
+    background: #dcdcdc; /* Light gray */
+    padding: 15px;
+    border: 1px solid #808080;
+    box-shadow: inset -2px -2px 0 #ffffff, inset 2px 2px 0 #404040;
+    text-align: left;
+  }
+  
+  #info p {
+    font-size: 12px;
+    line-height: 1.6;
+    color: black;
+  }
+  
+  /* Forms */
+  form label {
+    font-weight: bold;
+    color: black;
+    margin-bottom: 5px;
+    display: inline-block;
+  }
+  
+  form input,
+  form select {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 2px solid #808080;
+    background: #ffffff;
+    font-family: "Tahoma", "MS Sans Serif", Arial, sans-serif;
+    box-shadow: inset -2px -2px 0 #ffffff, inset 2px 2px 0 #404040;
+  }
+  
+  /* Buttons */
+  button {
+    background: #d3d3d3; /* Light gray */
+    border: 2px solid #808080;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: -2px -2px 0 #ffffff, 2px 2px 0 #404040;
+    margin: 5px;
+  }
+  
+  button:active {
+    box-shadow: inset -2px -2px 0 #ffffff, inset 2px 2px 0 #404040;
+  }
+  
+  /* Ingredients List */
+  #ingredients-list {
+    text-align: left;
+    margin: 5px auto;
+    display: flex;
+    flex-direction: column; /* Arrange items in a column */
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .ingredient {
+    display:flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .ingredient label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+
+    white-space: nowrap; /* Prevents text from wrapping */
+    overflow: hidden; /* Hides overflow if text is too long */
+    text-overflow: ellipsis; /* Adds ellipsis for truncated text */
+    flex: 1; /* Allows label to take available space */
+  }
+
+  .ingredient select {
+    width: 100px; /* Fixed width for dropdown menu */
+    flex-shrink: 0; /* Prevent dropdown from shrinking */
+  }
+  
+  /* Results Section */
+  #results {
+    margin-top: 20px;
+    font-size: 12px;
+    color: black;
+  }
+  
+  #results ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  #results ul li {
+    background: #e0e0e0;
+    padding: 5px;
+    border: 1px solid #808080;
+    box-shadow: inset -2px -2px 0 #ffffff, inset 2px 2px 0 #404040;
+    margin-bottom: 5px;
+  }
+  
+  /* Footer */
+  footer {
+    margin-top: 20px;
+    font-size: 10px;
+    color: #404040;
+  }
+  
+  /* Style for checkboxes */
+input[type="checkbox"] {
+    appearance: none; /* Reset browser styling */
+    -webkit-appearance: none; /* For Safari */
+    width: 16px;
+    height: 16px;
+    background-color: #ffffff; /* Background color */
+    border: 2px solid #808080; /* Border color */
+    box-shadow: inset -2px -2px 0 #ffffff, inset 2px 2px 0 #404040; /* Inset effect */
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  input[type="checkbox"]:checked {
+    background-color: #008080; /* Checked background color */
+    box-shadow: inset -2px -2px 0 #404040, inset 2px 2px 0 #ffffff; /* Change inset effect for checked state */
+  }
+  
+  
