@@ -2,7 +2,8 @@ const musicGallery = document.getElementById("music-gallery");
 
 // Example music data
 const musicData = [
-    { title: "1.wav", image: "assets/1.bmp", file: "assets/1.wav" }
+    { title: "1.wav", image: "assets/1.bmp", file: "assets/1.wav" },
+    { title: "2.wav", image: "assets/2.bmp", file: "assets/2.wav" }
 ];
 
 // Create the music player elements
