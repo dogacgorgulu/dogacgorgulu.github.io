@@ -52,8 +52,8 @@ h1 {
 
 /* Image styling */
 .music-card img {
-    width: 400px; /* Set image dimensions */
-    height: 400px;
+    width: 300px; /* Set image dimensions */
+    height: 300px;
     object-fit: contain; /* Preserve original aspect ratio and avoid cropping */
     background-color: #fff;
     image-rendering: pixelated; /* For retro pixelated aesthetics */
