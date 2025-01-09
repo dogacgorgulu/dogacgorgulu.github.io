@@ -45,3 +45,79 @@ main {
     font-size: 1rem;
     color: #333;
 }
+
+/* Style for buttons */
+/* Container for buttons */
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between buttons */
+    margin-top: 30px;
+}
+
+/* Custom button styles */
+/* Container for buttons */
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between buttons */
+    justify-content: center; /* Center align the buttons */
+    margin-top: 30px;
+}
+
+/* Custom button styles */
+.custom-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    text-decoration: none; /* Remove underline */
+    color: #fff; /* White text */
+    position: relative;
+    width: 300px; /* Fixed width for all buttons */
+    height: 200px; /* Fixed height for all buttons */
+    border-radius: 10px; /* Rounded corners */
+    overflow: hidden; /* Ensure content stays within rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+    background-color: #333; /* Fallback background color */
+}
+
+/* Button image */
+.custom-button img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the button */
+    filter: brightness(40%); /* Darkens the image */
+    z-index: 1;
+}
+
+/* Content inside the button */
+.button-content {
+    position: relative;
+    z-index: 2; /* Place above the faded image */
+    text-align: center;
+    padding: 10px;
+}
+
+.button-content h2 {
+    font-size: 20px;
+    margin: 0 0 5px;
+}
+
+.button-content p {
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Hover effect */
+.custom-button:hover img {
+    filter: brightness(60%); /* Lighten the image slightly on hover */
+}
+
+.custom-button:hover {
+    transform: scale(1.05); /* Slight zoom effect */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4); /* Stronger shadow */
+}
