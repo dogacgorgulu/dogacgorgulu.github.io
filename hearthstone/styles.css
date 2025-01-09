@@ -14,12 +14,23 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    background: #333;
+    background: #333; /* Fallback color */
     color: #fff;
     text-align: center;
     padding: 1rem 0;
     z-index: 1000;
+
+    /* Add background image */
+    background-image: url('images/header.webp');
+    background-size: cover; /* Ensures the image covers the entire header */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents tiling */
+
+    /* Add overlay to make text readable */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    background-blend-mode: overlay; /* Blend the overlay with the image */
 }
+
 
 main {
     margin-top: 80px; /* Adjust for header height */
@@ -27,23 +38,98 @@ main {
 }
 
 .container {
-    margin-bottom: 20px;
+    margin: 40px auto; /* Center horizontally with some vertical spacing */
     padding: 20px;
-    background: #f4f4f4;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background: #f9f9f9; /* Subtle background color */
+    border-radius: 8px; /* Slight rounding for a modern look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    max-width: 800px; /* Limit width for readability */
+    font-family: "Helvetica", Arial, sans-serif; /* Swiss-style typography */
+    line-height: 1.8; /* Enhanced readability */
+    color: #222; /* Darker gray for text */
 }
 
 .container img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin-bottom: 10px;
+    max-width: 100%; /* Ensures the image fits within the container */
+    height: auto; /* Maintains the aspect ratio */
+    display: block; /* Centers the image horizontally */
+    margin: 20px auto; /* Adds vertical spacing and centers the image */
+    border-radius: 4px; /* Slight rounding for a modern touch */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* Subtle shadow for depth */
 }
 
-.container p {
-    font-size: 1rem;
+/* Add optional caption styling */
+.container .image-caption {
+    text-align: center; /* Center-align the caption */
+    font-size: 14px; /* Smaller font for captions */
+    color: #555; /* Neutral gray for captions */
+    margin-top: 5px; /* Space between the image and the caption */
+    font-style: italic; /* Italic style for distinction */
+}
+
+/* Main heading */
+.container h2 {
+    font-size: 28px; /* Prominent size for main heading */
+    font-weight: bold; /* Bold for emphasis */
+    text-transform: uppercase; /* Uppercase for a Swiss-style look */
+    margin-bottom: 20px;
+    color: #111; /* Slightly darker color */
+}
+
+/* Subheadings */
+.container h3 {
+    font-size: 22px; /* Slightly smaller for hierarchy */
+    font-weight: bold;
+    margin-bottom: 12px;
     color: #333;
+}
+
+/* Minor headings */
+.container h4 {
+    font-size: 18px;
+    font-weight: normal; /* Softer emphasis */
+    margin-bottom: 10px;
+    color: #555;
+    font-style: italic; /* Distinct appearance for minor headings */
+}
+
+/* Paragraphs */
+.container p {
+    font-size: 16px;
+    margin-bottom: 15px; /* Consistent spacing for paragraphs */
+}
+
+/* Lists */
+.container ul {
+    margin-left: 20px; /* Indent lists for structure */
+    margin-bottom: 15px; /* Space below lists */
+}
+
+.container li {
+    font-size: 16px;
+    line-height: 1.6; /* Consistent line spacing */
+}
+
+/* Bold emphasis */
+.container strong {
+    font-weight: bold;
+    color: #000; /* Pure black for contrast */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+        font-size: 14px; /* Slightly smaller text for smaller screens */
+    }
+
+    .container h2 {
+        font-size: 24px;
+    }
+
+    .container h3 {
+        font-size: 20px;
+    }
 }
 
 /* Style for buttons */
@@ -89,7 +175,7 @@ main {
     width: 100%;
     height: 100%;
     object-fit: cover; /* Ensures the image covers the button */
-    filter: brightness(40%); /* Darkens the image */
+    filter: brightness(50%); /* Darkens the image */
     z-index: 1;
 }
 
