@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Project</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Course Project Header</h1>
+    </header>
+    <main>
+        <div class="container">
+            <h2>Finding 2</h2>
+            <p>Testing the classes was too obvious. In Hearthstone, some archetypes (strategies) dominate others, much like in rock-paper-scissors.
+                However, according to HearthArena.com, one archetype dominates the others. Additionally, I believe I perform better with certain archetypes.
+
+                In order to test my belief, I formulated the following null hypothesis:</p>
+                <p><strong>Null Hypothesis:</strong> There is no significant difference in the mean win rates among the archetypes.</p>
+                <p><strong>Alternative Hypothesis:</strong> There is a significant difference in the mean win rates among the archetypes.</p>
+
+                <p>I decided to run an ANOVA test since I am examining whether there is a significant difference between the dependent groups in terms of their mean win rates.</p>                
+        </div>
+        <div class="container">
+            <h2>Validating ANOVA</h2>
+            <h3>Independence</h3>
+            <p>The measurements should be independent, i.e., the measured value of one group should not be influenced by the measured value of another group.</p>
+            <p>I assume independence relying on the assumption of this is a competitive game 🥴. I love being an undergrad.</p>
+
+            <h3>Homogeneity</h3>
+            <p>The variances in each group should be approximately equal.</p>
+            <img src="images/F2_1.png" alt="Graphic 1">
+            <div class="image-caption">Win rate distribution by archetype.</div>
+            
+            <h3>Homogeneity</h3>
+            <p>I conducted Levene test.</p>
+            <ul>
+                <li><strong>Null Hypothesis:</strong> Groups have equal variances.</li>
+                <li><strong>Alternative Hypothesis:</strong> Groups have different variances.</li>
+            </ul>
+            <p>According to the Levene test, I found that the assumption of homogeneity of variances was upheld (p = 0.362).</p>
+            
+            <h3>Normal distribution</h3>
+            <p>The data within the groups should be normally distributed.</p>
+            
+            <img src="images/F2_QQ_Plots_Grid.png" alt="Graphic 2">
+            <div class="image-caption">Q-Q Plots with 95% Confidence Interval by Class</div>
+
+            <p>In the Q-Q plot of Attrition (Shapiro-Wilk p = 0.007) and Mid-Range (Shapiro-Wilk p = 0.022), one data point violates the 95% confidence interval.
+            The Shapiro-Wilk test indicates that I can assume normality for Mid-Range but not for Attrition. Therefore, I do NOT assume normality.</p>
+            
+
+        </div>
+        <div class="container">
+            <h2>Kruskal Wallis</h2>
+            <p>Since normality violated and ANOVA is no longer valid, I conduct Kruskal Wallis.</p>
+            <img src="images/F2_2.png" alt="Graphic 2">
+            <div class="image-caption">Win rate by class with means.</div>
+
+            <p> HERE HERE HERE HERE</p>
+            <p>In conclusion, there are no significant differences in win rates among the archetypes.</p>
+        </div>
+        <!-- Add more containers as needed -->
+    </main>
+</body>
+</html>
