@@ -16,38 +16,50 @@
             <p>In Hearthstone, many players believe they perform better with their favorite classes. I was one of them.  
                 This makes sense because, besides being familiar with the cards, the class you pick directly affects the card pool and hero power.
                 In order to test my belief, I formulated the following null hypothesis:</p>
-                <p><strong>Null Hypothesis:</strong> The mean win rate is equal across all classes.</p>
+                <p><strong>Null Hypothesis:</strong> There is no significant difference in the mean win rates among the classes.</p>
                 <p><strong>Alternative Hypothesis:</strong> There is a significant difference in the mean win rates among the classes.</p>
                 <p>I decided to run an ANOVA test since I am examining whether there is a significant difference between the dependent groups in terms of their mean win rates.</p>                
         </div>
         <div class="container">
             <h2>Validating ANOVA</h2>
-            <img src="images/F1_1.png" alt="Graphic 1">
-            <div class="image-caption">This is an example caption for the image.</div>
             <h3>Independence</h3>
             <p>The measurements should be independent, i.e., the measured value of one group should not be influenced by the measured value of another group.</p>
+            <p>I assume independence relying on the assumption of this is a competitive game 🥴.</p>
+
+            <h3>Homogeneity</h3>
+            <p>The variances in each group should be approximately equal.</p>
+            <img src="images/F1_1.png" alt="Graphic 1">
+            <div class="image-caption">Win rate distribution by class.</div>
             
             <h3>Homogeneity</h3>
-            <p>The variances in each group should be approximately equal. This can be checked with the Levene test:</p>
+            <p>I conducted Levene test.</p>
             <ul>
                 <li><strong>Null Hypothesis:</strong> Groups have equal variances.</li>
                 <li><strong>Alternative Hypothesis:</strong> Groups have different variances.</li>
             </ul>
-            <p>Using the Levene test, I found that the assumption of homogeneity of variances was upheld (p = 0.610).</p>
+            <p>According to the Levene test, I found that the assumption of homogeneity of variances was upheld (p = 0.610).</p>
             
             <h3>Normal distribution</h3>
             <p>The data within the groups should be normally distributed.</p>
             
-            <h4>Shapiro-Wilk Test for Normality</h4>
-            
+            <img src="images/F1_QQ_Plots_Grid.png" alt="Graphic 2">
+            <div class="image-caption">Q-Q Plots with 95% Confidence Interval by Class</div>
+
+            <p>First, I conducted a Shapiro-Wilk test to assess normality. However, two classes (Death Knight and Druid) had fewer than three data points.
+                Due to the limitations of the dataset, I decided to use Q-Q plots with a 95% confidence interval.
+                Since all data points lie within the confidence interval, I assumed normality.</p>
             
             
                 
 
         </div>
         <div class="container">
+            <h2>ANOVA</h2>
             <img src="images/F1_2.png" alt="Graphic 2">
-            <p>This is the explanation text for graphic 2.</p>
+            <div class="image-caption">Win rate by class with means.</div>
+
+            <p>According to the ANOVA test, I failed to reject the null hypothesis (p-value: 0.778).</p>
+            <p>In conclusion, there are no significant differences in win rates among the classes.</p>
         </div>
         <!-- Add more containers as needed -->
     </main>
