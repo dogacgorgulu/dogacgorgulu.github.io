@@ -8,15 +8,15 @@
 </head>
 <body>
     <header>
-        <h1>Course Project Header</h1>
+        <h1></h1>
     </header>
     <main>
         <div class="container">
             <h2>Finding 3</h2>
-            <p>Testing the classes was too obvious. In Hearthstone, some archetypes (strategies) dominate others, much like in rock-paper-scissors.
-                However, according to HearthArena.com, one archetype dominates the others. Additionally, I believe I perform better with certain archetypes.
+            <p>Even though commonly accepted archetypes exist,
+                one might construct their own strategy.
+                The aim of this section is to develop an off-meta solution: a custom archetype.</p>
 
-                In order to test my belief, I formulated the following null hypothesis:</p>
                 <p><strong>Null Hypothesis:</strong> The custom archetype does not significantly impacts win count.</p>
                 <p><strong>Alternative Hypothesis:</strong> The custom archetype significantly impact win count.</p>             
         </div>
@@ -24,13 +24,13 @@
             <h2>Custom Archetype</h2>
             <h3>Correlations</h3>
             <img src="images/F3_1.png" alt="Graphic 1">
-            <div class="image-caption">Win rate distribution by archetype.</div>
+            <div class="image-caption">Pearson correlation (W).</div>
 
             <img src="images/F3_2.png" alt="Graphic 1">
-            <div class="image-caption">Win rate distribution by archetype.</div>
+            <div class="image-caption">Spearman correlation (W).</div>
 
             <img src="images/F3_3.png" alt="Graphic 1">
-            <div class="image-caption">Win rate distribution by archetype.</div>
+            <div class="image-caption">Distance correlation (W).</div>
 
             <h3>Thresholds</h3>
 
@@ -39,23 +39,23 @@
             For elements with at least low Pearson or Spearman correlation, the threshold was set to the Median. For others, the threshold was defined as the Median ±3 (lower and upper bounds).
 
             <img src="images/F3_4.png" alt="Graphic 1">
-            <div class="image-caption">Win rate distribution by archetype.</div>
+            <div class="image-caption">Non-Linear Regression Curve with Median and ±3 Region (Late-game).</div>
 
             <img src="images/F3_5.png" alt="Graphic 1">
-            <div class="image-caption">Win rate distribution by archetype.</div>
+            <div class="image-caption">Non-Linear Regression Curve with Median and ±3 Region (Early Removals).</div>
 
             <img src="images/F3_6.png" alt="Graphic 1">
-            <div class="image-caption">Win rate distribution by archetype.</div>
+            <div class="image-caption">Non-Linear Regression Curve with Median and ±3 Region (5-Drops).</div>
             
         </div>
         <div class="container">
             <h2>Mann-Whitney U</h2>
             <p></p>
             <img src="images/F3_7.png" alt="Graphic 2">
-            <div class="image-caption">Win rate by archetype with means, per draft.</div>
+            <div class="image-caption">Comparison of Win Counts between Custom Archetype and the rest.</div>
 
-            <p>Null hypothesis was rejected (Mann-Whitney U, p = 0.002).</p>
-            <p>In conclusion, the custom archetype significantly impact win count.</p>
+            <p>The null hypothesis was rejected (Mann-Whitney U, p = 0.002).</p>
+            <p>In conclusion, the custom archetype significantly impacts the win count.</p>
         </div>
         <!-- Add more containers as needed -->
     </main>
