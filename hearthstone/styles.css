@@ -207,3 +207,27 @@ main {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4); /* Stronger shadow */
 }
+
+
+#play-music {
+    background: none; /* Removes the default button background */
+    border: none; /* Removes the default button border */
+    width: 100px; /* Button width */
+    height: 100px; /* Button height */
+}
+
+#play-music img {
+    width: 100%; /* Make the image fill the button */
+    height: 100%; /* Maintain aspect ratio */
+    object-fit: cover; /* Ensure it fits perfectly */
+    transition: transform 0.2s, box-shadow 0.2s; /* Optional: Hover effect */
+    filter: drop-shadow(0 0 10px #F78C15); /* Glow-like shadow */
+
+}
+
+
+/* Hover effect */
+#play-music:hover img {
+    transform: scale(1.1); /* Slight zoom on hover */
+    filter: drop-shadow(0 0 15px #FFC31F); /* Enhance glow on hover */
+}
