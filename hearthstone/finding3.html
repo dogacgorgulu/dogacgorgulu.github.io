@@ -71,5 +71,22 @@
         </div>
         <!-- Add more containers as needed -->
     </main>
+            <!-- Hidden audio element -->
+            <audio id="background-music" src="audios/theme.wav" preload="auto"></audio>
+
+            <script>
+            // Add a click event listener to the button
+            document.getElementById("play-music").addEventListener("click", function () {
+                const music = document.getElementById("background-music");
+    
+                // Attempt to play the music
+                music.play().then(() => {
+                    console.log("Music playback started.");
+                }).catch((error) => {
+                    console.error("Music playback failed:", error);
+                });
+    
+            });
+            </script>
 </body>
 </html>
