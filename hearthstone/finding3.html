@@ -19,9 +19,11 @@
             <p>Even though commonly accepted archetypes exist,
                 one might construct their own strategy.
                 The aim of this section is to develop an off-meta solution: a custom archetype.</p>
-
-                <p><strong>Null Hypothesis:</strong> The custom archetype does not significantly impacts win count.</p>
-                <p><strong>Alternative Hypothesis:</strong> The custom archetype significantly impact win count.</p>             
+            <ul>
+                <li><strong>Null Hypothesis:</strong> The custom archetype does not significantly impacts win count.</li>
+                <li><strong>Alternative Hypothesis:</strong> The custom archetype significantly impact win count.</li>    
+            </ul>
+         
         </div>
         <div class="container">
             <h2>Custom Archetype</h2>
@@ -37,18 +39,25 @@
 
             <h3>Thresholds</h3>
 
-            <p>Thresholds were set based on the correlations of the attributes.</p>
+            <p>Thresholds were set based on the correlations of the attributes.
             The top 3 highest attributes were selected from the distance correlation: S = [Late-game, Early Removals, 5-Drops].
-            For elements with at least low Pearson or Spearman correlation, the threshold was set to the Median. For others, the threshold was defined as the Median ±3 (lower and upper bounds).
+            For elements with at least low Pearson or Spearman correlation, the threshold was set to the Median. For others, the threshold was defined as the Median ±2 (lower and upper bounds).
+            </p>
+            <p><strong>Custom archetype attributes:</strong></p>
+            <ul>
+                <li>3 < Late-game < 7</li>
+                <li>3 < Early Removals < 7</li>
+                <li>1 < 5-Drops < 5</li>
+            </ul>
 
             <img src="images/F3_4.png" alt="Graphic 1">
-            <div class="image-caption">Non-Linear Regression Curve with Median and ±3 Region (Late-game).</div>
+            <div class="image-caption">Non-Linear Regression Curve with Median and ±2 Region (Late-game).</div>
 
             <img src="images/F3_5.png" alt="Graphic 1">
-            <div class="image-caption">Non-Linear Regression Curve with Median and ±3 Region (Early Removals).</div>
+            <div class="image-caption">Non-Linear Regression Curve with Median and ±2 Region (Early Removals).</div>
 
             <img src="images/F3_6.png" alt="Graphic 1">
-            <div class="image-caption">Non-Linear Regression Curve with Median and ±3 Region (5-Drops).</div>
+            <div class="image-caption">Non-Linear Regression Curve with Median and ±2 Region (5-Drops).</div>
             
         </div>
         <div class="container">
