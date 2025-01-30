@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
     // List of PDF files in the "pdfs" folder
     const pdfFiles = [
-      'library/pdfs/BOLD- Dataset and Metrics for Measuring Biases in Open-Ended Language Generation.pdf',
-      'library/pdfs/Challenging Systematic Prejudices.pdf'
+      'BOLD- Dataset and Metrics for Measuring Biases in Open-Ended Language Generation.pdf',
+      'Challenging Systematic Prejudices.pdf'
     ];
   
     // Generate file items for each PDF
