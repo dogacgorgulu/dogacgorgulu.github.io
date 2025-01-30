@@ -3,19 +3,30 @@ document.addEventListener('DOMContentLoaded', () => {
   
     // List of PDF files in the "pdfs" folder
     const pdfFiles = [
-      'book1.pdf',
-      'book2.pdf',
-      'book3.pdf'
+      'library/pdfs/BOLD- Dataset and Metrics for Measuring Biases in Open-Ended Language Generation.pdf',
+      'library/pdfs/Challenging Systematic Prejudices.pdf'
     ];
   
-    // Generate links for each PDF
+    // Generate file items for each PDF
     pdfFiles.forEach(pdf => {
-      const listItem = document.createElement('li');
+      const fileItem = document.createElement('div');
+      fileItem.className = 'file-item';
+  
+      const fileIcon = document.createElement('div');
+      fileIcon.className = 'file-icon';
+  
+      const fileName = document.createElement('div');
+      fileName.className = 'file-name';
+      fileName.textContent = pdf;
+  
+      // Wrap the icon and name in a link
       const link = document.createElement('a');
-      link.href = `pdfs/${pdf}`; // Correct path to the PDF file
-      link.textContent = pdf;
-      link.target = '_blank'; // Open in a new tab
-      listItem.appendChild(link);
-      pdfList.appendChild(listItem);
+      link.href = `pdfs/${pdf}`;
+      link.target = '_blank';
+      link.appendChild(fileIcon);
+      link.appendChild(fileName);
+  
+      fileItem.appendChild(link);
+      pdfList.appendChild(fileItem);
     });
   });
