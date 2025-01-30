@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
       // Wrap the icon and name in a link
       const link = document.createElement('a');
-      link.href = `pdfs/${pdf}`;
+      link.href = `/pdfs/${pdf}`; 
       link.target = '_blank';
       link.appendChild(fileIcon);
       link.appendChild(fileName);
