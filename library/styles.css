@@ -28,7 +28,7 @@ body {
   .file-icon {
     width: 64px;
     height: 64px;
-    background-image: url('../images/pdf-icon.png'); /* Path to your PNG icon */
+    background-image: url('/library/images/pdf-icon.png'); /* Absolute path */ /* Path to your PNG icon */
     background-size: cover;
     margin: 0 auto;
   }
