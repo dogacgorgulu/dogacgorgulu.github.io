@@ -1,9 +1,9 @@
 const socket = io("https://common-verdant-boa.glitch.me/spa");
 
 const avatarImage = new Image();
-avatarImage.src = "https://cdn.glitch.global/c44b5dde-8e2f-4e3d-8249-4f219cde050d/avatar.png?v=1733609208614"; // Path to your avatar image
+avatarImage.src = "./images/avatar.png"; // Path to your avatar image
 const backgroundImage = new Image();
-backgroundImage.src = "https://cdn.glitch.global/c44b5dde-8e2f-4e3d-8249-4f219cde050d/background.jpg?v=1733609211311"; // Path to your background image
+backgroundImage.src = "./images/background.jpg"; // Path to your background image
 
 avatarImage.onload = () => console.log("Avatar loaded successfully");
 avatarImage.onerror = () => console.error("Failed to load avatar image");
