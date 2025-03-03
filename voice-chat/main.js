@@ -14,6 +14,8 @@ let currentPeerId = null;
 
 // New: Ringtone element
 const ringtoneAudio = document.getElementById("ringtone");
+const toggleMuteButton = document.getElementById("toggleMute");
+let isMuted = true; // Start muted
 
 const iceServers = [
   { urls: "stun:stun.l.google.com:19302" }
@@ -24,6 +26,18 @@ async function initMedia() {
   localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
   console.log("Media initialized:", localStream);
 }
+
+// Toggle mute/unmute
+toggleMuteButton.addEventListener("click", () => {
+  isMuted = !isMuted;
+  ringtoneAudio.muted = isMuted;
+
+  if (isMuted) {
+    toggleMuteButton.textContent = "Unmute Ringtone";
+  } else {
+    toggleMuteButton.textContent = "Mute Ringtone";
+  }
+});
 
 // Trigger a refresh of the user list
 refreshUsersButton.addEventListener("click", () => {
@@ -75,7 +89,9 @@ socket.on("offer", async ({ offer, from }) => {
   console.log("Received offer from:", from);
 
   // New: Play ringtone
-  ringtoneAudio.play();
+  if (!isMuted) {
+    ringtoneAudio.play();
+  }
 
   // Show incoming call UI
   currentPeerId = from;

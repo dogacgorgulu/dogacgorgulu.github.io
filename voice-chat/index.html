@@ -51,6 +51,7 @@
 <div>
   <button id="refreshUsers">Refresh Users</button>
   <button id="hangUpCall" disabled>Hang Up</button>
+  <button id="toggleMute">Unmute Ringtone</button> <!-- New: Toggle Mute Button -->
 </div>
 
 <h2>Online Users</h2>
@@ -63,7 +64,7 @@
   <button id="rejectCall">Reject</button>
 </div>
 
-<audio id="ringtone" src="ringtone.mp3" loop></audio>
+<audio id="ringtone" src="ringtone.mp3" loop muted></audio>
 
 <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
 <script src="main.js"></script>
