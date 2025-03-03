@@ -12,6 +12,12 @@ body {
   align-items: center;
 }
 
+p, span, div, label, button, input, textarea, select {
+  font-family: 'MS Sans Serif', sans-serif;
+  font-weight: normal;
+  font-size: 14px; 
+}
+
 h1 {
   font-size: 2em;
   font-weight: normal; /* Reduced boldness */
@@ -111,8 +117,15 @@ button:hover {
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
   padding: 0; /* REMOVE PADDING from the container */
   text-align: center;
-  min-width: 300px; /* Minimum width */
+  min-width: 450px; /* Minimum width */
   flex-direction: column; /* Stack titlebar and content vertically */
+}
+
+#incomingCall .window-content {
+  padding: 20px;
+  flex-grow: 1;
+  background-color: #d0d0d0; /* Optional: Slightly darker background */
+  border: 1px solid #a0a0a0; /* Optional: Subtle border */
 }
 
 #incomingCall .window-titlebar {
@@ -132,3 +145,47 @@ button:hover {
   padding: 10px;
   flex-grow: 1; /* Allow content to take up remaining space */
 }
+
+#chatMessages {
+  font-weight: normal;
+  font-size: 14px;
+  text-align: left;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 5px;
+}
+
+#chatBox {
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  margin: 8px auto;
+}
+
+input[type="text"],
+textarea,
+select {
+    background-color: #fff;
+    border: 2px inset #c0c0c0;
+    padding: 3px;
+}
+
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+    font-weight: normal;
+    font-size: 14px;
+    outline: none; /* Remove default focus outline */
+    border: 2px outset #c0c0c0; /* Reverse the border on focus */
+}
+
+/* Add for nameInput specifically to match other inputs */
+#nameInput, #messageInput {
+  font-size: 14px;
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: #fff;
+  border: 2px inset #c0c0c0;
+}
+
+

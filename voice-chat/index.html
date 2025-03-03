@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebRTC Voice Chat</title>
+    <title>Voice Chat</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
+    <audio id="notificationSound" src="notification.mp3"></audio>
     
     <audio id="remoteAudio" autoplay></audio>
 
@@ -24,12 +24,13 @@
 
     <div class="window-container">
         <div class="window-titlebar">
-            User Name
+            User Settings
         </div>
         <div class="window-content">
-            <label for="nameInput">Your Name:</label>
+            <label for="nameInput">Your name:</label>
             <input type="text" id="nameInput" placeholder="Enter your name">
             <button id="setName">Set Name</button>
+            
         </div>
     </div>
 
@@ -38,8 +39,7 @@
             Online Users
         </div>
         <div class="window-content">
-            <div id="userList">Loading...</div>
-        </div>
+            <div id="userList">Loading Users...</div> </div>
     </div>
 
     <div id="incomingCall" class="window-container">
@@ -54,6 +54,17 @@
     </div>
 
     <audio id="ringtone" src="ringtone.mp3" loop muted></audio>
+
+    <div id="chatBox" class="window-container">
+        <div class="window-titlebar">
+            Public Chat
+        </div>
+        <div id="chatMessages" class="window-content"></div>
+        <div id="chatInput" style="display: flex; padding: 5px; border-top: 1px solid #ccc;">
+            <input type="text" id="messageInput" placeholder="Type a message..." style="flex-grow: 1; padding: 5px;">
+            <button id="sendMessage">Send</button>
+        </div>
+    </div>
 
     <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
     <script src="main.js"></script>

@@ -61,6 +61,12 @@ socket.on("userList", (users) => {
     });
 });
 
+socket.on("playNotification", ({ from }) => {
+  const notificationSound = document.getElementById("notificationSound");
+  notificationSound.play();
+  alert(`${from} sent you a notification!`);
+});
+
 // Update user list on the front-end
 socket.on("users", (users) => {
   // The server now sends a user list with names
@@ -221,4 +227,46 @@ async function hangUp() {
 socket.on("connect", () => {
   console.log("Connected to namespace as:", socket.id);
   socket.emit("getUsers");
+
+      // Request initial name from server
+      socket.emit("getInitialName");
 });
+
+// Handle initial name from server
+socket.on("initialName", (name) => {
+  myName = name;
+  console.log("Initial name received:", myName);
+});
+
+// Chat Functionality
+// Chat Functionality
+const chatMessages = document.getElementById("chatMessages");
+const messageInput = document.getElementById("messageInput");
+const sendMessageButton = document.getElementById("sendMessage");
+
+sendMessageButton.addEventListener("click", () => {
+    sendMessage();
+});
+
+messageInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        event.preventDefault(); // Prevent default newline behavior
+        sendMessage();
+    }
+});
+
+function sendMessage() {
+    const message = messageInput.value.trim();
+    if (message) {
+        socket.emit("chatMessage", { message, name: myName });
+        messageInput.value = "";
+    }
+}
+
+socket.on("chatMessage", ({ message, name }) => {
+    const messageElement = document.createElement("div");
+    messageElement.textContent = `${name}: ${message}`;
+    chatMessages.appendChild(messageElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+});
+
