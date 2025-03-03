@@ -4,58 +4,37 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#000000">
     <link rel="apple-touch-icon" href="/icons/apple-icon-180x180.png">
-
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Applications</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-        }
-        a {
-            display: block;
-            margin: 20px 0;
-            padding: 15px 25px;
-            font-size: 18px;
-            text-decoration: none;
-            color: white;
-            background-color: #ec4899;
-            border-radius: 5px;
-        }
-        a:hover {
-            background-color: #db2777;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+     <!-- Add this line to attempt to load the font -->
+     <link href="https://fonts.cdnfonts.com/css/ms-sans-serif" rel="stylesheet">
 </head>
 <body>
-    <h1>Applications</h1>
-    <a href="library/index.html">Library</a>
-    <a href="hearthstone/index.html">Hearthstone</a>
-    <a href="dunes/index.html">Tunes</a>
-    <a href="chat/index.html">True P2P Chat</a>
-    <a href="room-chat/index.html">Broadcast</a>
-    <a href="voice-chat/index.html">Voice Chat</a>
-    <a href="spa/index.html">Spa</a>
-    <a href="card-jitsu/index.html">Decentralized Card Jitsu</a>
-    <a href="cocktail/index.html">Cocktail</a>
-    <a href="admin/index.html">SQL</a>
-</body>
+    
 
-<script>
-    if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js').then(
-      (registration) => {
-        console.log('Service Worker registered with scope:', registration.scope);
-      },
-      (error) => {
-        console.error('Service Worker registration failed:', error);
-      }
-    );
-  });
-}
-</script>
+    <!-- Windows 95 Container -->
+    <div id="window-container">
+        <div id="window-titlebar">
+            Applications
+            <div id="window-close">X</div>
+        </div>
+        <div id="window-content">
+            <div id="links-container">
+                <a href="library/index.html">Library</a>
+                <a href="hearthstone/index.html">Hearthstone</a>
+                <a href="dunes/index.html">Tunes</a>
+                <!-- <a href="chat/index.html">True P2P Chat</a> -->
+                <a href="room-chat/index.html">Broadcast</a>
+                <a href="voice-chat/index.html">Voice Chat</a>
+                <a href="spa/index.html">Spa</a>
+                <a href="card-jitsu/index.html">Decentralized Card Jitsu</a>
+                <!-- <a href="cocktail/index.html">Cocktail</a> -->
+                <a href="admin/index.html">SQL</a>
+            </div>
+        </div>
+    </div>
+
+</body>
 </html>
