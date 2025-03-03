@@ -12,6 +12,9 @@ const answerCallButton = document.getElementById("answerCall");
 const rejectCallButton = document.getElementById("rejectCall");
 let currentPeerId = null;
 
+// New: Ringtone element
+const ringtoneAudio = document.getElementById("ringtone");
+
 const iceServers = [
   { urls: "stun:stun.l.google.com:19302" }
 ];
@@ -71,6 +74,9 @@ async function startCall(targetUserId) {
 socket.on("offer", async ({ offer, from }) => {
   console.log("Received offer from:", from);
 
+  // New: Play ringtone
+  ringtoneAudio.play();
+
   // Show incoming call UI
   currentPeerId = from;
   callerIdSpan.textContent = from;
@@ -84,6 +90,10 @@ socket.on("offer", async ({ offer, from }) => {
 // Answer the call
 answerCallButton.addEventListener("click", async () => {
   console.log("Answering call from:", currentPeerId);
+
+  // New: Stop ringtone
+  ringtoneAudio.pause();
+  ringtoneAudio.currentTime = 0;
 
   await initMedia();
 
@@ -102,6 +112,11 @@ answerCallButton.addEventListener("click", async () => {
 // Reject the call
 rejectCallButton.addEventListener("click", () => {
   console.log("Rejected call from:", currentPeerId);
+
+  // New: Stop ringtone
+  ringtoneAudio.pause();
+  ringtoneAudio.currentTime = 0;
+
   currentPeerId = null;
   incomingCallDiv.style.display = "none";
   if (peerConnection) {
