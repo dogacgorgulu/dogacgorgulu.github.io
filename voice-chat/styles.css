@@ -1,25 +1,134 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-  }
-  #userList {
-    margin: 20px auto;
-    max-width: 300px;
-    text-align: left;
-  }
-  .user {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border: 1px solid #ccc;
-    margin-bottom: 5px;
-    border-radius: 5px;
-  }
-  .user button {
-    padding: 5px 10px;
-    font-size: 14px;
-    cursor: pointer;
-  }
+  font-family: 'MS Sans Serif', sans-serif; /* The Classic! */
+  text-align: center;
+  margin: 0;
+  background-color: #008080; /* Windows 95 Turquoise */
+  color: #000; /* Black Text */
+  min-height: 100vh;
+  overflow: auto; /* Show scrollbar if content overflows */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
+  align-items: center;
+}
+
+h1 {
+  font-size: 2em;
+  font-weight: normal; /* Reduced boldness */
+  text-shadow: 0.5px 0.5px 0 #c0c0c0; /* Subtle "pixelated" shadow */
+  margin-bottom: 10px;  /* Reduced margin */
+  padding-bottom: 0;   /* Remove padding */
+  border: none; /*Remove border*/
+}
+
+/* General Window Style */
+.window-container {
+  background-color: #c0c0c0;
+  border: 2px outset #fff;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  margin: 10px auto;
+  width: 80%;
+  max-width: 400px;
+}
+
+.window-titlebar {
+  background-color: #000080;
+  color: #fff;
+  padding: 3px 5px;
+  font-weight: normal;
+  font-size: 1em;
+  cursor: default;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.window-content {
+  padding: 10px;
+}
+
+/* User List Style */
+#userList {
+  text-align: left;
+  padding: 0px; /* Reduced padding for less overall space */
+}
+
+.user {
+  display: flex;
+  justify-content: space-between; /* Keep elements spaced */
+  align-items: center;          /* Vertically align items */
+  padding: 0px 0px;             /* Reduced padding around each user */
+  margin-bottom: 0px;            /* Reduced margin between users */
+  border-radius: 0px;
+  font-size: 0.9em;             /* Slightly smaller font for a tighter look */
+}
+
+.user button {
+  padding: 2px 20px;             /* Slightly larger padding for better button size */
+  font-size: 14px;             /* increased font size of the button */
+  cursor: pointer;
+  color: #000;
+  background-color: #c0c0c0;
+  border: 2px outset #fff;
+  white-space: nowrap;          /* Prevent button text from wrapping */
+}
+
+.user span {
+  flex-grow: 1;                /* Allow the user name to take up available space */
+  margin-right: 5px;            /* Add a little space between name and button */
+  overflow: hidden;              /* Handle long names gracefully */
+  text-overflow: ellipsis;       /* Add ellipsis if name is too long */
+}
+
+/* Button Style */
+button {
+  margin: 5px;
+  padding: 5px 10px;
+  font-size: 14px;
+  color: #000;
+  background-color: #c0c0c0;
+  border: 2px outset #fff;
+  cursor: pointer;
+}
+
+button:hover {
+  border-style: inset; /* Inset on Hover */
+  background-color: #a0a0a0; /* Slightly Darker Gray */
+}
+
+/* Incoming Call Style - NOW CENTERED */
+#incomingCall {
+  display: none;
+  position: fixed; /* Important for centering in the viewport */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the element */
+  z-index: 1000; /* Ensure it's on top */
+  display: none; /* Initially hidden */
+  background-color: #c0c0c0;
+  border: 2px outset #fff;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  padding: 0; /* REMOVE PADDING from the container */
+  text-align: center;
+  min-width: 300px; /* Minimum width */
+  flex-direction: column; /* Stack titlebar and content vertically */
+}
+
+#incomingCall .window-titlebar {
+  background-color: #000080;
+  color: #fff;
+  padding: 3px 5px;
+  font-weight: normal;
+  font-size: 1em;
+  cursor: default;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#incomingCall .window-content {
+  padding: 10px;
+  flex-grow: 1; /* Allow content to take up remaining space */
+}

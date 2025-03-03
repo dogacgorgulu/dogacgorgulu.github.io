@@ -12,6 +12,11 @@ const answerCallButton = document.getElementById("answerCall");
 const rejectCallButton = document.getElementById("rejectCall");
 let currentPeerId = null;
 
+// New: Name input elements
+const nameInput = document.getElementById("nameInput");
+const setNameButton = document.getElementById("setName");
+let myName = ""; // Store the user's name
+
 // New: Ringtone element
 const ringtoneAudio = document.getElementById("ringtone");
 const toggleMuteButton = document.getElementById("toggleMute");
@@ -26,6 +31,55 @@ async function initMedia() {
   localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
   console.log("Media initialized:", localStream);
 }
+
+// New: Set Name Functionality
+setNameButton.addEventListener("click", () => {
+  const newName = nameInput.value.trim();
+  if (newName !== "") {
+    myName = newName;
+    socket.emit("setName", newName);  // Send name to the server
+  }
+});
+
+// New: Handle Name Updates
+socket.on("userList", (users) => {
+    // The server now sends a user list with names
+    console.log("Received user list:", users);
+    userList.innerHTML = ""; // Clear existing list
+    if (users.length === 0) {
+        userList.innerHTML = "<p>No other users online.</p>";
+        return;
+    }
+    users.forEach((user) => {
+        const userElement = document.createElement("div");
+        userElement.className = "user";
+        userElement.innerHTML = `
+            <span>User: ${user.name}</span>
+            <button onclick="startCall('${user.id}')">Call</button>
+        `;
+        userList.appendChild(userElement);
+    });
+});
+
+// Update user list on the front-end
+socket.on("users", (users) => {
+  // The server now sends a user list with names
+  console.log("Received user list:", users);
+  userList.innerHTML = ""; // Clear existing list
+  if (users.length === 0) {
+    userList.innerHTML = "<p>No other users online.</p>";
+    return;
+  }
+  users.forEach((user) => {
+    const userElement = document.createElement("div");
+    userElement.className = "user";
+    userElement.innerHTML = `
+      <span>User: ${user}</span>
+      <button onclick="startCall('${user}')">Call</button>
+    `;
+    userList.appendChild(userElement);
+  });
+});
 
 // Toggle mute/unmute
 toggleMuteButton.addEventListener("click", () => {
@@ -43,25 +97,6 @@ toggleMuteButton.addEventListener("click", () => {
 refreshUsersButton.addEventListener("click", () => {
   console.log("Requesting user list...");
   socket.emit("getUsers");
-});
-
-// Update the user list on the front-end
-socket.on("users", (users) => {
-  console.log("Received user list:", users);
-  userList.innerHTML = ""; // Clear existing list
-  if (users.length === 0) {
-    userList.innerHTML = "<p>No other users online.</p>";
-    return;
-  }
-  users.forEach((user) => {
-    const userElement = document.createElement("div");
-    userElement.className = "user";
-    userElement.innerHTML = `
-      <span>User: ${user}</span>
-      <button onclick="startCall('${user}')">Call</button>
-    `;
-    userList.appendChild(userElement);
-  });
 });
 
 // Start a call with a specific user
@@ -85,6 +120,7 @@ async function startCall(targetUserId) {
 }
 
 // Handle incoming offer
+// Handle incoming offer
 socket.on("offer", async ({ offer, from }) => {
   console.log("Received offer from:", from);
 
@@ -94,8 +130,8 @@ socket.on("offer", async ({ offer, from }) => {
   }
 
   // Show incoming call UI
-  currentPeerId = from;
-  callerIdSpan.textContent = from;
+  currentPeerId = from.id; // Access the ID from the from object
+  callerIdSpan.textContent = from.name; // Access the name from the from object
   incomingCallDiv.style.display = "block";
 
   // Set up the peer connection but don't respond yet

@@ -1,72 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WebRTC Voice Chat</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-  }
-  #userList {
-    margin: 20px auto;
-    max-width: 300px;
-    text-align: left;
-  }
-  .user {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border: 1px solid #ccc;
-    margin-bottom: 5px;
-    border-radius: 5px;
-  }
-  .user button {
-    padding: 5px 10px;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  button {
-    margin: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-  }
-  #incomingCall {
-    display: none;
-    border: 1px solid #ccc;
-    padding: 15px;
-    margin: 20px auto;
-    max-width: 300px;
-    text-align: center;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebRTC Voice Chat</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<h1>WebRTC Voice Chat</h1>
-<audio id="remoteAudio" autoplay></audio>
+    
+    <audio id="remoteAudio" autoplay></audio>
 
-<div>
-  <button id="refreshUsers">Refresh Users</button>
-  <button id="hangUpCall" disabled>Hang Up</button>
-  <button id="toggleMute">Unmute Ringtone</button> <!-- New: Toggle Mute Button -->
-</div>
+    <div class="window-container">
+        <div class="window-titlebar">
+            Controls
+        </div>
+        <div class="window-content">
+            <button id="refreshUsers">Refresh Users</button>
+            <button id="hangUpCall" disabled>Hang Up</button>
+            <button id="toggleMute">Unmute Ringtone</button>
+        </div>
+    </div>
 
-<h2>Online Users</h2>
-<div id="userList">Loading...</div>
+    <div class="window-container">
+        <div class="window-titlebar">
+            User Name
+        </div>
+        <div class="window-content">
+            <label for="nameInput">Your Name:</label>
+            <input type="text" id="nameInput" placeholder="Enter your name">
+            <button id="setName">Set Name</button>
+        </div>
+    </div>
 
-<!-- Incoming call UI -->
-<div id="incomingCall">
-  <p>Incoming call from <span id="callerId"></span></p>
-  <button id="answerCall">Answer</button>
-  <button id="rejectCall">Reject</button>
-</div>
+    <div class="window-container">
+        <div class="window-titlebar">
+            Online Users
+        </div>
+        <div class="window-content">
+            <div id="userList">Loading...</div>
+        </div>
+    </div>
 
-<audio id="ringtone" src="ringtone.mp3" loop muted></audio>
+    <div id="incomingCall" class="window-container">
+        <div class="window-titlebar">
+            Incoming Call
+        </div>
+        <div class="window-content">
+            <p>Incoming call from <span id="callerId"></span></p>
+            <button id="answerCall">Answer</button>
+            <button id="rejectCall">Reject</button>
+        </div>
+    </div>
 
-<script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
-<script src="main.js"></script>
+    <audio id="ringtone" src="ringtone.mp3" loop muted></audio>
+
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
