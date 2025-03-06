@@ -173,7 +173,7 @@ socket.on("message", (data) => {
         // Create a new chat log entry
         const messageElement = document.createElement("div");
         messageElement.textContent = `${players[data.id].name}: ${data.text}`;
-        messageElement.style.marginBottom = "5px";
+        
 
         // Append the message to the chat log
         chatLog.appendChild(messageElement);

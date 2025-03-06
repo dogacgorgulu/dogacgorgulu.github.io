@@ -9,12 +9,44 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="gameContainer">
-        <canvas id="gameCanvas"></canvas>
-        <div id="chatLog"></div>
-        <input id="chatInput" type="text" placeholder="Type a message...">
-        <button id="sendButton">Send</button>
+
+
+    <div class="window-container">
+        <div class="window-titlebar">
+            Spa
+        </div>
+        <div class="window-content">
+                <canvas id="gameCanvas"></canvas>
+        </div>
+        <div style="display: flex; padding: 5px; border-top: 1px solid #ccc;">
+            
+                <div id="chatLog" class="window-content"></div>
+        
+                <div style="display: flex; padding: 5px; border-top: 1px solid #ccc;">
+                    <input type="text" id="chatInput" placeholder="Type a message..." style="flex-grow: 1; padding: 5px;">
+                    <button id="sendButton">Send</button>
+                </div>
+        </div>
     </div>
+
+    <!--
+    
+        <div class="window-container">
+            <div class="window-titlebar">
+                Public Chat
+            </div>
+            <div id="chatLog" class="window-content"></div>
+    
+            <div style="display: flex; padding: 5px; border-top: 1px solid #ccc;">
+                <input type="text" id="chatInput" placeholder="Type a message..." style="flex-grow: 1; padding: 5px;">
+                <button id="sendButton">Send</button>
+            </div>
+            
+        </div>
+    -->
+
+
+
     <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
     <script src="main.js"></script>
 </body>

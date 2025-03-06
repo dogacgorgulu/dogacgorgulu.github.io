@@ -21,52 +21,174 @@ body {
     display: block;
 }
 
-/* Chat log styling */
-#chatLog {
-    position: absolute;
-    bottom: 10px; /* Position from bottom of the container */
-    left: 10px; /* Position from left */
-    width: 30%; /* Adjust width as needed */
-    height: 40%; /* Adjust height as needed */
-    background-color: rgba(0, 0, 0, 0.7); /* Transparent black */
-    color: white;
-    overflow-y: auto; /* Scrollable content */
-    border-radius: 8px; /* Rounded corners */
-    border: 1px solid #444; /* Subtle border for better visibility */
-    padding: 10px;
-    z-index: 10; /* Ensure it appears above the canvas */
-}
-
-/* Chat input styling */
-#chatInput {
-    position: absolute;
-    bottom: 16px; /* Align above chat log */
-    left: 15px;
-    width: calc(25%); /* Match chat log width minus button width */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.8); /* Slight transparency */
-    z-index: 11; /* Ensure it's above everything else */
-}
-
-/* Send button styling */
-#sendButton {
-    position: absolute;
-    bottom: 16px; /* Align with chat input */
-    left: 410px; /* Position next to chat input */
-    width: 56px;
-    height: 35px;
-    
-    background-color: #007b19;
-    color: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    cursor: pointer;
-    z-index: 11;
-    padding: 10px;
-}
 
 #sendButton:hover {
     background-color: #063300;
 }
+
+/* 95 CSS */
+
+body {
+  font-family: 'MS Sans Serif', sans-serif; /* The Classic! */
+  text-align: center;
+  margin: 0;
+  background-color: #008080; /* Windows 95 Turquoise */
+  color: #000; /* Black Text */
+  min-height: 100vh;
+  overflow: auto; /* Show scrollbar if content overflows */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
+  align-items: center;
+}
+
+p, span, div, label, button, input, textarea, select {
+  font-family: 'MS Sans Serif', sans-serif;
+  font-weight: normal;
+  font-size: 14px; 
+}
+
+h1 {
+  font-size: 2em;
+  font-weight: normal; /* Reduced boldness */
+  text-shadow: 0.5px 0.5px 0 #c0c0c0; /* Subtle "pixelated" shadow */
+  margin-bottom: 10px;  /* Reduced margin */
+  padding-bottom: 0;   /* Remove padding */
+  border: none; /*Remove border*/
+}
+
+/* General Window Style */
+.window-container {
+  background-color: #c0c0c0;
+  border: 2px outset #fff;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  margin: 10px auto;
+  width: 80%;
+  max-width: 1200px;
+}
+
+.window-titlebar {
+  background-color: #000080;
+  color: #fff;
+  padding: 3px 5px;
+  font-weight: normal;
+  font-size: 1em;
+  cursor: default;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.window-content {
+  padding: 10px;
+}
+
+.user {
+  display: flex;
+  justify-content: space-between; /* Keep elements spaced */
+  align-items: center;          /* Vertically align items */
+  padding: 0px 0px;             /* Reduced padding around each user */
+  margin-bottom: 0px;            /* Reduced margin between users */
+  border-radius: 0px;
+  font-size: 0.9em;             /* Slightly smaller font for a tighter look */
+}
+
+.user button {
+  padding: 2px 20px;             /* Slightly larger padding for better button size */
+  font-size: 14px;             /* increased font size of the button */
+  cursor: pointer;
+  color: #000;
+  background-color: #c0c0c0;
+  border: 2px outset #fff;
+  white-space: nowrap;          /* Prevent button text from wrapping */
+}
+
+.user span {
+  flex-grow: 1;                /* Allow the user name to take up available space */
+  margin-right: 5px;            /* Add a little space between name and button */
+  overflow: hidden;              /* Handle long names gracefully */
+  text-overflow: ellipsis;       /* Add ellipsis if name is too long */
+}
+
+/* Button Style */
+button {
+  margin: 5px;
+  padding: 5px 10px;
+  font-size: 14px;
+  color: #000;
+  background-color: #c0c0c0;
+  border: 2px outset #fff;
+  cursor: pointer;
+}
+
+button:hover {
+  border-style: inset; /* Inset on Hover */
+  background-color: #a0a0a0; /* Slightly Darker Gray */
+}
+
+#incomingCall .window-content {
+  padding: 20px;
+  flex-grow: 1;
+  background-color: #d0d0d0; /* Optional: Slightly darker background */
+  border: 1px solid #a0a0a0; /* Optional: Subtle border */
+}
+
+#incomingCall .window-titlebar {
+  background-color: #000080;
+  color: #fff;
+  padding: 3px 5px;
+  font-weight: normal;
+  font-size: 1em;
+  cursor: default;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#incomingCall .window-content {
+  padding: 10px;
+  flex-grow: 1; /* Allow content to take up remaining space */
+}
+
+#chatLog {
+  height: 100px;
+  font-weight: normal;
+  font-size: 14px;
+  text-align: left;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 5px;
+}
+
+
+
+input[type="text"],
+textarea,
+select {
+    background-color: #fff;
+    border: 2px inset #c0c0c0;
+    padding: 3px;
+}
+
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+    font-weight: normal;
+    font-size: 14px;
+    outline: none; /* Remove default focus outline */
+    border: 2px outset #c0c0c0; /* Reverse the border on focus */
+}
+
+/* Add for nameInput specifically to match other inputs */
+#nameInput, #chatInput, #messageInput {
+  font-size: 14px;
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: #fff;
+  border: 2px inset #c0c0c0;
+  flex-grow: 1;
+}
+
+
