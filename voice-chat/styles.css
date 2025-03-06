@@ -60,6 +60,11 @@ h1 {
   padding: 0px; /* Reduced padding for less overall space */
 }
 
+#callStatus {
+  text-align: left;
+  padding: 0px; /* Reduced padding for less overall space */
+}
+
 .user {
   display: flex;
   justify-content: space-between; /* Keep elements spaced */

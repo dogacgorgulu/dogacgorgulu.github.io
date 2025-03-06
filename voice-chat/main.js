@@ -12,40 +12,38 @@ const answerCallButton = document.getElementById("answerCall");
 const rejectCallButton = document.getElementById("rejectCall");
 let currentPeerId = null;
 
-// New: Name input elements
 const nameInput = document.getElementById("nameInput");
 const setNameButton = document.getElementById("setName");
-let myName = ""; // Store the user's name
+let myName = "";
 
-// New: Ringtone element
 const ringtoneAudio = document.getElementById("ringtone");
 const toggleMuteButton = document.getElementById("toggleMute");
-let isMuted = true; // Start muted
+let isMuted = true;
 
 const iceServers = [
   { urls: "stun:stun.l.google.com:19302" }
 ];
 
-// Initialize media stream
+let inCall = false;
+let callPartnerName = "";
+let isCalling = false;
+
 async function initMedia() {
   localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
   console.log("Media initialized:", localStream);
 }
 
-// New: Set Name Functionality
 setNameButton.addEventListener("click", () => {
   const newName = nameInput.value.trim();
   if (newName !== "") {
     myName = newName;
-    socket.emit("setName", newName);  // Send name to the server
+    socket.emit("setName", newName);
   }
 });
 
-// New: Handle Name Updates
 socket.on("userList", (users) => {
-    // The server now sends a user list with names
     console.log("Received user list:", users);
-    userList.innerHTML = ""; // Clear existing list
+    userList.innerHTML = "";
     if (users.length === 0) {
         userList.innerHTML = "<p>No other users online.</p>";
         return;
@@ -67,27 +65,6 @@ socket.on("playNotification", ({ from }) => {
   alert(`${from} sent you a notification!`);
 });
 
-// Update user list on the front-end
-socket.on("users", (users) => {
-  // The server now sends a user list with names
-  console.log("Received user list:", users);
-  userList.innerHTML = ""; // Clear existing list
-  if (users.length === 0) {
-    userList.innerHTML = "<p>No other users online.</p>";
-    return;
-  }
-  users.forEach((user) => {
-    const userElement = document.createElement("div");
-    userElement.className = "user";
-    userElement.innerHTML = `
-      <span>User: ${user}</span>
-      <button onclick="startCall('${user}')">Call</button>
-    `;
-    userList.appendChild(userElement);
-  });
-});
-
-// Toggle mute/unmute
 toggleMuteButton.addEventListener("click", () => {
   isMuted = !isMuted;
   ringtoneAudio.muted = isMuted;
@@ -99,13 +76,11 @@ toggleMuteButton.addEventListener("click", () => {
   }
 });
 
-// Trigger a refresh of the user list
 refreshUsersButton.addEventListener("click", () => {
   console.log("Requesting user list...");
   socket.emit("getUsers");
 });
 
-// Start a call with a specific user
 async function startCall(targetUserId) {
   console.log("Starting call with:", targetUserId);
   currentPeerId = targetUserId;
@@ -122,34 +97,31 @@ async function startCall(targetUserId) {
   await peerConnection.setLocalDescription(offer);
 
   socket.emit("offer", { target: targetUserId, offer });
-  hangUpButton.disabled = false; // Enable hang up button
+  hangUpButton.disabled = false;
+  inCall = true;
+  isCalling = true;
+  updateCallStatus();
 }
 
-// Handle incoming offer
-// Handle incoming offer
 socket.on("offer", async ({ offer, from }) => {
   console.log("Received offer from:", from);
 
-  // New: Play ringtone
   if (!isMuted) {
     ringtoneAudio.play();
   }
 
-  // Show incoming call UI
-  currentPeerId = from.id; // Access the ID from the from object
-  callerIdSpan.textContent = from.name; // Access the name from the from object
+  currentPeerId = from.id;
+  callerIdSpan.textContent = from.name;
   incomingCallDiv.style.display = "block";
+  callPartnerName = from.name;
 
-  // Set up the peer connection but don't respond yet
   await createPeerConnection();
   await peerConnection.setRemoteDescription(offer);
 });
 
-// Answer the call
 answerCallButton.addEventListener("click", async () => {
   console.log("Answering call from:", currentPeerId);
 
-  // New: Stop ringtone
   ringtoneAudio.pause();
   ringtoneAudio.currentTime = 0;
 
@@ -164,14 +136,15 @@ answerCallButton.addEventListener("click", async () => {
 
   socket.emit("answer", { target: currentPeerId, answer });
   incomingCallDiv.style.display = "none";
-  hangUpButton.disabled = false; // Enable hang up button
+  hangUpButton.disabled = false;
+  isCalling = false;
+  inCall = true;
+  updateCallStatus();
 });
 
-// Reject the call
 rejectCallButton.addEventListener("click", () => {
   console.log("Rejected call from:", currentPeerId);
 
-  // New: Stop ringtone
   ringtoneAudio.pause();
   ringtoneAudio.currentTime = 0;
 
@@ -183,13 +156,15 @@ rejectCallButton.addEventListener("click", () => {
   }
 });
 
-// Handle incoming answer
-socket.on("answer", async ({ answer }) => {
+socket.on("answer", async ({ answer, from }) => {
   console.log("Received answer");
   await peerConnection.setRemoteDescription(answer);
+  callPartnerName = from.name; // Get the callee's name
+  isCalling = false;
+  inCall = true; // Set inCall to true for the caller
+  updateCallStatus(); // Update the caller's UI
 });
 
-// Handle incoming ICE candidate
 socket.on("candidate", ({ candidate }) => {
   console.log("Received ICE candidate");
   peerConnection.addIceCandidate(candidate).catch(console.error);
@@ -211,35 +186,64 @@ async function createPeerConnection() {
   };
 }
 
-// Hang up the call
 hangUpButton.addEventListener("click", hangUp);
 async function hangUp() {
   if (peerConnection) {
+    socket.emit("hangUp", currentPeerId);
     peerConnection.close();
     peerConnection = null;
     currentPeerId = null;
   }
   console.log("Call ended.");
-  hangUpButton.disabled = true; // Disable hang up button
+  hangUpButton.disabled = true;
+  inCall = false;
+  isCalling = false;
+  updateCallStatus();
 }
 
-// Connect to the server and request user list on connect
+socket.on("hangUp", () => {
+  console.log("Remote user hung up.");
+  if (peerConnection) {
+    peerConnection.close();
+    peerConnection = null;
+    currentPeerId = null;
+  }
+  hangUpButton.disabled = true;
+  inCall = false;
+  isCalling = false;
+  updateCallStatus();
+});
+
+function updateCallStatus() {
+  const callStatusDiv = document.getElementById("callStatus");
+  if (!callStatusDiv) {
+    const newDiv = document.createElement("div");
+    newDiv.id = "callStatus";
+    document.body.appendChild(newDiv);
+  }
+
+  if (inCall) {
+    document.getElementById("callStatus").textContent = `In call with ${callPartnerName}.`;
+  } else {
+    document.getElementById("callStatus").textContent = "Not in a call.";
+  }
+
+  if (isCalling) {
+    document.getElementById("callStatus").textContent = `Calling...`;
+  }
+}
+
 socket.on("connect", () => {
   console.log("Connected to namespace as:", socket.id);
   socket.emit("getUsers");
-
-      // Request initial name from server
-      socket.emit("getInitialName");
+  socket.emit("getInitialName");
 });
 
-// Handle initial name from server
 socket.on("initialName", (name) => {
   myName = name;
   console.log("Initial name received:", myName);
 });
 
-// Chat Functionality
-// Chat Functionality
 const chatMessages = document.getElementById("chatMessages");
 const messageInput = document.getElementById("messageInput");
 const sendMessageButton = document.getElementById("sendMessage");
@@ -250,7 +254,7 @@ sendMessageButton.addEventListener("click", () => {
 
 messageInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
-        event.preventDefault(); // Prevent default newline behavior
+        event.preventDefault();
         sendMessage();
     }
 });
@@ -269,4 +273,3 @@ socket.on("chatMessage", ({ message, name }) => {
     chatMessages.appendChild(messageElement);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 });
-
