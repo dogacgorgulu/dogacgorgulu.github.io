@@ -1,0 +1,247 @@
+/* General Page Styling */
+body {
+    font-family: "Didot", "Georgia", serif; /* High-fashion serif font */
+    margin: 0;
+    padding: 0;
+    color: #2c2c2c; /* Rich dark gray for text */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: url("https://cdn.glitch.global/5cef66a0-1b3e-4e52-9883-95e58447dcbc/Mario-Testino-Kate-Moss-London-2006-cigarette.jpg?v=1737865187520")
+      no-repeat center center fixed; /* Background collage */
+    background-size: cover;
+    box-sizing: border-box; /* Include padding and borders in all element sizes */
+  }
+  
+  /* Apply box-sizing globally */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box; /* Ensure consistent sizing for all elements */
+  }
+  
+  /* Semi-Transparent Overlay */
+  body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+  
+  /* Header Styling */
+  .header {
+    width: 100%;
+    background-color: rgba(
+      6,
+      13,
+      13,
+      0.8
+    ); /* Black with transparency for elegance */
+    color: #FAFAFA; /* White text */
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+  }
+  
+  .header h1 {
+    margin: 0;
+    font-family: "Didot", serif; /* Fashion-inspired serif font */
+    font-size: 2rem;
+    letter-spacing: 2px;
+  }
+  
+  .header h1 a {
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Inherit the header text color */
+    transition: color 0.3s ease; /* Smooth transition for hover effect */
+  }
+  
+  .header h1 a:hover {
+    color: #fafafa; /* Change color on hover (optional) */
+  }
+  
+  .header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .header nav ul li {
+    display: inline;
+  }
+  
+  .header nav ul li a {
+    color: #fafafa; /* White links */
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 8px 16px;
+    border: 1px solid #fafafa;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .header nav ul li a:hover {
+    background-color: #fafafa; /* Hover effect */
+    color: #060d0d; /* Contrasting text */
+  }
+  
+  /* Main Container */
+  .container {
+    background: rgba(250, 250, 250, 0.9); /* Slightly transparent white */
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 90%; /* Flexible width for small screens */
+    max-width: 400px; /* Limit width for larger screens */
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: "Georgia", serif;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #060d0d; /* Black for strong headings */
+    letter-spacing: 1px;
+  }
+  
+  form label {
+    margin-bottom: 5px;
+    display: block;
+    text-align: left;
+    font-size: 1rem;
+    color: #444; /* Muted gray for labels */
+  }
+  
+  /* Form Input Fields and Dropdown Menus */
+  form input,
+  form select {
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 1rem;
+    width: 100%; /* Ensure fields take full container width */
+    border: 1px solid #ccc; /* Light gray borders */
+    border-radius: 10px;
+    box-shadow: inset 0 1px 4px rgba(6, 13, 13, 0.1); /* Inner shadow for depth */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+  }
+  
+  form button {
+    margin-bottom: 0px;
+    padding: 12px;
+    font-size: 1.1rem;
+    width: 100%; /* Full width for buttons */
+    max-width: 200px; /* Match input field width */
+    background-color: #060d0d; /* Black for button */
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  form button:hover {
+    background-color: #444; /* Darker gray on hover */
+  }
+  
+  /* Results Section */
+  #result {
+    margin-top: 20px;
+    text-align: left;
+    font-family: "Georgia", serif;
+    font-size: 1rem;
+    color: #2c2c2c;
+  }
+  
+  #result h3 {
+    color: #060d0d; /* Strong black for section headings */
+    margin-bottom: 10px;
+  }
+  
+  #result ul {
+    padding-left: 20px;
+  }
+  
+  #result li {
+    margin-bottom: 5px;
+    list-style-type: square; /* Old-school bullet points */
+  }
+  
+  /* Chart Container */
+  #chart-container {
+    margin-top: 20px;
+  }
+  
+  #weightLossChart {
+    width: 0;
+    height: 0;
+  }
+  
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #999; /* Elegant gray scrollbar */
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #666; /* Darker on hover */
+  }
+  
+  /* Mobile-First Responsive Adjustments */
+  @media (max-width: 768px) {
+    .header h1 {
+      font-size: 1.8rem;
+    }
+  
+    .header nav ul {
+      gap: 10px;
+    }
+  
+    .header nav ul li a {
+      font-size: 0.9rem;
+      padding: 5px 10px;
+    }
+  
+    .container {
+      padding: 15px; /* Reduce padding for smaller screens */
+    }
+  
+    h2 {
+      font-size: 1.3rem; /* Adjust heading size */
+    }
+  
+    form input,
+    form select,
+    form button {
+      padding: 10px; /* Adjust padding for inputs and buttons */
+      font-size: 0.95rem; /* Slightly smaller font size */
+    }
+  
+    #result h3 {
+      font-size: 1rem; /* Adjust result heading size */
+    }
+  
+    #result ul {
+      padding-left: 15px; /* Adjust padding for list */
+    }
+  }
+  

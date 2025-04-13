@@ -1,0 +1,33 @@
+/* styles.css */
+#card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px;
+}
+
+.card {
+    width: 100px;
+    height: 150px;
+    background-color: lightblue;
+    border: 1px solid gray;
+    cursor: grab;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* For absolute positioning during drag */
+    user-select: none; /* Prevent text selection during drag */
+    transition: transform 0.3s ease; /* For flip animation */
+
+}
+
+.card.flipped {
+    transform: rotateY(180deg);
+    background-color: lightcoral;
+}
+
+.card.dragging {
+    position: absolute; /* Allow free movement */
+    z-index: 10; /* Ensure it's on top */
+    pointer-events: none; /* Prevent interference with other elements */
+}

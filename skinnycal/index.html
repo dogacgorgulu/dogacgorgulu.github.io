@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="google-adsense-account" content="ca-pub-1985915994385993">
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-SVTE23JT84"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-SVTE23JT84");
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SC Diet Planner</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <a href="index.html" style="text-decoration: none; color: inherit">
+        <h1>Skinny Community</h1>
+      </a>
+      <nav>
+        <ul>
+          <!-- <li><a href="dietplanner.html">Diet Planner</a></li> -->
+        </ul>
+      </nav>
+    </header>
+    <div class="container">
+      <h2>Diet Planner</h2>
+      <form id="calculatorForm">
+        <label for="system">Measurement System:</label>
+        <select id="system">
+          <option value="metric" selected>Metric (kg, cm)</option>
+          <option value="imperial">Imperial (lb, inches)</option>
+        </select>
+
+        <label for="weight">CW</label>
+        <input type="number" id="weight" required />
+
+        <label for="height">Height</label>
+        <input type="number" id="height" required />
+
+        <label for="age">Age</label>
+        <input type="number" id="age" required />
+
+        <label for="sex">Sex</label>
+        <select id="sex" required>
+          <option value="male">Male AAB</option>
+          <option value="female">Female AAB</option>
+        </select>
+
+        <label for="activityFactor">Activity Factor</label>
+        <select id="activityFactor" required>
+          <option value="1">I have BMR anxiety</option>
+          <option value="1.1">Bedrotting</option>
+          <option value="1.2">I go to work/school</option>
+        </select>
+
+        <label for="goalWeight">GW</label>
+        <input type="number" id="goalWeight" required />
+
+        <label for="ultimateGoalWeight">UGW</label>
+        <input type="number" id="ultimateGoalWeight" required />
+
+        <label for="days">Days to Reach GW</label>
+        <input type="number" id="days" required />
+
+        <button type="button" id="calculateButton">Submit</button>
+      </form>
+
+      <div id="result"></div>
+      <div id="chart-container">
+        <canvas id="weightLossChart"></canvas>
+      </div>
+    </div>

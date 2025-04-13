@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaborative Tabletop</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+</head>
+<body>
+    <div id="user-info">
+        Your ID: <span id="user-id"></span><br>
+        Enter custom ID: <input type="text" id="custom-id">
+        <button id="set-id">Set ID</button>
+      </div>
+    <div id="card-container">
+        <div class="card" data-id="card1">Card 1</div>
+        <div class="card" data-id="card2">Card 2</div>
+        <div class="card" data-id="card3">Card 3</div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
